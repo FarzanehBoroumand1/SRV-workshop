@@ -52,7 +52,8 @@ A Kaplan–Meier (KM) curve estimates the **probability of remaining event-free 
 
 ## Example: simple Kaplan–Meier estimate
 
-```{r}
+```{r,warning=FALSE}
+
 library(survival)
 library(survminer)
 
@@ -90,7 +91,7 @@ Censored individuals:
 
 ## Kaplan–Meier curves by donor type
 
-```{r}
+```{r,warning=FALSE}
 set.seed(2025)
 
 n <- 200
@@ -160,7 +161,7 @@ It answers the question:
 
 ## Adjusted RMST regression
 
-```{r}
+```{r,,warning=FALSE}
 library(survRM2)
 
 tau <- 36
