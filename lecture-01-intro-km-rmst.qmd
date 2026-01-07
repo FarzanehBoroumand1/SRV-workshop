@@ -4,7 +4,7 @@ toc: true
 toc-depth: 3
 ---
 
-```{r}
+```{r, echo=FALSE}
 knitr::opts_chunk$set(
   message = FALSE,
   warning = FALSE
@@ -18,12 +18,12 @@ knitr::opts_chunk$set(
 ::: callout-note
 By the end of this lecture, you should be able to:
 
--   Describe what makes survival data different from standard outcomes
--   Explain how Kaplan–Meier survival curves are constructed
--   Interpret censoring in survival analysis
--   Identify the limitations of Kaplan–Meier curves
--   Understand the motivation for Restricted Mean Survival Time (RMST)
--   Interpret RMST differences and ratios in applied settings
+-   Describe what makes **survival** data different from standard outcomes
+-   Explain how **Kaplan–Meier survival curves** are constructed
+-   Interpret **censoring** in survival analysis
+-   Identify the **limitations** of Kaplan–Meier curves
+-   Understand the motivation for **Restricted Mean Survival Time (RMST)**
+-   Interpret **RMST differences and ratios** in applied settings
 :::
 
 ## What is survival data?

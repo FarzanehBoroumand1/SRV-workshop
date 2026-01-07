@@ -1,0 +1,184 @@
+---
+title: "Lecture 2: Cox proportional hazards model"
+toc: true
+toc-depth: 3
+---
+
+```{r, echo=FALSE}
+knitr::opts_chunk$set(
+  message = FALSE,
+  warning = FALSE
+)
+```
+
+## Learning objectives
+
+::: callout-note
+By the end of this lecture, you should be able to:
+
+- Understand what the **hazard** represents
+- Fit a **Cox proportional hazards (PH) model** in R
+- Check the **proportional hazards assumption**
+- Interpret **hazard ratios (HRs)**
+- Understand when Cox and RMST answer different questions
+:::
+
+## Survival Probability vs Hazard
+
+- **Survival probability** answers:  
+  *What proportion of patients are still event-free by time $t$?*
+
+- **Hazard** answers:  
+  *How quickly are events happening right now among those still at risk?*
+
+::: {.callout-note}
+Survival is cumulative over time.  
+Hazard is instantaneous risk at a given moment.
+:::
+
+---
+
+## What Does the Cox Model Do?
+
+The **Cox proportional hazards (PH) model** relates covariates to the hazard:
+
+> It estimates **relative differences in hazard** between groups.
+
+Results are reported as **hazard ratios (HRs)**:   
+- HR = 1 → no difference  
+- HR < 1 → lower hazard (protective)  
+- HR > 1 → higher hazard (increased risk)  
+
+---
+
+## Example: Kidney Transplant Study
+We are interested in whether donor type (living vs deceased) is associated with the hazard of graft failure over time, after adjusting for donor age, recipient sex, and baseline eGFR at the time of transplant.
+
+
+Outcome  
+- Time to graft failure (months since transplant)  
+
+Event Indicator  
+- Graft failure status  
+  - 1 = failure  
+  - 0 = censored  
+
+Main Exposure  
+- Donor type (Living vs Deceased)  
+
+Covariates  
+- Donor age (years)  
+- Recipient sex (male / female)  
+- eGFR at transplant  
+
+---
+
+## Load and Prepare the Data
+
+::: {.callout-note}
+We use simulated transplant data for illustration.
+:::
+
+```{r,  message=FALSE, warning=FALSE}
+library(survival)
+library(dplyr)
+
+df <- read.csv("simulated_data.csv")
+
+df$recipient_sex <- factor(df$recipient_sex, levels = c("Male", "Female"))
+df$donor_type <- factor(df$donor_type, levels = c("Deceased", "Living"))
+
+head(df)
+
+
+```
+
+
+## Fit the Cox Model
+
+```{r,  message=FALSE, warning=FALSE}
+
+cox_model <- coxph(
+Surv(time, status) ~ donor_type + donor_age + recipient_sex + egfr_at_tx,
+data = df
+)
+
+summary(cox_model)
+
+
+
+```
+
+
+## Checking Model Assumptions
+
+Proportional Hazards (PH) Assumption
+
+The Cox model assumes that hazard ratios are constant over time.
+
+We assess this using Schoenfeld residuals.
+
+
+```{r,  message=FALSE, warning=FALSE}
+
+ph_test <- cox.zph(cox_model)
+ph_test
+
+
+plot(ph_test)
+
+```
+
+::: {.callout-note}
+If the global test is not significant, the PH assumption is reasonable.
+:::
+
+
+## Interpreting Hazard Ratios
+Suppose the output shows:
+
+Donor type (Living vs Deceased): HR = 0.55
+
+::: {.callout-note}
+After adjustment, recipients of living donor kidneys have 45% lower hazard of graft failure
+compared with deceased donor recipients.
+:::
+
+Hazard ratios describe relative risk, not differences in survival time.
+
+
+
+## Discussion
+
+::: {.callout-question}
+
+What should we do if the proportional hazards assumption is violated?
+
+How could we model time-varying effects?
+
+When would RMST be preferable to the Cox proportional hazards model?
+:::
+
+
+
+
+##  Connection to RMST
+
+If hazards are not proportional:
+
+Hazard ratios may be misleading
+
+RMST provides an absolute, time-based summary
+
+RMST does not rely on the PH assumption
+
+This motivates using RMST as an alternative or complement to Cox models.
+
+
+
+
+
+
+
+
+

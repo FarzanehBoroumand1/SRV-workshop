@@ -1,10 +1,148 @@
 [
   {
+    "objectID": "lecture-02-cox-ph.html",
+    "href": "lecture-02-cox-ph.html",
+    "title": "Lecture 2: Cox proportional hazards model",
+    "section": "",
+    "text": "Note\n\n\n\nBy the end of this lecture, you should be able to:\n\nUnderstand what the hazard represents\nFit a Cox proportional hazards (PH) model in R\nCheck the proportional hazards assumption\nInterpret hazard ratios (HRs)\nUnderstand when Cox and RMST answer different questions",
+    "crumbs": [
+      "Lectures",
+      "Lecture 2: Cox proportional hazards model"
+    ]
+  },
+  {
+    "objectID": "lecture-02-cox-ph.html#learning-objectives",
+    "href": "lecture-02-cox-ph.html#learning-objectives",
+    "title": "Lecture 2: Cox proportional hazards model",
+    "section": "",
+    "text": "Note\n\n\n\nBy the end of this lecture, you should be able to:\n\nUnderstand what the hazard represents\nFit a Cox proportional hazards (PH) model in R\nCheck the proportional hazards assumption\nInterpret hazard ratios (HRs)\nUnderstand when Cox and RMST answer different questions",
+    "crumbs": [
+      "Lectures",
+      "Lecture 2: Cox proportional hazards model"
+    ]
+  },
+  {
+    "objectID": "lecture-02-cox-ph.html#survival-probability-vs-hazard",
+    "href": "lecture-02-cox-ph.html#survival-probability-vs-hazard",
+    "title": "Lecture 2: Cox proportional hazards model",
+    "section": "2 Survival Probability vs Hazard",
+    "text": "2 Survival Probability vs Hazard\n\nSurvival probability answers:\nWhat proportion of patients are still event-free by time \\(t\\)?\nHazard answers:\nHow quickly are events happening right now among those still at risk?\n\n\n\n\n\n\n\nNote\n\n\n\nSurvival is cumulative over time.\nHazard is instantaneous risk at a given moment.",
+    "crumbs": [
+      "Lectures",
+      "Lecture 2: Cox proportional hazards model"
+    ]
+  },
+  {
+    "objectID": "lecture-02-cox-ph.html#what-does-the-cox-model-do",
+    "href": "lecture-02-cox-ph.html#what-does-the-cox-model-do",
+    "title": "Lecture 2: Cox proportional hazards model",
+    "section": "3 What Does the Cox Model Do?",
+    "text": "3 What Does the Cox Model Do?\nThe Cox proportional hazards (PH) model relates covariates to the hazard:\n\nIt estimates relative differences in hazard between groups.\n\nResults are reported as hazard ratios (HRs):\n- HR = 1 → no difference\n- HR &lt; 1 → lower hazard (protective)\n- HR &gt; 1 → higher hazard (increased risk)",
+    "crumbs": [
+      "Lectures",
+      "Lecture 2: Cox proportional hazards model"
+    ]
+  },
+  {
+    "objectID": "lecture-02-cox-ph.html#example-kidney-transplant-study",
+    "href": "lecture-02-cox-ph.html#example-kidney-transplant-study",
+    "title": "Lecture 2: Cox proportional hazards model",
+    "section": "4 Example: Kidney Transplant Study",
+    "text": "4 Example: Kidney Transplant Study\nWe are interested in whether donor type (living vs deceased) is associated with the hazard of graft failure over time, after adjusting for donor age, recipient sex, and baseline eGFR at the time of transplant.\nOutcome\n- Time to graft failure (months since transplant)\nEvent Indicator\n- Graft failure status\n- 1 = failure\n- 0 = censored\nMain Exposure\n- Donor type (Living vs Deceased)\nCovariates\n- Donor age (years)\n- Recipient sex (male / female)\n- eGFR at transplant",
+    "crumbs": [
+      "Lectures",
+      "Lecture 2: Cox proportional hazards model"
+    ]
+  },
+  {
+    "objectID": "lecture-02-cox-ph.html#load-and-prepare-the-data",
+    "href": "lecture-02-cox-ph.html#load-and-prepare-the-data",
+    "title": "Lecture 2: Cox proportional hazards model",
+    "section": "5 Load and Prepare the Data",
+    "text": "5 Load and Prepare the Data\n\n\n\n\n\n\nNote\n\n\n\nWe use simulated transplant data for illustration.\n\n\n\n\nShow R code\nlibrary(survival)\nlibrary(dplyr)\n\ndf &lt;- read.csv(\"simulated_data.csv\")\n\ndf$recipient_sex &lt;- factor(df$recipient_sex, levels = c(\"Male\", \"Female\"))\ndf$donor_type &lt;- factor(df$donor_type, levels = c(\"Deceased\", \"Living\"))\n\nhead(df)\n\n\n  id  time status donor_type donor_age recipient_sex egfr_at_tx\n1  1  41.6      0     Living        32          Male       34.9\n2  2  38.7      0   Deceased        64        Female       12.6\n3  3   0.9      0   Deceased        64          Male       45.5\n4  4  13.3      0   Deceased        44          Male       41.0\n5  5 131.9      1     Living        59          Male       31.1\n6  6  14.5      0     Living        37          Male       31.5",
+    "crumbs": [
+      "Lectures",
+      "Lecture 2: Cox proportional hazards model"
+    ]
+  },
+  {
+    "objectID": "lecture-02-cox-ph.html#fit-the-cox-model",
+    "href": "lecture-02-cox-ph.html#fit-the-cox-model",
+    "title": "Lecture 2: Cox proportional hazards model",
+    "section": "6 Fit the Cox Model",
+    "text": "6 Fit the Cox Model\n\n\nShow R code\ncox_model &lt;- coxph(\nSurv(time, status) ~ donor_type + donor_age + recipient_sex + egfr_at_tx,\ndata = df\n)\n\nsummary(cox_model)\n\n\nCall:\ncoxph(formula = Surv(time, status) ~ donor_type + donor_age + \n    recipient_sex + egfr_at_tx, data = df)\n\n  n= 1000, number of events= 470 \n\n                         coef exp(coef)  se(coef)      z Pr(&gt;|z|)    \ndonor_typeLiving    -0.603679  0.546796  0.117873 -5.121 3.03e-07 ***\ndonor_age            0.020758  1.020975  0.004604  4.509 6.52e-06 ***\nrecipient_sexFemale  0.060762  1.062646  0.093337  0.651    0.515    \negfr_at_tx          -0.026328  0.974015  0.003046 -8.645  &lt; 2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n                    exp(coef) exp(-coef) lower .95 upper .95\ndonor_typeLiving       0.5468     1.8288    0.4340    0.6889\ndonor_age              1.0210     0.9795    1.0118    1.0302\nrecipient_sexFemale    1.0626     0.9410    0.8850    1.2760\negfr_at_tx             0.9740     1.0267    0.9682    0.9798\n\nConcordance= 0.661  (se = 0.013 )\nLikelihood ratio test= 160.2  on 4 df,   p=&lt;2e-16\nWald test            = 151.8  on 4 df,   p=&lt;2e-16\nScore (logrank) test = 156.1  on 4 df,   p=&lt;2e-16",
+    "crumbs": [
+      "Lectures",
+      "Lecture 2: Cox proportional hazards model"
+    ]
+  },
+  {
+    "objectID": "lecture-02-cox-ph.html#checking-model-assumptions",
+    "href": "lecture-02-cox-ph.html#checking-model-assumptions",
+    "title": "Lecture 2: Cox proportional hazards model",
+    "section": "7 Checking Model Assumptions",
+    "text": "7 Checking Model Assumptions\nProportional Hazards (PH) Assumption\nThe Cox model assumes that hazard ratios are constant over time.\nWe assess this using Schoenfeld residuals.\n\n\nShow R code\nph_test &lt;- cox.zph(cox_model)\nph_test\n\n\n               chisq df     p\ndonor_type    4.4452  1 0.035\ndonor_age     2.9643  1 0.085\nrecipient_sex 0.0295  1 0.864\negfr_at_tx    2.1768  1 0.140\nGLOBAL        6.2504  4 0.181\n\n\nShow R code\nplot(ph_test)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nIf the global test is not significant, the PH assumption is reasonable.",
+    "crumbs": [
+      "Lectures",
+      "Lecture 2: Cox proportional hazards model"
+    ]
+  },
+  {
+    "objectID": "lecture-02-cox-ph.html#interpreting-hazard-ratios",
+    "href": "lecture-02-cox-ph.html#interpreting-hazard-ratios",
+    "title": "Lecture 2: Cox proportional hazards model",
+    "section": "8 Interpreting Hazard Ratios",
+    "text": "8 Interpreting Hazard Ratios\nSuppose the output shows:\nDonor type (Living vs Deceased): HR = 0.55\n\n\n\n\n\n\nNote\n\n\n\nAfter adjustment, recipients of living donor kidneys have 45% lower hazard of graft failure compared with deceased donor recipients.\n\n\nHazard ratios describe relative risk, not differences in survival time.",
+    "crumbs": [
+      "Lectures",
+      "Lecture 2: Cox proportional hazards model"
+    ]
+  },
+  {
+    "objectID": "lecture-02-cox-ph.html#discussion",
+    "href": "lecture-02-cox-ph.html#discussion",
+    "title": "Lecture 2: Cox proportional hazards model",
+    "section": "9 Discussion",
+    "text": "9 Discussion\n\nWhat should we do if the proportional hazards assumption is violated?\nHow could we model time-varying effects?\nWhen would RMST be preferable to the Cox proportional hazards model?",
+    "crumbs": [
+      "Lectures",
+      "Lecture 2: Cox proportional hazards model"
+    ]
+  },
+  {
+    "objectID": "lecture-02-cox-ph.html#connection-to-rmst",
+    "href": "lecture-02-cox-ph.html#connection-to-rmst",
+    "title": "Lecture 2: Cox proportional hazards model",
+    "section": "10 Connection to RMST",
+    "text": "10 Connection to RMST\nIf hazards are not proportional:\nHazard ratios may be misleading\nRMST provides an absolute, time-based summary\nRMST does not rely on the PH assumption\nThis motivates using RMST as an alternative or complement to Cox models.",
+    "crumbs": [
+      "Lectures",
+      "Lecture 2: Cox proportional hazards model"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Advanced Survival Concepts and Analysis",
+    "section": "",
+    "text": "Welcome! This workshop contains 5 lectures on survival analysis.\n\n\n\n\n\n\nHow to use this website\n\n\n\n\nClick Lecture 1–5 in the sidebar.\nEach lecture contains:\n\nexplanation\nR code (collapsible)\noutputs\ninterpretation",
+    "crumbs": [
+      "Home"
+    ]
+  },
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site\n\n\nShow R code\n1 + 1\n\n\n[1] 2"
+  },
+  {
     "objectID": "lecture-01-intro-km-rmst.html",
     "href": "lecture-01-intro-km-rmst.html",
     "title": "Lecture 1: Introduction, Kaplan–Meier and RMST",
     "section": "",
-    "text": "Show R code\nknitr::opts_chunk$set(\n  message = FALSE,\n  warning = FALSE\n)",
+    "text": "Note\n\n\n\nBy the end of this lecture, you should be able to:\n\nDescribe what makes survival data different from standard outcomes\nExplain how Kaplan–Meier survival curves are constructed\nInterpret censoring in survival analysis\nIdentify the limitations of Kaplan–Meier curves\nUnderstand the motivation for Restricted Mean Survival Time (RMST)\nInterpret RMST differences and ratios in applied settings",
     "crumbs": [
       "Lectures",
       "Lecture 1: Introduction, Kaplan–Meier and RMST"
@@ -14,8 +152,8 @@
     "objectID": "lecture-01-intro-km-rmst.html#learning-objectives",
     "href": "lecture-01-intro-km-rmst.html#learning-objectives",
     "title": "Lecture 1: Introduction, Kaplan–Meier and RMST",
-    "section": "1 Learning objectives",
-    "text": "1 Learning objectives\n\n\n\n\n\n\nNote\n\n\n\nBy the end of this lecture, you should be able to:\n\nDescribe what makes survival data different from standard outcomes\nExplain how Kaplan–Meier survival curves are constructed\nInterpret censoring in survival analysis\nIdentify the limitations of Kaplan–Meier curves\nUnderstand the motivation for Restricted Mean Survival Time (RMST)\nInterpret RMST differences and ratios in applied settings",
+    "section": "",
+    "text": "Note\n\n\n\nBy the end of this lecture, you should be able to:\n\nDescribe what makes survival data different from standard outcomes\nExplain how Kaplan–Meier survival curves are constructed\nInterpret censoring in survival analysis\nIdentify the limitations of Kaplan–Meier curves\nUnderstand the motivation for Restricted Mean Survival Time (RMST)\nInterpret RMST differences and ratios in applied settings",
     "crumbs": [
       "Lectures",
       "Lecture 1: Introduction, Kaplan–Meier and RMST"
@@ -96,23 +234,6 @@
     "crumbs": [
       "Lectures",
       "Lecture 1: Introduction, Kaplan–Meier and RMST"
-    ]
-  },
-  {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
-    "section": "",
-    "text": "About this site\n\n\nShow R code\n1 + 1\n\n\n[1] 2"
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "Advanced Survival Concepts and Analysis",
-    "section": "",
-    "text": "Welcome! This workshop contains 5 lectures on survival analysis.\n\n\n\n\n\n\nHow to use this website\n\n\n\n\nClick Lecture 1–5 in the sidebar.\nEach lecture contains:\n\nexplanation\nR code (collapsible)\noutputs\ninterpretation",
-    "crumbs": [
-      "Home"
     ]
   }
 ]

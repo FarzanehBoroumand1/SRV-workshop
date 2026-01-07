@@ -13,6 +13,7 @@ website:
       - section: "Lectures"
         contents:
           - lecture-01-intro-km-rmst.qmd
+          - lecture-02-cox-ph.qmd
 format:
   html:
     mathjax: true
