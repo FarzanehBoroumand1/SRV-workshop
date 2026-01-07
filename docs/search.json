@@ -1,5 +1,104 @@
 [
   {
+    "objectID": "lecture-01-intro-km-rmst.html",
+    "href": "lecture-01-intro-km-rmst.html",
+    "title": "Lecture 1: Introduction, Kaplan–Meier and RMST",
+    "section": "",
+    "text": "Note\n\n\n\nBy the end of this lecture, you should be able to:\n\nDescribe what makes survival data different from standard outcomes\nExplain how Kaplan–Meier survival curves are constructed\nInterpret censoring in survival analysis\nIdentify the limitations of Kaplan–Meier curves\nUnderstand the motivation for Restricted Mean Survival Time (RMST)\nInterpret RMST differences and ratios in applied settings",
+    "crumbs": [
+      "Lectures",
+      "Lecture 1: Introduction, Kaplan–Meier and RMST"
+    ]
+  },
+  {
+    "objectID": "lecture-01-intro-km-rmst.html#learning-objectives",
+    "href": "lecture-01-intro-km-rmst.html#learning-objectives",
+    "title": "Lecture 1: Introduction, Kaplan–Meier and RMST",
+    "section": "",
+    "text": "Note\n\n\n\nBy the end of this lecture, you should be able to:\n\nDescribe what makes survival data different from standard outcomes\nExplain how Kaplan–Meier survival curves are constructed\nInterpret censoring in survival analysis\nIdentify the limitations of Kaplan–Meier curves\nUnderstand the motivation for Restricted Mean Survival Time (RMST)\nInterpret RMST differences and ratios in applied settings",
+    "crumbs": [
+      "Lectures",
+      "Lecture 1: Introduction, Kaplan–Meier and RMST"
+    ]
+  },
+  {
+    "objectID": "lecture-01-intro-km-rmst.html#what-is-survival-data",
+    "href": "lecture-01-intro-km-rmst.html#what-is-survival-data",
+    "title": "Lecture 1: Introduction, Kaplan–Meier and RMST",
+    "section": "2 What is survival data?",
+    "text": "2 What is survival data?\nSurvival data measure the time until a specific event occurs.\nExamples in kidney research include:\n- Time from transplantation to graft failure\n- Time from transplant to patient death\n- Time to acute rejection\n\n\n\n\n\n\nKey feature of survival data\n\n\n\nThe outcome is composite: - a time variable - an event indicator\n(1 = event occurred, 0 = censored)\nThese two components must always be analysed together.",
+    "crumbs": [
+      "Lectures",
+      "Lecture 1: Introduction, Kaplan–Meier and RMST"
+    ]
+  },
+  {
+    "objectID": "lecture-01-intro-km-rmst.html#kaplanmeier-survival-curves",
+    "href": "lecture-01-intro-km-rmst.html#kaplanmeier-survival-curves",
+    "title": "Lecture 1: Introduction, Kaplan–Meier and RMST",
+    "section": "3 Kaplan–Meier survival curves",
+    "text": "3 Kaplan–Meier survival curves\nA Kaplan–Meier (KM) curve estimates the probability of remaining event-free beyond a given time.\n\n\n\n\n\n\nHow to read a Kaplan–Meier curve\n\n\n\n\nThe curve decreases in steps, not smoothly\nEach drop corresponds to an event time\nFlat sections indicate no events\nCensored observations:\n\ndo not cause the curve to drop\nreduce the number at risk going forward",
+    "crumbs": [
+      "Lectures",
+      "Lecture 1: Introduction, Kaplan–Meier and RMST"
+    ]
+  },
+  {
+    "objectID": "lecture-01-intro-km-rmst.html#example-simple-kaplanmeier-estimate",
+    "href": "lecture-01-intro-km-rmst.html#example-simple-kaplanmeier-estimate",
+    "title": "Lecture 1: Introduction, Kaplan–Meier and RMST",
+    "section": "4 Example: simple Kaplan–Meier estimate",
+    "text": "4 Example: simple Kaplan–Meier estimate\n\n\nShow R code\nlibrary(survival)\nlibrary(survminer)\n\n\nWarning: package 'survminer' was built under R version 4.4.3\n\n\nLoading required package: ggplot2\n\n\nLoading required package: ggpubr\n\n\nWarning: package 'ggpubr' was built under R version 4.4.3\n\n\n\nAttaching package: 'survminer'\n\n\nThe following object is masked from 'package:survival':\n\n    myeloma\n\n\nShow R code\ndf &lt;- data.frame(\n  id = 1:6,\n  time = c(3, 5, 6, 8, 10, 12),\n  status = c(1, 0, 1, 1, 0, 1)\n)\n\nkm_fit &lt;- survfit(Surv(time, status) ~ 1, data = df)\n\nggsurvplot(\n  km_fit,\n  data = df,\n  censor = TRUE,\n  risk.table = TRUE,\n  xlab = \"Time from transplant (months)\",\n  ylab = \"Survival probability\",\n  ggtheme = theme_minimal()\n)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInterpretation\n\n\n\nAt any given time point, the survival probability represents the estimated proportion of individuals who remain event-free beyond that time.\nCensored individuals: - contribute information up to their censoring time - do not count as failures - do not cause drops in the curve",
+    "crumbs": [
+      "Lectures",
+      "Lecture 1: Introduction, Kaplan–Meier and RMST"
+    ]
+  },
+  {
+    "objectID": "lecture-01-intro-km-rmst.html#kaplanmeier-curves-by-donor-type",
+    "href": "lecture-01-intro-km-rmst.html#kaplanmeier-curves-by-donor-type",
+    "title": "Lecture 1: Introduction, Kaplan–Meier and RMST",
+    "section": "5 Kaplan–Meier curves by donor type",
+    "text": "5 Kaplan–Meier curves by donor type\n\n\nShow R code\nset.seed(2025)\n\nn &lt;- 200\ndonor_type &lt;- sample(c(\"Living\", \"Deceased\"), n, replace = TRUE)\n\ntime &lt;- ifelse(donor_type == \"Living\",\n               rexp(n, rate = 0.05),\n               rexp(n, rate = 0.1))\n\ncensoring_time &lt;- rexp(n, rate = 0.05)\nobserved_time &lt;- pmin(time, censoring_time)\nstatus &lt;- as.integer(time &lt;= censoring_time)\n\ndf &lt;- data.frame(\n  time = round(observed_time, 1),\n  status = status,\n  donor_type = donor_type\n)\n\nkm_fit &lt;- survfit(Surv(time, status) ~ donor_type, data = df)\n\nggsurvplot(\n  km_fit,\n  data = df,\n  risk.table = TRUE,\n  pval = TRUE,\n  conf.int = TRUE,\n  legend.title = \"Donor type\",\n  xlab = \"Time to graft failure (months)\",\n  ylab = \"Survival probability\",\n  ggtheme = theme_minimal()\n)",
+    "crumbs": [
+      "Lectures",
+      "Lecture 1: Introduction, Kaplan–Meier and RMST"
+    ]
+  },
+  {
+    "objectID": "lecture-01-intro-km-rmst.html#limitation-of-kaplanmeier-curves",
+    "href": "lecture-01-intro-km-rmst.html#limitation-of-kaplanmeier-curves",
+    "title": "Lecture 1: Introduction, Kaplan–Meier and RMST",
+    "section": "6 Limitation of Kaplan–Meier curves",
+    "text": "6 Limitation of Kaplan–Meier curves\n\n\n\n\n\n\nWarning\n\n\n\nKaplan–Meier curves allow group comparison only.\nThey cannot: - adjust for confounders - include continuous predictors\nFor adjusted analyses, we need regression-based approaches, such as Cox regression or RMST regression.",
+    "crumbs": [
+      "Lectures",
+      "Lecture 1: Introduction, Kaplan–Meier and RMST"
+    ]
+  },
+  {
+    "objectID": "lecture-01-intro-km-rmst.html#restricted-mean-survival-time-rmst",
+    "href": "lecture-01-intro-km-rmst.html#restricted-mean-survival-time-rmst",
+    "title": "Lecture 1: Introduction, Kaplan–Meier and RMST",
+    "section": "7 Restricted Mean Survival Time (RMST)",
+    "text": "7 Restricted Mean Survival Time (RMST)\n\n\n\n\n\n\nNote\n\n\n\nRMST is the average time survived up to a fixed time point τ.\nIt answers the question:\n\n“How long, on average, do individuals remain event-free within τ months?”\n\n\n\n\n\n\n\n\n\nWhy RMST is attractive\n\n\n\n\nDirectly interpretable\nDoes not require proportional hazards\nWorks well when survival curves cross",
+    "crumbs": [
+      "Lectures",
+      "Lecture 1: Introduction, Kaplan–Meier and RMST"
+    ]
+  },
+  {
+    "objectID": "lecture-01-intro-km-rmst.html#adjusted-rmst-regression",
+    "href": "lecture-01-intro-km-rmst.html#adjusted-rmst-regression",
+    "title": "Lecture 1: Introduction, Kaplan–Meier and RMST",
+    "section": "8 Adjusted RMST regression",
+    "text": "8 Adjusted RMST regression\n\n\nShow R code\nlibrary(survRM2)\n\ntau &lt;- 36\n\ndf$donor_type_bin &lt;- ifelse(df$donor_type == \"Living\", 1, 0)\n\nrmst_model &lt;- rmst2(\n  time = df$time,\n  status = df$status,\n  arm = df$donor_type_bin,\n  tau = tau\n)\n\nrmst_model\n\n\n\nThe truncation time: tau = 36  was specified. \n\nRestricted Mean Survival Time (RMST) by arm \n               Est.    se lower .95 upper .95\nRMST (arm=1) 15.447 1.600    12.310    18.583\nRMST (arm=0)  9.323 0.973     7.416    11.231\n\n\nRestricted Mean Time Lost (RMTL) by arm \n               Est.    se lower .95 upper .95\nRMTL (arm=1) 20.553 1.600    17.417    23.690\nRMTL (arm=0) 26.677 0.973    24.769    28.584\n\n\nBetween-group contrast \n                      Est. lower .95 upper .95     p\nRMST (arm=1)-(arm=0) 6.123     2.452     9.794 0.001\nRMST (arm=1)/(arm=0) 1.657     1.242     2.210 0.001\nRMTL (arm=1)/(arm=0) 0.770     0.651     0.912 0.002\n\n\n\n\n\n\n\n\nInterpretation (RMST difference)\n\n\n\nRecipients of living donor kidneys experienced, on average, a longer event-free survival time up to 36 months compared with recipients of deceased donor kidneys.\n\n\n\n\n\n\n\n\nInterpretation (RMST ratio)\n\n\n\nOver the 36-month period, recipients of living donor kidneys had a longer average event-free survival time than recipients of deceased donor kidneys.\n\n\n\n\nWhy do we need to choose a truncation time τ?\nWhat happens if τ is too short or too long?\nWhen would RMST be preferable to a Cox model?",
+    "crumbs": [
+      "Lectures",
+      "Lecture 1: Introduction, Kaplan–Meier and RMST"
+    ]
+  },
+  {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",

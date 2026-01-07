@@ -1,3 +1,213 @@
 ---
 title: "Lecture 1: Introduction, Kaplan–Meier and RMST"
+toc: true
+toc-depth: 3
 ---
+
+## Learning objectives
+
+::: callout-note
+By the end of this lecture, you should be able to:
+
+-   Describe what makes survival data different from standard outcomes
+-   Explain how Kaplan–Meier survival curves are constructed
+-   Interpret censoring in survival analysis
+-   Identify the limitations of Kaplan–Meier curves
+-   Understand the motivation for Restricted Mean Survival Time (RMST)
+-   Interpret RMST differences and ratios in applied settings
+:::
+
+## What is survival data?
+
+Survival data measure the **time until a specific event occurs**.
+
+Examples in kidney research include:\
+- Time from transplantation to graft failure\
+- Time from transplant to patient death\
+- Time to acute rejection
+
+::: callout-note
+### Key feature of survival data
+
+The outcome is **composite**: - a **time variable** - an **event indicator**\
+(1 = event occurred, 0 = censored)
+
+These two components must always be analysed **together**.
+:::
+
+## Kaplan–Meier survival curves
+
+A Kaplan–Meier (KM) curve estimates the **probability of remaining event-free beyond a given time**.
+
+::: callout-tip
+### How to read a Kaplan–Meier curve
+
+-   The curve decreases in **steps**, not smoothly
+-   Each drop corresponds to an **event time**
+-   Flat sections indicate **no events**
+-   Censored observations:
+    -   do **not** cause the curve to drop
+    -   reduce the number at risk going forward
+:::
+
+## Example: simple Kaplan–Meier estimate
+
+```{r}
+library(survival)
+library(survminer)
+
+df <- data.frame(
+  id = 1:6,
+  time = c(3, 5, 6, 8, 10, 12),
+  status = c(1, 0, 1, 1, 0, 1)
+)
+
+km_fit <- survfit(Surv(time, status) ~ 1, data = df)
+
+ggsurvplot(
+  km_fit,
+  data = df,
+  censor = TRUE,
+  risk.table = TRUE,
+  xlab = "Time from transplant (months)",
+  ylab = "Survival probability",
+  ggtheme = theme_minimal()
+)
+```
+
+::: {.callout-tip}
+### Interpretation
+
+At any given time point, the survival probability represents the estimated proportion
+of individuals who remain event-free beyond that time.
+
+Censored individuals:
+- contribute information up to their censoring time
+- do not count as failures
+- do not cause drops in the curve
+:::
+
+
+## Kaplan–Meier curves by donor type
+
+```{r}
+set.seed(2025)
+
+n <- 200
+donor_type <- sample(c("Living", "Deceased"), n, replace = TRUE)
+
+time <- ifelse(donor_type == "Living",
+               rexp(n, rate = 0.05),
+               rexp(n, rate = 0.1))
+
+censoring_time <- rexp(n, rate = 0.05)
+observed_time <- pmin(time, censoring_time)
+status <- as.integer(time <= censoring_time)
+
+df <- data.frame(
+  time = round(observed_time, 1),
+  status = status,
+  donor_type = donor_type
+)
+
+km_fit <- survfit(Surv(time, status) ~ donor_type, data = df)
+
+ggsurvplot(
+  km_fit,
+  data = df,
+  risk.table = TRUE,
+  pval = TRUE,
+  conf.int = TRUE,
+  legend.title = "Donor type",
+  xlab = "Time to graft failure (months)",
+  ylab = "Survival probability",
+  ggtheme = theme_minimal()
+)
+```
+
+
+## Limitation of Kaplan–Meier curves
+
+::: {.callout-warning}
+Kaplan–Meier curves allow **group comparison only**.
+
+They cannot:
+- adjust for confounders
+- include continuous predictors
+
+For adjusted analyses, we need regression-based approaches,
+such as Cox regression or RMST regression.
+:::
+
+## Restricted Mean Survival Time (RMST)
+
+::: {.callout-note}
+RMST is the **average time survived up to a fixed time point τ**.
+
+It answers the question:
+
+> “How long, on average, do individuals remain event-free within τ months?”
+:::
+
+::: {.callout-tip}
+### Why RMST is attractive
+
+- Directly interpretable
+- Does not require proportional hazards
+- Works well when survival curves cross
+:::
+
+
+## Adjusted RMST regression
+
+```{r}
+library(survRM2)
+
+tau <- 36
+
+df$donor_type_bin <- ifelse(df$donor_type == "Living", 1, 0)
+
+rmst_model <- rmst2(
+  time = df$time,
+  status = df$status,
+  arm = df$donor_type_bin,
+  tau = tau
+)
+
+rmst_model
+```
+
+::: {.callout-tip}
+### Interpretation (RMST difference)
+
+Recipients of living donor kidneys experienced, on average,
+a longer event-free survival time up to 36 months compared with
+recipients of deceased donor kidneys.
+:::
+
+::: {.callout-tip}
+### Interpretation (RMST ratio)
+
+Over the 36-month period, recipients of living donor kidneys had
+a longer average event-free survival time than recipients of
+deceased donor kidneys.
+:::
+
+
+::: {.callout-question}
+- Why do we need to choose a truncation time τ?
+- What happens if τ is too short or too long?
+- When would RMST be preferable to a Cox model?
+:::
+
+
+
+
+
+
+
+
+
+
+
+
