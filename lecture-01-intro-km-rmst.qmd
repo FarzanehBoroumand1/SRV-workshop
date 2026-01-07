@@ -4,6 +4,15 @@ toc: true
 toc-depth: 3
 ---
 
+```{r}
+knitr::opts_chunk$set(
+  message = FALSE,
+  warning = FALSE
+)
+```
+
+
+
 ## Learning objectives
 
 ::: callout-note
@@ -39,6 +48,27 @@ These two components must always be analysed **together**.
 
 A Kaplan–Meier (KM) curve estimates the **probability of remaining event-free beyond a given time**.
 
+The **KM method** is a **non-parametric** approach used to estimate the
+survival function.
+
+- It estimates the probability of surviving beyond a given time.
+- It appropriately handles **censoring**, where some individuals have not experienced
+  the event by the end of follow-up.
+
+The Kaplan–Meier estimator at time $t_i$ is defined as:
+
+$$
+\hat{S}(t_i) = \hat{S}(t_{i-1}) \times \left( 1 - \frac{d_i}{r_i} \right)
+$$
+
+where:
+
+- $ d_i $ is the **number of events** occurring at time $ t_i $
+- $ r_i $ is the **number of individuals at risk** just before time $ t_i $
+
+
+
+
 ::: callout-tip
 ### How to read a Kaplan–Meier curve
 
@@ -51,6 +81,29 @@ A Kaplan–Meier (KM) curve estimates the **probability of remaining event-free 
 :::
 
 ## Example: simple Kaplan–Meier estimate
+This dataset captures the time from kidney transplantation to graft failure. The only predictor variable included is donor type.
+
+| ID | Graft failure | Time to graft failure (months) | Donor type |
+|----|---------------|--------------------------------|------------|
+| 1  | 1             | 3                              | Living     |
+| 2  | 0             | 5                              | Deceased   |
+| 3  | 1             | 6                              | Living     |
+| 4  | 1             | 8                              | Deceased   |
+| 5  | 0             | 10                             | Living     |
+| 6  | 1             | 12                             | Deceased   |
+
+
+
+The KM estimates can be written as follows:  
+
+| Sorted time | Graft failure | Number of people at risk | Survival probability |
+|------------|---------------|--------------------------|----------------------|
+| 0          | –             | 6                        | 1.000                |
+| 3          | 1             | 6                        | 1 × (1 − 1/6) = 0.833 |
+| 6          | 1             | 4                        | 0.833 × (1 − 1/4) = 0.625 |
+| 8          | 1             | 3                        | 0.625 × (1 − 1/3) = 0.417 |
+| 12         | 1             | 2                        | 0.417 × (1 − 1/1) = 0 |
+
 
 ```{r,warning=FALSE}
 
@@ -82,14 +135,17 @@ ggsurvplot(
 At any given time point, the survival probability represents the estimated proportion
 of individuals who remain event-free beyond that time.
 
-Censored individuals:
-- contribute information up to their censoring time
-- do not count as failures
-- do not cause drops in the curve
+Censored individuals:  
+- contribute information up to their censoring time  
+- do not count as failures  
+- do not cause drops in the curve  
 :::
 
 
 ## Kaplan–Meier curves by donor type
+
+The simulated data contains the time from kidney transplantation to graft failure. The only predictor variable included is donor type.
+
 
 ```{r,warning=FALSE}
 set.seed(2025)
@@ -132,15 +188,29 @@ ggsurvplot(
 ::: {.callout-warning}
 Kaplan–Meier curves allow **group comparison only**.
 
-They cannot:
-- adjust for confounders
-- include continuous predictors
+They cannot:  
+- adjust for confounders  
+- include continuous predictors  
 
 For adjusted analyses, we need regression-based approaches,
-such as Cox regression or RMST regression.
+such as Cox regression or **RMST regression**.
 :::
 
 ## Restricted Mean Survival Time (RMST)
+
+So far, we’ve seen that **Kaplan-Meier** does not adjust for confounders.
+To handle covariates, we need approaches like:  
+- Cox regression  
+- RMST regression  
+- Parametric survival models  
+
+In censored data, the true mean survival time is often not observable. We don’t have event time for some of the individual they may not experience the event.
+
+Because of censoring, estimating the unrestricted mean survival time is often not feasible.
+Instead, we define a fixed time point $𝝉$ and focus on Restricted Mean Survival Time (RMST):  
+The average time survived up to time $𝝉$. 
+
+
 
 ::: {.callout-note}
 RMST is the **average time survived up to a fixed time point τ**.
@@ -159,44 +229,212 @@ It answers the question:
 :::
 
 
-## Adjusted RMST regression
 
-```{r,,warning=FALSE}
+
+```{r, message=FALSE, warning=FALSE}
+library(ggplot2)
+
+# Parameters
+tau <- 5
+rate <- 0.2
+tmax <- 10
+
+
+# Example survival curve
+# S(t) = exp(-rate * t)
+
+surv_df <- data.frame(time = seq(0, tmax, by = 0.01))
+surv_df$S <- exp(-rate * surv_df$time)
+
+# Area under curve up to tau (RMST region)
+surv_df_shade <- subset(surv_df, time <= tau)
+
+
+# Plot
+ggplot(surv_df, aes(x = time, y = S)) +
+  geom_area(
+    data = surv_df_shade,
+    aes(x = time, y = S),
+    fill = "skyblue",
+    alpha = 0.35
+  ) +
+  geom_line(
+    linewidth = 1.2,
+    colour = "blue"
+  ) +
+  geom_vline(
+    xintercept = tau,
+    linetype = "dashed",
+    colour = "red",
+    linewidth = 0.9
+  ) +
+  annotate(
+    "text",
+    x = tau + 0.15,
+    y = 0.5,
+    label = paste0("Tau = ", tau),
+    colour = "red",
+    size = 5,
+    hjust = 0
+  ) +
+  labs(
+    x = "Time",
+    y = "Survival Probability"
+  ) +
+  coord_cartesian(xlim = c(0, tmax), ylim = c(0, 1)) +
+  theme_minimal(base_size = 14)
+```
+
+
+
+
+
+## Adjusted RMST regression in Kidney Transplant Patients
+
+
+We aim to estimate the **restricted mean survival time (RMST)** up to **$\tau = 36$ months** after kidney transplantation, and to compare outcomes between donor types while adjusting for important clinical factors.  
+
+
+Outcome  
+- **Time to graft failure** (months since transplantation)  
+
+Event Indicator  
+- **Graft failure status**
+  - 1 = graft failure occurred  
+  - 0 = censored (no failure by end of follow-up)  
+
+Main Exposure  
+- **Donor type**
+  - Living donor  
+  - Deceased donor    
+
+
+Covariates (Adjusted For)  
+To reduce confounding, we adjust for:  
+- **Donor age** (years)  
+- **Recipient gender** (male / female)  
+- **Baseline eGFR at transplant** (kidney function at time of surgery)  
+
+Interpretation Goal  
+After adjustment, the RMST contrast represents:  
+
+> The **average difference in graft-survival time up to $36$ months** between living and deceased donor transplants,  
+> among patients with similar donor age, recipient gender, and baseline eGFR.
+
+
+
+
+```{r,warning=FALSE, message=FALSE}
+
+
+library(survival)
 library(survRM2)
+library(survminer)
+library(dplyr)
 
-tau <- 36
 
-df$donor_type_bin <- ifelse(df$donor_type == "Living", 1, 0)
+# -------------------- Simulate the dataset
 
-rmst_model <- rmst2(
-  time = df$time,
-  status = df$status,
-  arm = df$donor_type_bin,
-  tau = tau
+set.seed(2025)
+n <- 1000
+
+# Donor type
+donor_type <- sample(c("Living", "Deceased"), size = n, replace = TRUE)
+
+# Donor age (older for deceased donors)
+donor_age <- ifelse(donor_type == "Living",
+                    rnorm(n, mean = 45, sd = 10),
+                    rnorm(n, mean = 60, sd = 10))
+donor_age <- round(pmax(donor_age, 18))
+
+# Recipient sex
+recipient_sex <- sample(c("Male", "Female"), size = n, replace = TRUE)
+
+# eGFR at transplant
+egfr_at_tx <- round(runif(n, min = 5, max = 60), 1)
+
+# Simulated survival times (longer for living donors)
+time <- ifelse(donor_type == "Living",
+               rexp(n, rate = 0.05),  # mean ~20
+               rexp(n, rate = 0.1))   # mean ~10
+
+# Censoring
+censoring_time <- rexp(n, rate = 0.05)
+#observed_time <- pmin(time, censoring_time)
+observed_time <- pmax(pmin(time, censoring_time), 0.01)
+status <- as.integer(time <= censoring_time)
+
+# Create dataset
+df <- data.frame(
+  id = 1:n,
+  time = round(observed_time, 1),
+  status = status,
+  donor_type = donor_type,
+  donor_age = donor_age,
+  recipient_sex = recipient_sex,
+  egfr_at_tx = egfr_at_tx
 )
 
+# Encode donor_type as binary: 1 = Living, 0 = Deceased
+df$donor_type_bin <- ifelse(df$donor_type == "Living", 1, 0)
+
+
+#----------------- Fit RMST Regression (with covariates)
+
+# Set truncation time τ (e.g., 36 months)
+tau <- 36
+
+df$recipient_sex <- as.factor(df$recipient_sex)
+df$donor_type_bin <- ifelse(df$donor_type == "Living", 1, 0)
+df$time[df$time == 0] <- 0.01
+covariates <- model.matrix(~ donor_age + recipient_sex + egfr_at_tx, data = df)[, -1]
+str(df$recipient_sex)
+
+# Fit RMST regression model
+rmst_model <- rmst2(time = df$time,
+                    status = df$status,
+                    arm = df$donor_type_bin,
+                    tau = 36,
+                    covariates = covariates
+                    )
+
 rmst_model
+
+
+
 ```
 
 ::: {.callout-tip}
 ### Interpretation (RMST difference)
 
-Recipients of living donor kidneys experienced, on average,
-a longer event-free survival time up to 36 months compared with
-recipients of deceased donor kidneys.
+RMST (Living donor - Deceased donor) = 6.30 months95% CI: 3.91 to 8.68, p < 0.001
+Interpretation: On average, recipients of living donor kidneys survive 6.3 more months event-free (up to 36 months) than those with deceased donors, after adjusting for age, sex, and eGFR at transplant.
+
 :::
 
 ::: {.callout-tip}
 ### Interpretation (RMST ratio)
 
-Over the 36-month period, recipients of living donor kidneys had
-a longer average event-free survival time than recipients of
-deceased donor kidneys.
+RMST ratio = 1.69 (Living vs Deceased) 95% CI: 1.39 to 2.05, p < 0.001
+Over the 36-month period, recipients of living donor kidneys have 69% longer average event-free survival time than recipients of deceased donor kidneys, after adjustment.
+
 :::
 
+::: {.callout-tip}
+### Interpretation (Covariate coefficients)
+
+None of the covariates were significant in our simulated data but if for an example egfr was significant then the interpretation would be: 
+
+Each unit increase in eGFR at the time of transplant is associated with an additional 0.047(coefficient in the model ) months (≈3 days) of average event-free survival time over 36 months, adjusting for donor type, donor age, and recipient sex.
+
+:::
 
 ::: {.callout-question}
-- Why do we need to choose a truncation time τ?
+
+**Think about the following before moving on:**
+
+
+- Why do we need to choose a truncation time $τ$?
 - What happens if τ is too short or too long?
 - When would RMST be preferable to a Cox model?
 :::

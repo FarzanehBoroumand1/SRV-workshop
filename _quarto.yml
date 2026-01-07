@@ -13,13 +13,13 @@ website:
       - section: "Lectures"
         contents:
           - lecture-01-intro-km-rmst.qmd
-       
 format:
   html:
+    mathjax: true
     theme: cosmo
     toc: true
+    toc-depth: 3
     code-fold: true
     code-summary: "Show R code"
     code-tools: true
     number-sections: true
-
