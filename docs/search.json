@@ -108,7 +108,7 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "SRV-workshop",
+    "title": "Advanced Survival Concepts and Analysis",
     "section": "",
     "text": "Welcome! This workshop contains 5 lectures on survival analysis.\n\n\n\n\n\n\nHow to use this website\n\n\n\n\nClick Lecture 1–5 in the sidebar.\nEach lecture contains:\n\nexplanation\nR code (collapsible)\noutputs\ninterpretation",
     "crumbs": [

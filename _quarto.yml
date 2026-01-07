@@ -3,7 +3,7 @@ project:
   output-dir: docs
 
 website:
-  title: "SRV-workshop"
+  title: "Advanced Survival Concepts and Analysis"
   sidebar:
     style: "docked"
     search: true

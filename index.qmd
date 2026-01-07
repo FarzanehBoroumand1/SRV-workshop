@@ -1,5 +1,5 @@
 ---
-title: "SRV-workshop"
+title: "Advanced Survival Concepts and Analysis"
 ---
 
 Welcome! This workshop contains 5 lectures on survival analysis.
