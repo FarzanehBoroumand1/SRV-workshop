@@ -388,7 +388,7 @@ df$recipient_sex <- as.factor(df$recipient_sex)
 df$donor_type_bin <- ifelse(df$donor_type == "Living", 1, 0)
 df$time[df$time == 0] <- 0.01
 covariates <- model.matrix(~ donor_age + recipient_sex + egfr_at_tx, data = df)[, -1]
-str(df$recipient_sex)
+
 
 # Fit RMST regression model
 rmst_model <- rmst2(time = df$time,
