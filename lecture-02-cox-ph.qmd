@@ -134,12 +134,13 @@ If the global test is not significant, the PH assumption is reasonable.
 :::
 
 
-## Interpreting Hazard Ratios
+
+::: {.callout-tip}
+
+### Interpretation
 Suppose the output shows:
 
-Donor type (Living vs Deceased): HR = 0.55
-
-::: {.callout-note}
+Donor type (Living vs Deceased): HR = 0.55 
 After adjustment, recipients of living donor kidneys have 45% lower hazard of graft failure
 compared with deceased donor recipients.
 :::
@@ -148,9 +149,11 @@ Hazard ratios describe relative risk, not differences in survival time.
 
 
 
-## Discussion
+
 
 ::: {.callout-question}
+
+**Think about the following before moving on:**
 
 What should we do if the proportional hazards assumption is violated?
 

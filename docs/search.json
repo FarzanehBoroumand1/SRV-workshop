@@ -81,29 +81,7 @@
     "href": "lecture-02-cox-ph.html#checking-model-assumptions",
     "title": "Lecture 2: Cox proportional hazards model",
     "section": "7 Checking Model Assumptions",
-    "text": "7 Checking Model Assumptions\nProportional Hazards (PH) Assumption\nThe Cox model assumes that hazard ratios are constant over time.\nWe assess this using Schoenfeld residuals.\n\n\nShow R code\nph_test &lt;- cox.zph(cox_model)\nph_test\n\n\n               chisq df     p\ndonor_type    4.4452  1 0.035\ndonor_age     2.9643  1 0.085\nrecipient_sex 0.0295  1 0.864\negfr_at_tx    2.1768  1 0.140\nGLOBAL        6.2504  4 0.181\n\n\nShow R code\nplot(ph_test)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nIf the global test is not significant, the PH assumption is reasonable.",
-    "crumbs": [
-      "Lectures",
-      "Lecture 2: Cox proportional hazards model"
-    ]
-  },
-  {
-    "objectID": "lecture-02-cox-ph.html#interpreting-hazard-ratios",
-    "href": "lecture-02-cox-ph.html#interpreting-hazard-ratios",
-    "title": "Lecture 2: Cox proportional hazards model",
-    "section": "8 Interpreting Hazard Ratios",
-    "text": "8 Interpreting Hazard Ratios\nSuppose the output shows:\nDonor type (Living vs Deceased): HR = 0.55\n\n\n\n\n\n\nNote\n\n\n\nAfter adjustment, recipients of living donor kidneys have 45% lower hazard of graft failure compared with deceased donor recipients.\n\n\nHazard ratios describe relative risk, not differences in survival time.",
-    "crumbs": [
-      "Lectures",
-      "Lecture 2: Cox proportional hazards model"
-    ]
-  },
-  {
-    "objectID": "lecture-02-cox-ph.html#discussion",
-    "href": "lecture-02-cox-ph.html#discussion",
-    "title": "Lecture 2: Cox proportional hazards model",
-    "section": "9 Discussion",
-    "text": "9 Discussion\n\nWhat should we do if the proportional hazards assumption is violated?\nHow could we model time-varying effects?\nWhen would RMST be preferable to the Cox proportional hazards model?",
+    "text": "7 Checking Model Assumptions\nProportional Hazards (PH) Assumption\nThe Cox model assumes that hazard ratios are constant over time.\nWe assess this using Schoenfeld residuals.\n\n\nShow R code\nph_test &lt;- cox.zph(cox_model)\nph_test\n\n\n               chisq df     p\ndonor_type    4.4452  1 0.035\ndonor_age     2.9643  1 0.085\nrecipient_sex 0.0295  1 0.864\negfr_at_tx    2.1768  1 0.140\nGLOBAL        6.2504  4 0.181\n\n\nShow R code\nplot(ph_test)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nIf the global test is not significant, the PH assumption is reasonable.\n\n\n\n\n\n\n\n\nInterpretation\n\n\n\nSuppose the output shows:\nDonor type (Living vs Deceased): HR = 0.55 After adjustment, recipients of living donor kidneys have 45% lower hazard of graft failure compared with deceased donor recipients.\n\n\nHazard ratios describe relative risk, not differences in survival time.\n\nThink about the following before moving on:\nWhat should we do if the proportional hazards assumption is violated?\nHow could we model time-varying effects?\nWhen would RMST be preferable to the Cox proportional hazards model?",
     "crumbs": [
       "Lectures",
       "Lecture 2: Cox proportional hazards model"
@@ -113,8 +91,8 @@
     "objectID": "lecture-02-cox-ph.html#connection-to-rmst",
     "href": "lecture-02-cox-ph.html#connection-to-rmst",
     "title": "Lecture 2: Cox proportional hazards model",
-    "section": "10 Connection to RMST",
-    "text": "10 Connection to RMST\nIf hazards are not proportional:\nHazard ratios may be misleading\nRMST provides an absolute, time-based summary\nRMST does not rely on the PH assumption\nThis motivates using RMST as an alternative or complement to Cox models.",
+    "section": "8 Connection to RMST",
+    "text": "8 Connection to RMST\nIf hazards are not proportional:\nHazard ratios may be misleading\nRMST provides an absolute, time-based summary\nRMST does not rely on the PH assumption\nThis motivates using RMST as an alternative or complement to Cox models.",
     "crumbs": [
       "Lectures",
       "Lecture 2: Cox proportional hazards model"
