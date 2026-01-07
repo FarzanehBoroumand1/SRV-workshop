@@ -36,20 +36,184 @@ Survival is cumulative over time.
 Hazard is instantaneous risk at a given moment.
 :::
 
----
+
+
+## Risk and Hazard at Time $t$
+
+We follow people from a start point (e.g., transplant) until an event (e.g., graft failure) or censoring.
+
+**Risk Set at Time $t$**  
+
+At time $t$, the **risk set** includes only individuals who:
+
+- have **not yet experienced the event**, and
+- have **not been censored before time $t$**
+
+These are the only individuals who are considered **at risk** at time $t$.
+
+
+ 
+**Hazard at Time $t$**  
+
+Among individuals who are still event-free at time $t$, the **hazard** describes:
+
+> How quickly events are occurring at that exact moment.
+
+Formally, the hazard function is defined as:
+
+$$
+h(t) = \lim_{\Delta t \to 0}
+\frac{\Pr(\text{event in } [t, t+\Delta t) \mid \text{survived to } t)}{\Delta t}
+$$
+
+::: {.callout-note}
+
+The hazard is a **rate**, not a probability.  
+It can be larger than 1 and does not represent the chance of failure by time $t$.
+
+:::
+
+
+
+## From Hazard to Short-Term Risk
+
+The hazard describes how fast events are occurring **at an instant**, but it is not itself a probability.
+
+To approximate the **short-term risk of experiencing the event**, we look at a small time window of length $\Delta t$.
+
+For very small $\Delta t$, the probability of the event occurring shortly after time $t$ is approximately:
+
+$$
+\Pr(\text{event in the next } \Delta t \mid \text{alive at } t)
+\;\approx\;
+h(t) \times \Delta t
+$$
+
+::: {.callout-note}
+
+This approximation helps link the hazard to a more intuitive concept of short-term risk.
+However, hazard itself is still a **rate**, not a probability.
+
+:::
+
+
+::: {.callout-tip}
+
+### Example 
+- At 12 months, 80 people are still at risk.  
+- Between 12 and 13 months, 4 events occur.  
+- The average monthly hazard over that interval ≈ 4/80=0.05 per month.  
+- So the risk during that month ≈ 5% (because 0.05 × 1 month).  
+
+:::
+
+
+
+## What Is the Link Between Hazard and Survival?
+
+**- Cumulative Hazard** 
+
+The **cumulative hazard** up to time $t$ is the total hazard accumulated over time:
+
+$$
+H(t) = \int_0^t h(u)\, du
+$$
+
+**- Survival Function**
+
+The survival probability at time $t$ is related to the cumulative hazard by:
+
+$$
+S(t) = \exp\{-H(t)\}
+$$
+
+This means that survival depends on the **entire history of the hazard**, not just the hazard at a single time point.
+
+
+
+## 🚗 Speedometer and Odometer Analogy
+
+::: {.callout-note}
+Think of **hazard as a speedometer** and **survival as an odometer**.
+:::
+
+If we know the **speed at every moment**, we can calculate the **total distance travelled** by adding up (integrating) the speed over time.
+
+Similarly:
+
+- If we know the **hazard at each moment**,  
+- we can calculate the **cumulative hazard** by integrating over time,  
+- and from the cumulative hazard we can determine the **survival probability**.
+
+Survival tells us **how far we have made it without experiencing the event** since the starting point.
+
+
+
+
 
 ## What Does the Cox Model Do?
 
-The **Cox proportional hazards (PH) model** relates covariates to the hazard:
+In practice, individuals have different characteristics that may affect their risk of experiencing the event.
 
-> It estimates **relative differences in hazard** between groups.
+The **Cox proportional hazards model** describes how covariates change the hazard over time:
 
-Results are reported as **hazard ratios (HRs)**:   
-- HR = 1 → no difference  
-- HR < 1 → lower hazard (protective)  
-- HR > 1 → higher hazard (increased risk)  
+$$
+h(t \mid X) = h_0(t)\exp(\beta_1 X_1 + \beta_2 X_2 + \cdots + \beta_p X_p)
+$$
 
----
+where:
+
+- $h(t \mid X)$ is the hazard for an individual with covariates $X$
+- $h_0(t)$ is the **baseline hazard** (when all $X = 0$)
+- $\beta$ values describe how covariates affect the hazard
+
+::: {.callout-note}
+The Cox model does **not** require specifying the shape of $h_0(t)$.
+It focuses on estimating **relative differences in hazard** between individuals.
+:::
+
+
+
+## What Is a Hazard Ratio?
+
+For a one-unit increase in a covariate $X_j$, the hazard ratio is:
+
+$$
+HR = \exp(\beta_j)
+$$
+
+This represents the ratio of hazards between two individuals who differ by one unit in $X_j$,  
+holding all other covariates constant.
+
+
+::: {.callout-tip}
+
+### Interpretation
+- $HR = 1$: no difference in hazard  
+- $HR < 1$: lower hazard (protective effect)  
+- $HR > 1$: higher hazard (increased risk)
+
+:::
+
+
+
+## Cox PH model assumptions
+
+**1. Proportional Hazards (PH)**  
+The hazard ratio between groups is constant over time.
+Example: If $HR = 0.6$ at 1 year, it should also be 0.6 at 5 years.  
+ 
+**2. Linearity of Continuous Covariates**  
+Continuous variables (e.g., age, eGFR) affect the log hazard in a linear way.
+If not, we may need transformations or splines.  
+
+**3. Independent Censoring**  
+Censoring (loss to follow-up, end of study) is unrelated to the future risk of the event.  
+
+**4. Correct Model Specification**  
+All important predictors are included, and no important variables are mis-specified.  
+
+
 
 ## Example: Kidney Transplant Study
 We are interested in whether donor type (living vs deceased) is associated with the hazard of graft failure over time, after adjusting for donor age, recipient sex, and baseline eGFR at the time of transplant.
@@ -58,8 +222,7 @@ We are interested in whether donor type (living vs deceased) is associated with 
 Outcome  
 - Time to graft failure (months since transplant)  
 
-Event Indicator  
-- Graft failure status  
+Event Indicator: Graft failure status  
   - 1 = failure  
   - 0 = censored  
 
@@ -71,9 +234,9 @@ Covariates
 - Recipient sex (male / female)  
 - eGFR at transplant  
 
----
 
-## Load and Prepare the Data
+
+
 
 ::: {.callout-note}
 We use simulated transplant data for illustration.
@@ -112,11 +275,11 @@ summary(cox_model)
 
 ## Checking Model Assumptions
 
-Proportional Hazards (PH) Assumption
+**1. Proportional Hazards (PH) Assumption**
 
 The Cox model assumes that hazard ratios are constant over time.
 
-We assess this using Schoenfeld residuals.
+We assess this using **Schoenfeld residuals**.
 
 
 ```{r,  message=FALSE, warning=FALSE}
@@ -134,20 +297,79 @@ If the global test is not significant, the PH assumption is reasonable.
 :::
 
 
+**2. Linearity of Continuous Covariates**
 
-::: {.callout-tip}
+The Cox model assumes that continuous covariates have a linear effect on the log-hazard.  
+If this assumption is violated, the model may be misspecified.
 
-### Interpretation
-Suppose the output shows:
+A common diagnostic is to plot **Martingale residuals** against each continuous covariate:
 
-Donor type (Living vs Deceased): HR = 0.55 
-After adjustment, recipients of living donor kidneys have 45% lower hazard of graft failure
-compared with deceased donor recipients.
+
+```{r,  message=FALSE, warning=FALSE}
+
+mart_resid <- residuals(cox_model, type = "martingale")
+
+# Plot residuals vs continuous covariates
+
+
+plot(df$donor_age, mart_resid,
+     xlab = "Donor age (years)", ylab = "Martingale residuals",
+     main = "Linearity check: Donor age")
+lines(lowess(df$donor_age, mart_resid), lwd = 2)
+
+plot(df$egfr_at_tx, mart_resid,
+     xlab = "eGFR at transplant", ylab = "Martingale residuals",
+     main = "Linearity check: eGFR")
+lines(lowess(df$egfr_at_tx, mart_resid), lwd = 2)
+
+
+
+```
+
+::: {.callout-note}
+If the linearity assumption holds, the scatter of residuals should look randomly spread around zero with no strong curvature.
+
+If you see a systematic curve/trend, that suggests non-linearity, and you might need transformations (e.g. log, quadratic, splines).
+
 :::
 
-Hazard ratios describe relative risk, not differences in survival time.
+
+## Model Interpretation
 
 
+**-Donor type:**  
+Recipients of living donor kidneys had a 45% lower hazard of graft failure compared with those who received deceased donor kidneys (HR = 0.55, 95% CI: 0.43–0.69, p < 0.001).  
+
+**-Donor age:**  
+Each additional year of donor age was associated with a 2% increase in hazard of graft failure (HR = 1.02, 95% CI: 1.01–1.03, p < 0.001).  
+
+How to improve the reporting HR for donor age?  
+Donor age: Each 10-year increase in donor age was associated with a 22% increase in the hazard of graft failure (HR = 1.22, 95% CI: 1.13–1.34, p < 0.001).  
+
+
+**-Recipient sex:**  
+There was no evidence of an association between recipient sex and graft failure (HR = 1.06, 95% CI: 0.89–1.28, p = 0.52).  
+
+**-eGFR at transplant:**  
+Higher baseline eGFR was strongly protective: each 1-unit increase was associated with a 3% lower hazard of graft failure (HR = 0.97, 95% CI: 0.97–0.98, p < 0.001).  
+
+
+
+
+::: {.callout-note}
+
+##  Connection to RMST
+
+If hazards are not proportional:
+
+Hazard ratios may be misleading
+
+RMST provides an absolute, time-based summary
+
+RMST does not rely on the PH assumption
+
+This motivates using RMST as an alternative or complement to Cox models.
+:::
 
 
 
@@ -161,24 +383,6 @@ How could we model time-varying effects?
 
 When would RMST be preferable to the Cox proportional hazards model?
 :::
-
-
-
-
-##  Connection to RMST
-
-If hazards are not proportional:
-
-Hazard ratios may be misleading
-
-RMST provides an absolute, time-based summary
-
-RMST does not rely on the PH assumption
-
-This motivates using RMST as an alternative or complement to Cox models.
-
-
-
 
 
 

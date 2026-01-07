@@ -33,11 +33,77 @@
     ]
   },
   {
+    "objectID": "lecture-02-cox-ph.html#risk-and-hazard-at-time-t",
+    "href": "lecture-02-cox-ph.html#risk-and-hazard-at-time-t",
+    "title": "Lecture 2: Cox proportional hazards model",
+    "section": "3 Risk and Hazard at Time \\(t\\)",
+    "text": "3 Risk and Hazard at Time \\(t\\)\nWe follow people from a start point (e.g., transplant) until an event (e.g., graft failure) or censoring.\nRisk Set at Time \\(t\\)\nAt time \\(t\\), the risk set includes only individuals who:\n\nhave not yet experienced the event, and\nhave not been censored before time \\(t\\)\n\nThese are the only individuals who are considered at risk at time \\(t\\).\nHazard at Time \\(t\\)\nAmong individuals who are still event-free at time \\(t\\), the hazard describes:\n\nHow quickly events are occurring at that exact moment.\n\nFormally, the hazard function is defined as:\n\\[\nh(t) = \\lim_{\\Delta t \\to 0}\n\\frac{\\Pr(\\text{event in } [t, t+\\Delta t) \\mid \\text{survived to } t)}{\\Delta t}\n\\]\n\n\n\n\n\n\nNote\n\n\n\nThe hazard is a rate, not a probability.\nIt can be larger than 1 and does not represent the chance of failure by time \\(t\\).",
+    "crumbs": [
+      "Lectures",
+      "Lecture 2: Cox proportional hazards model"
+    ]
+  },
+  {
+    "objectID": "lecture-02-cox-ph.html#from-hazard-to-short-term-risk",
+    "href": "lecture-02-cox-ph.html#from-hazard-to-short-term-risk",
+    "title": "Lecture 2: Cox proportional hazards model",
+    "section": "4 From Hazard to Short-Term Risk",
+    "text": "4 From Hazard to Short-Term Risk\nThe hazard describes how fast events are occurring at an instant, but it is not itself a probability.\nTo approximate the short-term risk of experiencing the event, we look at a small time window of length \\(\\Delta t\\).\nFor very small \\(\\Delta t\\), the probability of the event occurring shortly after time \\(t\\) is approximately:\n\\[\n\\Pr(\\text{event in the next } \\Delta t \\mid \\text{alive at } t)\n\\;\\approx\\;\nh(t) \\times \\Delta t\n\\]\n\n\n\n\n\n\nNote\n\n\n\nThis approximation helps link the hazard to a more intuitive concept of short-term risk. However, hazard itself is still a rate, not a probability.\n\n\n\n\n\n\n\n\nExample\n\n\n\n\nAt 12 months, 80 people are still at risk.\n\nBetween 12 and 13 months, 4 events occur.\n\nThe average monthly hazard over that interval ≈ 4/80=0.05 per month.\n\nSo the risk during that month ≈ 5% (because 0.05 × 1 month).",
+    "crumbs": [
+      "Lectures",
+      "Lecture 2: Cox proportional hazards model"
+    ]
+  },
+  {
+    "objectID": "lecture-02-cox-ph.html#what-is-the-link-between-hazard-and-survival",
+    "href": "lecture-02-cox-ph.html#what-is-the-link-between-hazard-and-survival",
+    "title": "Lecture 2: Cox proportional hazards model",
+    "section": "5 What Is the Link Between Hazard and Survival?",
+    "text": "5 What Is the Link Between Hazard and Survival?\n- Cumulative Hazard\nThe cumulative hazard up to time \\(t\\) is the total hazard accumulated over time:\n\\[\nH(t) = \\int_0^t h(u)\\, du\n\\]\n- Survival Function\nThe survival probability at time \\(t\\) is related to the cumulative hazard by:\n\\[\nS(t) = \\exp\\{-H(t)\\}\n\\]\nThis means that survival depends on the entire history of the hazard, not just the hazard at a single time point.",
+    "crumbs": [
+      "Lectures",
+      "Lecture 2: Cox proportional hazards model"
+    ]
+  },
+  {
+    "objectID": "lecture-02-cox-ph.html#speedometer-and-odometer-analogy",
+    "href": "lecture-02-cox-ph.html#speedometer-and-odometer-analogy",
+    "title": "Lecture 2: Cox proportional hazards model",
+    "section": "6 🚗 Speedometer and Odometer Analogy",
+    "text": "6 🚗 Speedometer and Odometer Analogy\n\n\n\n\n\n\nNote\n\n\n\nThink of hazard as a speedometer and survival as an odometer.\n\n\nIf we know the speed at every moment, we can calculate the total distance travelled by adding up (integrating) the speed over time.\nSimilarly:\n\nIf we know the hazard at each moment,\n\nwe can calculate the cumulative hazard by integrating over time,\n\nand from the cumulative hazard we can determine the survival probability.\n\nSurvival tells us how far we have made it without experiencing the event since the starting point.",
+    "crumbs": [
+      "Lectures",
+      "Lecture 2: Cox proportional hazards model"
+    ]
+  },
+  {
     "objectID": "lecture-02-cox-ph.html#what-does-the-cox-model-do",
     "href": "lecture-02-cox-ph.html#what-does-the-cox-model-do",
     "title": "Lecture 2: Cox proportional hazards model",
-    "section": "3 What Does the Cox Model Do?",
-    "text": "3 What Does the Cox Model Do?\nThe Cox proportional hazards (PH) model relates covariates to the hazard:\n\nIt estimates relative differences in hazard between groups.\n\nResults are reported as hazard ratios (HRs):\n- HR = 1 → no difference\n- HR &lt; 1 → lower hazard (protective)\n- HR &gt; 1 → higher hazard (increased risk)",
+    "section": "7 What Does the Cox Model Do?",
+    "text": "7 What Does the Cox Model Do?\nIn practice, individuals have different characteristics that may affect their risk of experiencing the event.\nThe Cox proportional hazards model describes how covariates change the hazard over time:\n\\[\nh(t \\mid X) = h_0(t)\\exp(\\beta_1 X_1 + \\beta_2 X_2 + \\cdots + \\beta_p X_p)\n\\]\nwhere:\n\n\\(h(t \\mid X)\\) is the hazard for an individual with covariates \\(X\\)\n\\(h_0(t)\\) is the baseline hazard (when all \\(X = 0\\))\n\\(\\beta\\) values describe how covariates affect the hazard\n\n\n\n\n\n\n\nNote\n\n\n\nThe Cox model does not require specifying the shape of \\(h_0(t)\\). It focuses on estimating relative differences in hazard between individuals.",
+    "crumbs": [
+      "Lectures",
+      "Lecture 2: Cox proportional hazards model"
+    ]
+  },
+  {
+    "objectID": "lecture-02-cox-ph.html#what-is-a-hazard-ratio",
+    "href": "lecture-02-cox-ph.html#what-is-a-hazard-ratio",
+    "title": "Lecture 2: Cox proportional hazards model",
+    "section": "8 What Is a Hazard Ratio?",
+    "text": "8 What Is a Hazard Ratio?\nFor a one-unit increase in a covariate \\(X_j\\), the hazard ratio is:\n\\[\nHR = \\exp(\\beta_j)\n\\]\nThis represents the ratio of hazards between two individuals who differ by one unit in \\(X_j\\),\nholding all other covariates constant.\n\n\n\n\n\n\nInterpretation\n\n\n\n\n\\(HR = 1\\): no difference in hazard\n\n\\(HR &lt; 1\\): lower hazard (protective effect)\n\n\\(HR &gt; 1\\): higher hazard (increased risk)",
+    "crumbs": [
+      "Lectures",
+      "Lecture 2: Cox proportional hazards model"
+    ]
+  },
+  {
+    "objectID": "lecture-02-cox-ph.html#cox-ph-model-assumptions",
+    "href": "lecture-02-cox-ph.html#cox-ph-model-assumptions",
+    "title": "Lecture 2: Cox proportional hazards model",
+    "section": "9 Cox PH model assumptions",
+    "text": "9 Cox PH model assumptions\n1. Proportional Hazards (PH)\nThe hazard ratio between groups is constant over time. Example: If \\(HR = 0.6\\) at 1 year, it should also be 0.6 at 5 years.\n2. Linearity of Continuous Covariates\nContinuous variables (e.g., age, eGFR) affect the log hazard in a linear way. If not, we may need transformations or splines.\n3. Independent Censoring\nCensoring (loss to follow-up, end of study) is unrelated to the future risk of the event.\n4. Correct Model Specification\nAll important predictors are included, and no important variables are mis-specified.",
     "crumbs": [
       "Lectures",
       "Lecture 2: Cox proportional hazards model"
@@ -47,19 +113,8 @@
     "objectID": "lecture-02-cox-ph.html#example-kidney-transplant-study",
     "href": "lecture-02-cox-ph.html#example-kidney-transplant-study",
     "title": "Lecture 2: Cox proportional hazards model",
-    "section": "4 Example: Kidney Transplant Study",
-    "text": "4 Example: Kidney Transplant Study\nWe are interested in whether donor type (living vs deceased) is associated with the hazard of graft failure over time, after adjusting for donor age, recipient sex, and baseline eGFR at the time of transplant.\nOutcome\n- Time to graft failure (months since transplant)\nEvent Indicator\n- Graft failure status\n- 1 = failure\n- 0 = censored\nMain Exposure\n- Donor type (Living vs Deceased)\nCovariates\n- Donor age (years)\n- Recipient sex (male / female)\n- eGFR at transplant",
-    "crumbs": [
-      "Lectures",
-      "Lecture 2: Cox proportional hazards model"
-    ]
-  },
-  {
-    "objectID": "lecture-02-cox-ph.html#load-and-prepare-the-data",
-    "href": "lecture-02-cox-ph.html#load-and-prepare-the-data",
-    "title": "Lecture 2: Cox proportional hazards model",
-    "section": "5 Load and Prepare the Data",
-    "text": "5 Load and Prepare the Data\n\n\n\n\n\n\nNote\n\n\n\nWe use simulated transplant data for illustration.\n\n\n\n\nShow R code\nlibrary(survival)\nlibrary(dplyr)\n\ndf &lt;- read.csv(\"simulated_data.csv\")\n\ndf$recipient_sex &lt;- factor(df$recipient_sex, levels = c(\"Male\", \"Female\"))\ndf$donor_type &lt;- factor(df$donor_type, levels = c(\"Deceased\", \"Living\"))\n\nhead(df)\n\n\n  id  time status donor_type donor_age recipient_sex egfr_at_tx\n1  1  41.6      0     Living        32          Male       34.9\n2  2  38.7      0   Deceased        64        Female       12.6\n3  3   0.9      0   Deceased        64          Male       45.5\n4  4  13.3      0   Deceased        44          Male       41.0\n5  5 131.9      1     Living        59          Male       31.1\n6  6  14.5      0     Living        37          Male       31.5",
+    "section": "10 Example: Kidney Transplant Study",
+    "text": "10 Example: Kidney Transplant Study\nWe are interested in whether donor type (living vs deceased) is associated with the hazard of graft failure over time, after adjusting for donor age, recipient sex, and baseline eGFR at the time of transplant.\nOutcome\n- Time to graft failure (months since transplant)\nEvent Indicator: Graft failure status\n- 1 = failure\n- 0 = censored\nMain Exposure\n- Donor type (Living vs Deceased)\nCovariates\n- Donor age (years)\n- Recipient sex (male / female)\n- eGFR at transplant\n\n\n\n\n\n\nNote\n\n\n\nWe use simulated transplant data for illustration.\n\n\n\n\nShow R code\nlibrary(survival)\nlibrary(dplyr)\n\ndf &lt;- read.csv(\"simulated_data.csv\")\n\ndf$recipient_sex &lt;- factor(df$recipient_sex, levels = c(\"Male\", \"Female\"))\ndf$donor_type &lt;- factor(df$donor_type, levels = c(\"Deceased\", \"Living\"))\n\nhead(df)\n\n\n  id  time status donor_type donor_age recipient_sex egfr_at_tx\n1  1  41.6      0     Living        32          Male       34.9\n2  2  38.7      0   Deceased        64        Female       12.6\n3  3   0.9      0   Deceased        64          Male       45.5\n4  4  13.3      0   Deceased        44          Male       41.0\n5  5 131.9      1     Living        59          Male       31.1\n6  6  14.5      0     Living        37          Male       31.5",
     "crumbs": [
       "Lectures",
       "Lecture 2: Cox proportional hazards model"
@@ -69,8 +124,8 @@
     "objectID": "lecture-02-cox-ph.html#fit-the-cox-model",
     "href": "lecture-02-cox-ph.html#fit-the-cox-model",
     "title": "Lecture 2: Cox proportional hazards model",
-    "section": "6 Fit the Cox Model",
-    "text": "6 Fit the Cox Model\n\n\nShow R code\ncox_model &lt;- coxph(\nSurv(time, status) ~ donor_type + donor_age + recipient_sex + egfr_at_tx,\ndata = df\n)\n\nsummary(cox_model)\n\n\nCall:\ncoxph(formula = Surv(time, status) ~ donor_type + donor_age + \n    recipient_sex + egfr_at_tx, data = df)\n\n  n= 1000, number of events= 470 \n\n                         coef exp(coef)  se(coef)      z Pr(&gt;|z|)    \ndonor_typeLiving    -0.603679  0.546796  0.117873 -5.121 3.03e-07 ***\ndonor_age            0.020758  1.020975  0.004604  4.509 6.52e-06 ***\nrecipient_sexFemale  0.060762  1.062646  0.093337  0.651    0.515    \negfr_at_tx          -0.026328  0.974015  0.003046 -8.645  &lt; 2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n                    exp(coef) exp(-coef) lower .95 upper .95\ndonor_typeLiving       0.5468     1.8288    0.4340    0.6889\ndonor_age              1.0210     0.9795    1.0118    1.0302\nrecipient_sexFemale    1.0626     0.9410    0.8850    1.2760\negfr_at_tx             0.9740     1.0267    0.9682    0.9798\n\nConcordance= 0.661  (se = 0.013 )\nLikelihood ratio test= 160.2  on 4 df,   p=&lt;2e-16\nWald test            = 151.8  on 4 df,   p=&lt;2e-16\nScore (logrank) test = 156.1  on 4 df,   p=&lt;2e-16",
+    "section": "11 Fit the Cox Model",
+    "text": "11 Fit the Cox Model\n\n\nShow R code\ncox_model &lt;- coxph(\nSurv(time, status) ~ donor_type + donor_age + recipient_sex + egfr_at_tx,\ndata = df\n)\n\nsummary(cox_model)\n\n\nCall:\ncoxph(formula = Surv(time, status) ~ donor_type + donor_age + \n    recipient_sex + egfr_at_tx, data = df)\n\n  n= 1000, number of events= 470 \n\n                         coef exp(coef)  se(coef)      z Pr(&gt;|z|)    \ndonor_typeLiving    -0.603679  0.546796  0.117873 -5.121 3.03e-07 ***\ndonor_age            0.020758  1.020975  0.004604  4.509 6.52e-06 ***\nrecipient_sexFemale  0.060762  1.062646  0.093337  0.651    0.515    \negfr_at_tx          -0.026328  0.974015  0.003046 -8.645  &lt; 2e-16 ***\n---\nSignif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1\n\n                    exp(coef) exp(-coef) lower .95 upper .95\ndonor_typeLiving       0.5468     1.8288    0.4340    0.6889\ndonor_age              1.0210     0.9795    1.0118    1.0302\nrecipient_sexFemale    1.0626     0.9410    0.8850    1.2760\negfr_at_tx             0.9740     1.0267    0.9682    0.9798\n\nConcordance= 0.661  (se = 0.013 )\nLikelihood ratio test= 160.2  on 4 df,   p=&lt;2e-16\nWald test            = 151.8  on 4 df,   p=&lt;2e-16\nScore (logrank) test = 156.1  on 4 df,   p=&lt;2e-16",
     "crumbs": [
       "Lectures",
       "Lecture 2: Cox proportional hazards model"
@@ -80,19 +135,19 @@
     "objectID": "lecture-02-cox-ph.html#checking-model-assumptions",
     "href": "lecture-02-cox-ph.html#checking-model-assumptions",
     "title": "Lecture 2: Cox proportional hazards model",
-    "section": "7 Checking Model Assumptions",
-    "text": "7 Checking Model Assumptions\nProportional Hazards (PH) Assumption\nThe Cox model assumes that hazard ratios are constant over time.\nWe assess this using Schoenfeld residuals.\n\n\nShow R code\nph_test &lt;- cox.zph(cox_model)\nph_test\n\n\n               chisq df     p\ndonor_type    4.4452  1 0.035\ndonor_age     2.9643  1 0.085\nrecipient_sex 0.0295  1 0.864\negfr_at_tx    2.1768  1 0.140\nGLOBAL        6.2504  4 0.181\n\n\nShow R code\nplot(ph_test)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nIf the global test is not significant, the PH assumption is reasonable.\n\n\n\n\n\n\n\n\nInterpretation\n\n\n\nSuppose the output shows:\nDonor type (Living vs Deceased): HR = 0.55 After adjustment, recipients of living donor kidneys have 45% lower hazard of graft failure compared with deceased donor recipients.\n\n\nHazard ratios describe relative risk, not differences in survival time.\n\nThink about the following before moving on:\nWhat should we do if the proportional hazards assumption is violated?\nHow could we model time-varying effects?\nWhen would RMST be preferable to the Cox proportional hazards model?",
+    "section": "12 Checking Model Assumptions",
+    "text": "12 Checking Model Assumptions\n1. Proportional Hazards (PH) Assumption\nThe Cox model assumes that hazard ratios are constant over time.\nWe assess this using Schoenfeld residuals.\n\n\nShow R code\nph_test &lt;- cox.zph(cox_model)\nph_test\n\n\n               chisq df     p\ndonor_type    4.4452  1 0.035\ndonor_age     2.9643  1 0.085\nrecipient_sex 0.0295  1 0.864\negfr_at_tx    2.1768  1 0.140\nGLOBAL        6.2504  4 0.181\n\n\nShow R code\nplot(ph_test)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nIf the global test is not significant, the PH assumption is reasonable.\n\n\n2. Linearity of Continuous Covariates\nThe Cox model assumes that continuous covariates have a linear effect on the log-hazard.\nIf this assumption is violated, the model may be misspecified.\nA common diagnostic is to plot Martingale residuals against each continuous covariate:\n\n\nShow R code\nmart_resid &lt;- residuals(cox_model, type = \"martingale\")\n\n# Plot residuals vs continuous covariates\n\n\nplot(df$donor_age, mart_resid,\n     xlab = \"Donor age (years)\", ylab = \"Martingale residuals\",\n     main = \"Linearity check: Donor age\")\nlines(lowess(df$donor_age, mart_resid), lwd = 2)\n\n\n\n\n\n\n\n\n\nShow R code\nplot(df$egfr_at_tx, mart_resid,\n     xlab = \"eGFR at transplant\", ylab = \"Martingale residuals\",\n     main = \"Linearity check: eGFR\")\nlines(lowess(df$egfr_at_tx, mart_resid), lwd = 2)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nIf the linearity assumption holds, the scatter of residuals should look randomly spread around zero with no strong curvature.\nIf you see a systematic curve/trend, that suggests non-linearity, and you might need transformations (e.g. log, quadratic, splines).",
     "crumbs": [
       "Lectures",
       "Lecture 2: Cox proportional hazards model"
     ]
   },
   {
-    "objectID": "lecture-02-cox-ph.html#connection-to-rmst",
-    "href": "lecture-02-cox-ph.html#connection-to-rmst",
+    "objectID": "lecture-02-cox-ph.html#model-interpretation",
+    "href": "lecture-02-cox-ph.html#model-interpretation",
     "title": "Lecture 2: Cox proportional hazards model",
-    "section": "8 Connection to RMST",
-    "text": "8 Connection to RMST\nIf hazards are not proportional:\nHazard ratios may be misleading\nRMST provides an absolute, time-based summary\nRMST does not rely on the PH assumption\nThis motivates using RMST as an alternative or complement to Cox models.",
+    "section": "13 Model Interpretation",
+    "text": "13 Model Interpretation\n-Donor type:\nRecipients of living donor kidneys had a 45% lower hazard of graft failure compared with those who received deceased donor kidneys (HR = 0.55, 95% CI: 0.43–0.69, p &lt; 0.001).\n-Donor age:\nEach additional year of donor age was associated with a 2% increase in hazard of graft failure (HR = 1.02, 95% CI: 1.01–1.03, p &lt; 0.001).\nHow to improve the reporting HR for donor age?\nDonor age: Each 10-year increase in donor age was associated with a 22% increase in the hazard of graft failure (HR = 1.22, 95% CI: 1.13–1.34, p &lt; 0.001).\n-Recipient sex:\nThere was no evidence of an association between recipient sex and graft failure (HR = 1.06, 95% CI: 0.89–1.28, p = 0.52).\n-eGFR at transplant:\nHigher baseline eGFR was strongly protective: each 1-unit increase was associated with a 3% lower hazard of graft failure (HR = 0.97, 95% CI: 0.97–0.98, p &lt; 0.001).\n\n\n\n\n\n\nConnection to RMST\n\n\n\nIf hazards are not proportional:\nHazard ratios may be misleading\nRMST provides an absolute, time-based summary\nRMST does not rely on the PH assumption\nThis motivates using RMST as an alternative or complement to Cox models.\n\n\n\nThink about the following before moving on:\nWhat should we do if the proportional hazards assumption is violated?\nHow could we model time-varying effects?\nWhen would RMST be preferable to the Cox proportional hazards model?",
     "crumbs": [
       "Lectures",
       "Lecture 2: Cox proportional hazards model"
