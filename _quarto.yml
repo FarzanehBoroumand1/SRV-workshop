@@ -4,17 +4,22 @@ project:
 
 website:
   title: "SRV-workshop"
-  navbar:
-    left:
-      - href: index.qmd
-        text: Home
-      - about.qmd
-
+  sidebar:
+    style: "docked"
+    search: true
+    contents:
+      - text: "Home"
+        href: index.qmd
+      - section: "Lectures"
+        contents:
+          - lecture-01-intro-km-rmst.qmd
+       
 format:
   html:
     theme: cosmo
-    css: styles.css
     toc: true
-
-editor: visual
+    code-fold: true
+    code-summary: "Show R code"
+    code-tools: true
+    number-sections: true
 

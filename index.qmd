@@ -2,10 +2,15 @@
 title: "SRV-workshop"
 ---
 
-This is a Quarto website.
+Welcome! This workshop contains 5 lectures on survival analysis.
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+::: callout-note
+### How to use this website
 
-```{r}
-1 + 1
-```
+-   Click **Lecture 1–5** in the sidebar.
+-   Each lecture contains:
+    -   explanation
+    -   R code (collapsible)
+    -   outputs
+    -   interpretation
+:::
