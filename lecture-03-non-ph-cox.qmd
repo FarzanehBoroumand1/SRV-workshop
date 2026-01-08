@@ -1,0 +1,26 @@
+---
+title: "Lecture 3: Cox model when PH assumption is violated"
+toc: true
+toc-depth: 3
+---
+
+
+```{r, echo=FALSE}
+knitr::opts_chunk$set(
+  message = FALSE,
+  warning = FALSE
+)
+```
+
+## Learning Objectives
+
+::: callout-note
+By the end of this lecture, you should be able to:
+
+- Recognise when the **proportional hazards (PH) assumption** is violated
+- Understand different strategies to handle non-PH:
+  - Stratified Cox model
+  - Time-varying effects
+  - Extended Cox with time-varying covariates
+- Understand when a **joint model** is needed
+:::
