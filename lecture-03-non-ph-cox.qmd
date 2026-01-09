@@ -375,12 +375,13 @@ standard_cox_plot<-ggplot(df_ph, aes(x = time, y = surv, colour = donor_type, fi
 
 
  
-par(mfrow = c(1, 2))  # 1 row, 2 columns
+library(gridExtra)
 
-print(standard_cox_plot)
-print(stratified_cox_plot)
-
-par(mfrow = c(1, 1))  # reset layout 
+grid.arrange(
+  standard_cox_plot,
+  stratified_cox_plot,
+  ncol = 2
+)
 
 ```
 
