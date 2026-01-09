@@ -376,10 +376,19 @@ standard_cox_plot<-ggplot(df_ph, aes(x = time, y = surv, colour = donor_type, fi
 
  
 library(gridExtra)
+library(ggplot2)
 
+# Reduce title size for each plot
+standard_cox_plot_small <- standard_cox_plot +
+  theme(plot.title = element_text(size = 10))
+
+stratified_cox_plot_small <- stratified_cox_plot +
+  theme(plot.title = element_text(size = 10))
+
+# Arrange side by side
 grid.arrange(
-  standard_cox_plot,
-  stratified_cox_plot,
+  standard_cox_plot_small,
+  stratified_cox_plot_small,
   ncol = 2
 )
 
