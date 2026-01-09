@@ -23,4 +23,365 @@ By the end of this lecture, you should be able to:
   - Time-varying effects
   - Extended Cox with time-varying covariates
 - Understand when a **joint model** is needed
+
 :::
+
+
+
+## Reminder: Proportional Hazards Assumption
+
+The Cox model assumes that **hazard ratios are constant over time**.
+
+This means that if one group has higher risk than another at the beginning,
+it has the same *relative* risk later in follow-up.
+
+::: {.callout-note}
+If this assumption does not hold, the estimated hazard ratio from a standard Cox model
+may be misleading.
+:::
+
+
+## What If Proportional Hazards Does Not Hold?
+
+There are several approaches when PH is violated:
+
+1. **Stratified Cox model:** allow baseline hazards to differ by group.
+2. **Include time-varying effect:** model changing effects over time, include interaction between covariate and time (e.g. $𝑥×𝑡$). 
+3. **Use extended Cox model:** allow a covariate’s value itself to change over time.
+
+
+
+## Stratified Cox model
+
+When the proportional hazards (PH) assumption is violated for a categorical variable, one option is a **stratified Cox model**.
+
+A stratified Cox model can be written as:
+
+$$
+h_s(t \mid X) = h_{0s}(t)\,\exp(\beta_1 X_1 + \beta_2 X_2 + \cdots)
+$$
+
+where:
+
+- $s$ is the stratum (e.g. donor type)
+- $h_{0s}(t)$ is the **baseline hazard for stratum $s$**
+- $X_1, X_2, \ldots$ are other covariates
+
+ **What does stratification mean?**  
+
+If we stratify on a variable (e.g. **donor type**):
+
+- We **do not estimate a single hazard ratio** for the stratifying variable anymore  
+  (we are not saying “living vs deceased = HR 0.7”)
+- The stratifying variable is used only to **define strata**
+- Each stratum is allowed to have a **different baseline risk trajectory** over time
+
+In words:
+
+> Patients with living donors and patients with deceased donors are allowed to have completely different baseline hazards over time.
+
+**What is still estimated?**   
+
+We still estimate the effects of other covariates (e.g. donor age, recipient sex, eGFR at transplant), assuming those effects are **proportional within each stratum**.
+
+::: {.callout-note}
+Stratification is useful when a variable strongly affects baseline risk but does not satisfy the PH assumption.
+:::
+
+
+Stratification can be thought of as:
+
+> **“Parallel Cox models with different baseline hazards, but the same slopes for the other covariates.”**
+
+That is, each group has its own baseline risk over time, but covariate effects are assumed to be the same across groups.
+
+---
+
+ ✅  **When to use stratification**
+Use stratification when:
+
+- The proportional hazards (PH) violation is mainly driven by **one categorical variable** (e.g. donor type)
+- You still want to **adjust for this variable**
+- But you do **not need its hazard ratio** as a main result
+
+In this case, the variable is used to define strata rather than being estimated as a coefficient.
+
+---
+
+❌ **When not to use stratification**
+Do **not** use stratification when:
+
+- The stratifying variable is your **primary exposure of interest**
+- You need to report a **hazard ratio comparing groups**
+
+Because once you stratify on a variable (e.g. donor type), you **no longer obtain a single hazard ratio** comparing those groups.
+
+## Example: Handling Non-Proportional Hazards Using Stratified Cox Model
+
+We are interested in whether time to graft failure after kidney transplantation differs by donor type (living vs deceased), after adjusting for important clinical factors.
+
+
+We begin by fitting a standard Cox proportional hazards model, then check the PH assumption.
+If the PH assumption is violated for donor type, we refit the model using stratification by donor type.
+
+```{r, message=FALSE, warning=FALSE}
+library(survival)
+
+stratified_kidney_data<-read.csv("stratified_kidney_data.CSV")
+
+cox_standard <- coxph(
+  Surv(time, status) ~ donor_type +
+    donor_age +
+    recipient_gender +
+    egfr_baseline,
+  data = stratified_kidney_data
+)
+
+#summary(cox_standard)
+
+#check the PH assumption first 
+ph_test <- cox.zph(cox_standard)
+ph_test
+plot(ph_test)
+```
+
+::: {.callout-note}
+A small p-value indicates evidence against the proportional hazards assumption.
+:::
+
+**Interpretation of PH diagnostics**  
+
+The proportional hazards assumption is violated for donor type.  
+Other covariates do not show strong evidence of violation.  
+The global test is significant, indicating overall non-proportionality.  
+This suggests that the effect of donor type on graft failure risk changes over time, making the standard Cox model inappropriate.  
+
+
+**Stratified Cox model**  
+
+To address this violation, we fit a stratified Cox model, stratifying on donor type.
+
+```{r, message=FALSE, warning=FALSE}
+library(survival)
+cox_strat <- coxph(
+Surv(time, status) ~ donor_age + recipient_gender + egfr_baseline +
+strata(donor_type),
+data = stratified_kidney_data
+)
+
+summary(cox_strat)
+
+```
+
+
+::: {.callout-note}
+- We no longer estimate a hazard ratio for donor type.
+
+- Donor type is now used only to define separate baseline hazards.
+
+- Effects of other covariates are assumed proportional within each stratum.
+:::
+
+
+🧠  **Interpretation of stratified Cox model**
+
+Within each donor type (living and deceased), we interpret covariate effects as follows:
+
+✅ Donor age  
+
+HR ≈ 1.01 (95% CI: 0.997–1.03, P-value=0.14), Not statistically significant.  
+Within each donor type, donor age shows no strong association with graft failure.
+
+✅ Recipient gender (male)
+
+HR ≈ 1.58 (95% CI: 1.16–2.13, P-value=0.003), Statistically significant.
+Male recipients have about 58% higher hazard of graft failure compared to females
+This comparison is within donor type, adjusting for donor age and eGFR.
+
+✅ eGFR at transplant
+
+HR ≈ 0.99 (95% CI: 0.97–1.00, P-value=0.033), Statistically significant.
+Each 1-unit increase in baseline eGFR is associated with about 1–2% lower hazard of graft failure, within each donor type.
+To improve interpretability, we can express the effect per **10-unit increase** in eGFR:
+
+$$
+HR_{10\text{-unit}} = 0.99^{10} \approx 0.90
+$$
+
+**Interpretation:**  
+Within each donor type, a 10-unit higher eGFR at the time of transplant is associated with approximately a **10% lower hazard of graft failure**, after adjusting for donor age and recipient gender.
+
+
+::: {.callout-tip}
+
+
+### What about donor type?
+
+Stratifying by donor type allows each group to have its own baseline hazard curve, effectively removing the need to assume a constant hazard ratio over time.  
+
+The curves demonstrate that living and deceased donor grafts follow different survival trajectories — exactly what we expect when the PH assumption is violated.
+
+:::
+
+```{r, message=FALSE, warning=FALSE}
+
+# cox_strat is the stratified cox model we fitted in previous chunk 
+sf_strat <- survfit(cox_strat)
+
+# Convert survfit to a tidy data frame for ggplot
+sf_df <- data.frame(
+  time  = sf_strat$time,
+  surv  = sf_strat$surv,
+  lower = sf_strat$lower,
+  upper = sf_strat$upper,
+  strata = rep(names(sf_strat$strata), sf_strat$strata)
+)
+
+# Clean up the stratum labels from "donor_type=deceased" → "deceased"
+sf_df$strata <- sub("donor_type=", "", sf_df$strata)
+
+library(ggplot2)
+
+stratified_cox_plot<-ggplot(sf_df, aes(x = time, y = surv, colour = strata)) +
+  geom_step(linewidth = 1.2) +
+  geom_ribbon(aes(ymin = lower, ymax = upper, fill = strata),
+              alpha = 0.15, linewidth = 0) +
+  scale_colour_manual(values = c("deceased" = "#365abd",  # deep blue
+                                 "living"   = "#c0397e"))+ # magenta/rose
+
+  scale_fill_manual(values = c("deceased" = "#365abd",
+                               "living"   = "#c0397e")) +
+  labs(
+    title = "Stratified Cox Model\nDifferent Baseline Hazards by Donor Type",
+    x = "Time since transplant (years)",
+    y = "Survival probability",
+    colour = "Donor type",
+    fill   = "Donor type"
+  ) +
+  coord_cartesian(ylim = c(0.4, 1)) +
+  theme_grey(base_size = 14) +
+  theme(
+    plot.title       = element_text(face = "bold", hjust = 0.5),
+    legend.position  = "bottom",
+    legend.title     = element_text(face = "bold")
+  )
+
+stratified_cox_plot
+
+```
+
+
+
+
+::: {.callout-warning}
+### Why Ignoring PH Violations Can Be Misleading
+
+If we ignore the violation of the proportional hazards (PH) assumption and proceed with a standard Cox model, we may obtain a single hazard ratio that does **not accurately reflect how risk changes over time**.
+
+This can lead to misleading conclusions, as the estimated effect represents an average over follow-up rather than the true time-varying relationship.
+
+This is illustrated in the plot below, where the separation between groups is clearly **not constant over time**.
+
+:::
+
+
+```{r, message=FALSE, warning=FALSE}
+
+#data preparation for plot 
+
+new_deceased <- data.frame(
+  donor_type = factor("deceased", levels = levels(as.factor(stratified_kidney_data$donor_type))),
+  donor_age = mean(stratified_kidney_data$donor_age, na.rm = TRUE),
+  recipient_gender = factor("female", levels = levels(as.factor(stratified_kidney_data$recipient_gender))),
+  egfr_baseline = mean(stratified_kidney_data$egfr_baseline, na.rm = TRUE)
+)
+
+new_living <- data.frame(
+  donor_type = factor("living", levels = levels(as.factor(stratified_kidney_data$donor_type))),
+  donor_age = mean(stratified_kidney_data$donor_age, na.rm = TRUE),
+  recipient_gender = factor("female", levels = levels(as.factor(stratified_kidney_data$recipient_gender))),
+  egfr_baseline = mean(stratified_kidney_data$egfr_baseline, na.rm = TRUE)
+)
+
+
+
+
+
+sf_deceased <- survfit(cox_standard, newdata = new_deceased)
+sf_living   <- survfit(cox_standard, newdata = new_living)
+
+
+df_dec <- data.frame(
+  time       = sf_deceased$time,
+  surv       = sf_deceased$surv,
+  lower      = sf_deceased$lower,
+  upper      = sf_deceased$upper,
+  donor_type = "Deceased donor"
+)
+
+df_liv <- data.frame(
+  time       = sf_living$time,
+  surv       = sf_living$surv,
+  lower      = sf_living$lower,
+  upper      = sf_living$upper,
+  donor_type = "Living donor"
+)
+
+
+df_ph <- rbind(df_dec, df_liv)
+
+
+
+
+standard_cox_plot<-ggplot(df_ph, aes(x = time, y = surv, colour = donor_type, fill = donor_type)) +
+  # CI ribbon
+  geom_ribbon(aes(ymin = lower, ymax = upper),
+              alpha = 0.2,
+              colour = NA,
+              show.legend = FALSE) +
+  # Step survival curve
+  geom_step(linewidth = 1.2) +
+  
+  # Manual colours for consistency across slides
+  scale_colour_manual(
+    values = c("Deceased donor" = "#365abd",   # blue
+               "Living donor"   = "#c0397e")   # magenta/rose
+  ) +
+  scale_fill_manual(
+    values = c("Deceased donor" = "#365abd",
+               "Living donor"   = "#c0397e")
+  ) +
+  
+  # Axis labels and title
+  labs(
+    title = "Standard Cox PH Model\nAssumes Constant Effect of Donor Type",
+    x = "Time since transplant (years)",
+    y = "Predicted survival probability",
+    colour = "Donor type"
+  ) +
+  
+  # y-axis from 0.4 to 1.0
+  coord_cartesian(ylim = c(0.4, 1.0)) +
+  
+  # Use grey theme with gridlines
+  theme_grey(base_size = 14) +
+  theme(
+    plot.title       = element_text(face = "bold", hjust = 0.5),
+    legend.position  = "bottom",
+    legend.title     = element_text(face = "bold")
+  )
+
+
+
+
+ 
+par(mfrow = c(1, 2))  # 1 row, 2 columns
+
+print(standard_cox_plot)
+print(stratified_cox_plot)
+
+par(mfrow = c(1, 1))  # reset layout 
+
+```
+
+
