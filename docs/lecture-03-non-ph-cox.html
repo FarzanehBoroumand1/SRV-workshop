@@ -359,7 +359,7 @@ Note
 <section id="example-handling-non-proportional-hazards-using-stratified-cox-model" class="level2" data-number="5">
 <h2 data-number="5" class="anchored" data-anchor-id="example-handling-non-proportional-hazards-using-stratified-cox-model"><span class="header-section-number">5</span> Example: Handling Non-Proportional Hazards Using Stratified Cox Model</h2>
 <p>We are interested in whether time to graft failure after kidney transplantation differs by donor type (living vs deceased), after adjusting for important clinical factors.</p>
-<p>We begin by fitting a standard Cox proportional hazards model, then check the PH assumption. If the PH assumption is violated for donor type, we refit the model using stratification by donor type.</p>
+<p>We begin by fitting a standard Cox proportional hazards model, then check the PH assumption. If the PH assumption is violated for any categorical covariate in the model, we refit the model using stratification by that covariate.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Show R code</summary>
@@ -556,7 +556,7 @@ What about donor type?
 <span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
 <span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Stratified Cox Model</span><span class="sc">\n</span><span class="st">Different Baseline Hazards by Donor Type"</span>,</span>
 <span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Time since transplant (years)"</span>,</span>
-<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Survival probability"</span>,</span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Predicted survival probability"</span>,</span>
 <span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">colour =</span> <span class="st">"Donor type"</span>,</span>
 <span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill   =</span> <span class="st">"Donor type"</span></span>
 <span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
@@ -1302,7 +1302,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb8-122"><a href="#cb8-122" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-123"><a href="#cb8-123" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-124"><a href="#cb8-124" aria-hidden="true" tabindex="-1"></a>We begin by fitting a standard Cox proportional hazards model, then check the PH assumption.</span>
-<span id="cb8-125"><a href="#cb8-125" aria-hidden="true" tabindex="-1"></a>If the PH assumption is violated for donor type, we refit the model using stratification by donor type.</span>
+<span id="cb8-125"><a href="#cb8-125" aria-hidden="true" tabindex="-1"></a>If the PH assumption is violated for any categorical covariate in the model, we refit the model using stratification by that covariate.</span>
 <span id="cb8-126"><a href="#cb8-126" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-127"><a href="#cb8-127" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, message=FALSE, warning=FALSE}</span></span>
 <span id="cb8-128"><a href="#cb8-128" aria-hidden="true" tabindex="-1"></a><span class="in">library(survival)</span></span>
@@ -1434,7 +1434,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb8-254"><a href="#cb8-254" aria-hidden="true" tabindex="-1"></a><span class="in">  labs(</span></span>
 <span id="cb8-255"><a href="#cb8-255" aria-hidden="true" tabindex="-1"></a><span class="in">    title = "Stratified Cox Model\nDifferent Baseline Hazards by Donor Type",</span></span>
 <span id="cb8-256"><a href="#cb8-256" aria-hidden="true" tabindex="-1"></a><span class="in">    x = "Time since transplant (years)",</span></span>
-<span id="cb8-257"><a href="#cb8-257" aria-hidden="true" tabindex="-1"></a><span class="in">    y = "Survival probability",</span></span>
+<span id="cb8-257"><a href="#cb8-257" aria-hidden="true" tabindex="-1"></a><span class="in">    y = "Predicted survival probability",</span></span>
 <span id="cb8-258"><a href="#cb8-258" aria-hidden="true" tabindex="-1"></a><span class="in">    colour = "Donor type",</span></span>
 <span id="cb8-259"><a href="#cb8-259" aria-hidden="true" tabindex="-1"></a><span class="in">    fill   = "Donor type"</span></span>
 <span id="cb8-260"><a href="#cb8-260" aria-hidden="true" tabindex="-1"></a><span class="in">  ) +</span></span>
@@ -1564,7 +1564,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb8-384"><a href="#cb8-384" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
 <span id="cb8-385"><a href="#cb8-385" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-386"><a href="#cb8-386" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb8-387"><a href="#cb8-387" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb8-387"><a href="#cb8-387" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-388"><a href="#cb8-388" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

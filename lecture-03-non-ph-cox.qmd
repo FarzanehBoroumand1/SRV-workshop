@@ -122,7 +122,7 @@ We are interested in whether time to graft failure after kidney transplantation 
 
 
 We begin by fitting a standard Cox proportional hazards model, then check the PH assumption.
-If the PH assumption is violated for donor type, we refit the model using stratification by donor type.
+If the PH assumption is violated for any categorical covariate in the model, we refit the model using stratification by that covariate.
 
 ```{r, message=FALSE, warning=FALSE}
 library(survival)
@@ -254,7 +254,7 @@ stratified_cox_plot<-ggplot(sf_df, aes(x = time, y = surv, colour = strata)) +
   labs(
     title = "Stratified Cox Model\nDifferent Baseline Hazards by Donor Type",
     x = "Time since transplant (years)",
-    y = "Survival probability",
+    y = "Predicted survival probability",
     colour = "Donor type",
     fill   = "Donor type"
   ) +
@@ -384,5 +384,6 @@ grid.arrange(
 )
 
 ```
+
 
 
