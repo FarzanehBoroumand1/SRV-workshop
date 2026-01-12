@@ -63,8 +63,8 @@ $$
 
 where:
 
-- $ d_i $ is the **number of events** occurring at time $ t_i $
-- $ r_i $ is the **number of individuals at risk** just before time $ t_i $
+- $d_i$ is the **number of events** occurring at time $t_i$
+- $r_i$ is the **number of individuals at risk** just before time $t_i$
 
 
 
