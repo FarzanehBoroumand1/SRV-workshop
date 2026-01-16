@@ -1054,6 +1054,20 @@ ggplot(surv_plot_df,
     plot.subtitle = element_text(hjust = 0.5),
     legend.position = "right",
     panel.grid.minor = element_blank()
+  )+ theme(
+    plot.title = element_text(
+      face = "bold",
+      size = 12,
+      hjust = 0.5,
+      margin = margin(b = 6)   # space below title
+    ),
+    plot.subtitle = element_text(
+      size = 11,
+      hjust = 0.5,
+      margin = margin(b = 8)
+    ),
+    legend.position = "right",
+    panel.grid.minor = element_blank()
   )
 
 
@@ -1100,5 +1114,21 @@ The extended Cox model treats time-varying covariates as **external**.
 
 If the covariate is influenced by the underlying disease process
 (e.g. declining eGFR because the graft is failing),
-this assumption may be violated — motivating **joint models**.
+this assumption may be violated.
+:::
+
+
+
+
+::: {.callout-question}
+
+**Think about the following before moving on:**
+
+What if the decline in eGFR over time reflects underlying changes in other clinical factors, rather than acting as an isolated predictor?
+
+And those same variables may also affect the risk of graft failure.
+
+
+If a time-dependent covariate both **predicts** the event and is **affected by** the underlying disease process, is an extended Cox model still appropriate?
+
 :::

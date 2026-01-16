@@ -1425,7 +1425,21 @@ Accounting for changes in kidney function over time substantially alters the int
 <span id="cb14-97"><a href="#cb14-97" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">hjust =</span> <span class="fl">0.5</span>),</span>
 <span id="cb14-98"><a href="#cb14-98" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"right"</span>,</span>
 <span id="cb14-99"><a href="#cb14-99" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>()</span>
-<span id="cb14-100"><a href="#cb14-100" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-100"><a href="#cb14-100" aria-hidden="true" tabindex="-1"></a>  )<span class="sc">+</span> <span class="fu">theme</span>(</span>
+<span id="cb14-101"><a href="#cb14-101" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(</span>
+<span id="cb14-102"><a href="#cb14-102" aria-hidden="true" tabindex="-1"></a>      <span class="at">face =</span> <span class="st">"bold"</span>,</span>
+<span id="cb14-103"><a href="#cb14-103" aria-hidden="true" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">12</span>,</span>
+<span id="cb14-104"><a href="#cb14-104" aria-hidden="true" tabindex="-1"></a>      <span class="at">hjust =</span> <span class="fl">0.5</span>,</span>
+<span id="cb14-105"><a href="#cb14-105" aria-hidden="true" tabindex="-1"></a>      <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">b =</span> <span class="dv">6</span>)   <span class="co"># space below title</span></span>
+<span id="cb14-106"><a href="#cb14-106" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb14-107"><a href="#cb14-107" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(</span>
+<span id="cb14-108"><a href="#cb14-108" aria-hidden="true" tabindex="-1"></a>      <span class="at">size =</span> <span class="dv">11</span>,</span>
+<span id="cb14-109"><a href="#cb14-109" aria-hidden="true" tabindex="-1"></a>      <span class="at">hjust =</span> <span class="fl">0.5</span>,</span>
+<span id="cb14-110"><a href="#cb14-110" aria-hidden="true" tabindex="-1"></a>      <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">b =</span> <span class="dv">8</span>)</span>
+<span id="cb14-111"><a href="#cb14-111" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb14-112"><a href="#cb14-112" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"right"</span>,</span>
+<span id="cb14-113"><a href="#cb14-113" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb14-114"><a href="#cb14-114" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div>
@@ -1476,8 +1490,14 @@ Warning
 </div>
 <div class="callout-body-container callout-body">
 <p>The extended Cox model treats time-varying covariates as <strong>external</strong>.</p>
-<p>If the covariate is influenced by the underlying disease process (e.g.&nbsp;declining eGFR because the graft is failing), this assumption may be violated — motivating <strong>joint models</strong>.</p>
+<p>If the covariate is influenced by the underlying disease process (e.g.&nbsp;declining eGFR because the graft is failing), this assumption may be violated.</p>
 </div>
+</div>
+<div class="callout-question">
+<p><strong>Think about the following before moving on:</strong></p>
+<p>What if the decline in eGFR over time reflects underlying changes in other clinical factors, rather than acting as an isolated predictor?</p>
+<p>And those same variables may also affect the risk of graft failure.</p>
+<p>If a time-dependent covariate both <strong>predicts</strong> the event and is <strong>affected by</strong> the underlying disease process, is an extended Cox model still appropriate?</p>
 </div>
 
 
@@ -3013,54 +3033,84 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb15-1054"><a href="#cb15-1054" aria-hidden="true" tabindex="-1"></a><span class="in">    plot.subtitle = element_text(hjust = 0.5),</span></span>
 <span id="cb15-1055"><a href="#cb15-1055" aria-hidden="true" tabindex="-1"></a><span class="in">    legend.position = "right",</span></span>
 <span id="cb15-1056"><a href="#cb15-1056" aria-hidden="true" tabindex="-1"></a><span class="in">    panel.grid.minor = element_blank()</span></span>
-<span id="cb15-1057"><a href="#cb15-1057" aria-hidden="true" tabindex="-1"></a><span class="in">  )</span></span>
-<span id="cb15-1058"><a href="#cb15-1058" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-1059"><a href="#cb15-1059" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-1060"><a href="#cb15-1060" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb15-1061"><a href="#cb15-1061" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-1062"><a href="#cb15-1062" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
-<span id="cb15-1063"><a href="#cb15-1063" aria-hidden="true" tabindex="-1"></a><span class="fu">### Interpretation of Predicted Survival by Current eGFR Level</span></span>
-<span id="cb15-1064"><a href="#cb15-1064" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-1065"><a href="#cb15-1065" aria-hidden="true" tabindex="-1"></a>The extended Cox model allows us to interpret graft survival **conditional on the current level of kidney function**, updated over time.</span>
-<span id="cb15-1066"><a href="#cb15-1066" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-1067"><a href="#cb15-1067" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb15-1068"><a href="#cb15-1068" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-1069"><a href="#cb15-1069" aria-hidden="true" tabindex="-1"></a>✅ **eGFR = 90 (green)**</span>
-<span id="cb15-1070"><a href="#cb15-1070" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-1071"><a href="#cb15-1071" aria-hidden="true" tabindex="-1"></a>Predicted graft survival is **very stable over time**.  </span>
-<span id="cb15-1072"><a href="#cb15-1072" aria-hidden="true" tabindex="-1"></a>The survival curve remains close to **1.0**, indicating that patients maintaining this level of kidney function have a **very low risk of graft failure** throughout follow-up.</span>
+<span id="cb15-1057"><a href="#cb15-1057" aria-hidden="true" tabindex="-1"></a><span class="in">  )+ theme(</span></span>
+<span id="cb15-1058"><a href="#cb15-1058" aria-hidden="true" tabindex="-1"></a><span class="in">    plot.title = element_text(</span></span>
+<span id="cb15-1059"><a href="#cb15-1059" aria-hidden="true" tabindex="-1"></a><span class="in">      face = "bold",</span></span>
+<span id="cb15-1060"><a href="#cb15-1060" aria-hidden="true" tabindex="-1"></a><span class="in">      size = 12,</span></span>
+<span id="cb15-1061"><a href="#cb15-1061" aria-hidden="true" tabindex="-1"></a><span class="in">      hjust = 0.5,</span></span>
+<span id="cb15-1062"><a href="#cb15-1062" aria-hidden="true" tabindex="-1"></a><span class="in">      margin = margin(b = 6)   # space below title</span></span>
+<span id="cb15-1063"><a href="#cb15-1063" aria-hidden="true" tabindex="-1"></a><span class="in">    ),</span></span>
+<span id="cb15-1064"><a href="#cb15-1064" aria-hidden="true" tabindex="-1"></a><span class="in">    plot.subtitle = element_text(</span></span>
+<span id="cb15-1065"><a href="#cb15-1065" aria-hidden="true" tabindex="-1"></a><span class="in">      size = 11,</span></span>
+<span id="cb15-1066"><a href="#cb15-1066" aria-hidden="true" tabindex="-1"></a><span class="in">      hjust = 0.5,</span></span>
+<span id="cb15-1067"><a href="#cb15-1067" aria-hidden="true" tabindex="-1"></a><span class="in">      margin = margin(b = 8)</span></span>
+<span id="cb15-1068"><a href="#cb15-1068" aria-hidden="true" tabindex="-1"></a><span class="in">    ),</span></span>
+<span id="cb15-1069"><a href="#cb15-1069" aria-hidden="true" tabindex="-1"></a><span class="in">    legend.position = "right",</span></span>
+<span id="cb15-1070"><a href="#cb15-1070" aria-hidden="true" tabindex="-1"></a><span class="in">    panel.grid.minor = element_blank()</span></span>
+<span id="cb15-1071"><a href="#cb15-1071" aria-hidden="true" tabindex="-1"></a><span class="in">  )</span></span>
+<span id="cb15-1072"><a href="#cb15-1072" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-1073"><a href="#cb15-1073" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-1074"><a href="#cb15-1074" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb15-1074"><a href="#cb15-1074" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb15-1075"><a href="#cb15-1075" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-1076"><a href="#cb15-1076" aria-hidden="true" tabindex="-1"></a>✅ **eGFR = 60 (orange)**</span>
-<span id="cb15-1077"><a href="#cb15-1077" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-1078"><a href="#cb15-1078" aria-hidden="true" tabindex="-1"></a>Graft survival remains **high**, although slightly lower than at eGFR = 90.  </span>
-<span id="cb15-1079"><a href="#cb15-1079" aria-hidden="true" tabindex="-1"></a>The probability of graft survival stays above **95% over 8 years**, suggesting a **modest increase in risk**, but overall good long-term outcomes.</span>
+<span id="cb15-1076"><a href="#cb15-1076" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb15-1077"><a href="#cb15-1077" aria-hidden="true" tabindex="-1"></a><span class="fu">### Interpretation of Predicted Survival by Current eGFR Level</span></span>
+<span id="cb15-1078"><a href="#cb15-1078" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-1079"><a href="#cb15-1079" aria-hidden="true" tabindex="-1"></a>The extended Cox model allows us to interpret graft survival **conditional on the current level of kidney function**, updated over time.</span>
 <span id="cb15-1080"><a href="#cb15-1080" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb15-1081"><a href="#cb15-1081" aria-hidden="true" tabindex="-1"></a>---</span>
 <span id="cb15-1082"><a href="#cb15-1082" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-1083"><a href="#cb15-1083" aria-hidden="true" tabindex="-1"></a>✅ **eGFR = 30 (red)**</span>
+<span id="cb15-1083"><a href="#cb15-1083" aria-hidden="true" tabindex="-1"></a>✅ **eGFR = 90 (green)**</span>
 <span id="cb15-1084"><a href="#cb15-1084" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-1085"><a href="#cb15-1085" aria-hidden="true" tabindex="-1"></a>Graft survival is **markedly reduced**.  </span>
-<span id="cb15-1086"><a href="#cb15-1086" aria-hidden="true" tabindex="-1"></a>The survival curve declines more steeply, showing a **pronounced increase in the risk of graft loss over time**.  </span>
-<span id="cb15-1087"><a href="#cb15-1087" aria-hidden="true" tabindex="-1"></a>This highlights low current eGFR as a **strong indicator of poor prognosis**.</span>
-<span id="cb15-1088"><a href="#cb15-1088" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-1089"><a href="#cb15-1089" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb15-1090"><a href="#cb15-1090" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-1091"><a href="#cb15-1091" aria-hidden="true" tabindex="-1"></a>**Overall interpretation:**  </span>
-<span id="cb15-1092"><a href="#cb15-1092" aria-hidden="true" tabindex="-1"></a>In the extended Cox model, **current eGFR is a powerful, time-updated predictor of graft survival**.  </span>
-<span id="cb15-1093"><a href="#cb15-1093" aria-hidden="true" tabindex="-1"></a>Lower eGFR values are associated with **substantially worse survival trajectories**, reinforcing the importance of modelling kidney function as a **time-varying covariate** rather than a baseline-only measure.</span>
-<span id="cb15-1094"><a href="#cb15-1094" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb15-1095"><a href="#cb15-1095" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-1085"><a href="#cb15-1085" aria-hidden="true" tabindex="-1"></a>Predicted graft survival is **very stable over time**.  </span>
+<span id="cb15-1086"><a href="#cb15-1086" aria-hidden="true" tabindex="-1"></a>The survival curve remains close to **1.0**, indicating that patients maintaining this level of kidney function have a **very low risk of graft failure** throughout follow-up.</span>
+<span id="cb15-1087"><a href="#cb15-1087" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-1088"><a href="#cb15-1088" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb15-1089"><a href="#cb15-1089" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-1090"><a href="#cb15-1090" aria-hidden="true" tabindex="-1"></a>✅ **eGFR = 60 (orange)**</span>
+<span id="cb15-1091"><a href="#cb15-1091" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-1092"><a href="#cb15-1092" aria-hidden="true" tabindex="-1"></a>Graft survival remains **high**, although slightly lower than at eGFR = 90.  </span>
+<span id="cb15-1093"><a href="#cb15-1093" aria-hidden="true" tabindex="-1"></a>The probability of graft survival stays above **95% over 8 years**, suggesting a **modest increase in risk**, but overall good long-term outcomes.</span>
+<span id="cb15-1094"><a href="#cb15-1094" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-1095"><a href="#cb15-1095" aria-hidden="true" tabindex="-1"></a>---</span>
 <span id="cb15-1096"><a href="#cb15-1096" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-1097"><a href="#cb15-1097" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-1098"><a href="#cb15-1098" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning}</span>
-<span id="cb15-1099"><a href="#cb15-1099" aria-hidden="true" tabindex="-1"></a>The extended Cox model treats time-varying covariates as **external**.</span>
-<span id="cb15-1100"><a href="#cb15-1100" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-1101"><a href="#cb15-1101" aria-hidden="true" tabindex="-1"></a>If the covariate is influenced by the underlying disease process</span>
-<span id="cb15-1102"><a href="#cb15-1102" aria-hidden="true" tabindex="-1"></a>(e.g. declining eGFR because the graft is failing),</span>
-<span id="cb15-1103"><a href="#cb15-1103" aria-hidden="true" tabindex="-1"></a>this assumption may be violated — motivating **joint models**.</span>
-<span id="cb15-1104"><a href="#cb15-1104" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb15-1097"><a href="#cb15-1097" aria-hidden="true" tabindex="-1"></a>✅ **eGFR = 30 (red)**</span>
+<span id="cb15-1098"><a href="#cb15-1098" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-1099"><a href="#cb15-1099" aria-hidden="true" tabindex="-1"></a>Graft survival is **markedly reduced**.  </span>
+<span id="cb15-1100"><a href="#cb15-1100" aria-hidden="true" tabindex="-1"></a>The survival curve declines more steeply, showing a **pronounced increase in the risk of graft loss over time**.  </span>
+<span id="cb15-1101"><a href="#cb15-1101" aria-hidden="true" tabindex="-1"></a>This highlights low current eGFR as a **strong indicator of poor prognosis**.</span>
+<span id="cb15-1102"><a href="#cb15-1102" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-1103"><a href="#cb15-1103" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb15-1104"><a href="#cb15-1104" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-1105"><a href="#cb15-1105" aria-hidden="true" tabindex="-1"></a>**Overall interpretation:**  </span>
+<span id="cb15-1106"><a href="#cb15-1106" aria-hidden="true" tabindex="-1"></a>In the extended Cox model, **current eGFR is a powerful, time-updated predictor of graft survival**.  </span>
+<span id="cb15-1107"><a href="#cb15-1107" aria-hidden="true" tabindex="-1"></a>Lower eGFR values are associated with **substantially worse survival trajectories**, reinforcing the importance of modelling kidney function as a **time-varying covariate** rather than a baseline-only measure.</span>
+<span id="cb15-1108"><a href="#cb15-1108" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb15-1109"><a href="#cb15-1109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-1110"><a href="#cb15-1110" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-1111"><a href="#cb15-1111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-1112"><a href="#cb15-1112" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning}</span>
+<span id="cb15-1113"><a href="#cb15-1113" aria-hidden="true" tabindex="-1"></a>The extended Cox model treats time-varying covariates as **external**.</span>
+<span id="cb15-1114"><a href="#cb15-1114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-1115"><a href="#cb15-1115" aria-hidden="true" tabindex="-1"></a>If the covariate is influenced by the underlying disease process</span>
+<span id="cb15-1116"><a href="#cb15-1116" aria-hidden="true" tabindex="-1"></a>(e.g. declining eGFR because the graft is failing),</span>
+<span id="cb15-1117"><a href="#cb15-1117" aria-hidden="true" tabindex="-1"></a>this assumption may be violated.</span>
+<span id="cb15-1118"><a href="#cb15-1118" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb15-1119"><a href="#cb15-1119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-1120"><a href="#cb15-1120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-1121"><a href="#cb15-1121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-1122"><a href="#cb15-1122" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-1123"><a href="#cb15-1123" aria-hidden="true" tabindex="-1"></a>::: {.callout-question}</span>
+<span id="cb15-1124"><a href="#cb15-1124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-1125"><a href="#cb15-1125" aria-hidden="true" tabindex="-1"></a>**Think about the following before moving on:**</span>
+<span id="cb15-1126"><a href="#cb15-1126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-1127"><a href="#cb15-1127" aria-hidden="true" tabindex="-1"></a>What if the decline in eGFR over time reflects underlying changes in other clinical factors, rather than acting as an isolated predictor?</span>
+<span id="cb15-1128"><a href="#cb15-1128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-1129"><a href="#cb15-1129" aria-hidden="true" tabindex="-1"></a>And those same variables may also affect the risk of graft failure.</span>
+<span id="cb15-1130"><a href="#cb15-1130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-1131"><a href="#cb15-1131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-1132"><a href="#cb15-1132" aria-hidden="true" tabindex="-1"></a>If a time-dependent covariate both **predicts** the event and is **affected by** the underlying disease process, is an extended Cox model still appropriate?</span>
+<span id="cb15-1133"><a href="#cb15-1133" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-1134"><a href="#cb15-1134" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 

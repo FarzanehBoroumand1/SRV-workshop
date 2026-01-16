@@ -2,7 +2,19 @@
 title: "Advanced Survival Concepts and Analysis"
 ---
 
-Welcome! This workshop contains 5 lectures on survival analysis.
+
+
+Welcome!
+
+This workshop covers a series of lectures on **survival analysis**.
+
+We begin with an introduction to **survival data** and basic survival analysis, followed by the **Cox proportional hazards model**. We then explore **extensions of the Cox model** when the proportional hazards assumption is violated, as well as **joint models** and **nonlinear Cox models**.
+
+All lectures are prepared by **Dr Farzaneh Boroumand** (Farzaneh.Boroumand@sydney.edu.au).
+
+The datasets used in this workshop are **simulated datasets**, created solely for **educational purposes**.
+
+
 
 ::: callout-note
 ### How to use this website
