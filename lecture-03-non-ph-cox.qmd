@@ -95,9 +95,11 @@ Stratification can be thought of as:
 
 That is, each group has its own baseline risk over time, but covariate effects are assumed to be the same across groups.
 
----
 
- ✅  **When to use stratification**
+::: {.callout-tip}
+### When to Use It
+
+✅  **When to use stratification**
 Use stratification when:
 
 - The proportional hazards (PH) violation is mainly driven by **one categorical variable** (e.g. donor type)
@@ -106,7 +108,7 @@ Use stratification when:
 
 In this case, the variable is used to define strata rather than being estimated as a coefficient.
 
----
+
 
 ❌ **When not to use stratification**
 Do **not** use stratification when:
@@ -115,6 +117,9 @@ Do **not** use stratification when:
 - You need to report a **hazard ratio comparing groups**
 
 Because once you stratify on a variable (e.g. donor type), you **no longer obtain a single hazard ratio** comparing those groups.
+:::
+
+
 
 ## Example: Handling Non-Proportional Hazards Using Stratified Cox Model
 
@@ -183,7 +188,9 @@ summary(cox_strat)
 :::
 
 
-🧠  **Interpretation of stratified Cox model**
+
+::: {.callout-tip}
+### Interpretation 
 
 Within each donor type (living and deceased), we interpret covariate effects as follows:
 
@@ -210,7 +217,7 @@ $$
 
 **Interpretation:**  
 Within each donor type, a 10-unit higher eGFR at the time of transplant is associated with approximately a **10% lower hazard of graft failure**, after adjusting for donor age and recipient gender.
-
+:::
 
 ::: {.callout-tip}
 
@@ -422,8 +429,6 @@ For example:
 - Later, that advantage may **diminish or reverse**
 
 **Model Idea**  
-
-## Including Time-Varying Effects
 
 In the **standard Cox model**:
 
@@ -686,5 +691,137 @@ By 5–8 years, the HR > 2–3, suggesting higher hazard among living-donor graf
 
 The confidence band widens with time because there are fewer events and greater uncertainty at longer follow-up. 
 
+:::
 
+## Extended Cox Model
+
+Before introducing the **extended Cox model**, it is important to distinguish between
+**time-fixed covariates** and **time-varying covariates**.
+
+
+::: {.callout-note}
+
+### Time-Fixed vs Time-Varying Covariates
+
+**Time-Fixed Covariates:** 
+
+A **time-fixed covariate** is measured once (usually at baseline) and assumed to remain
+constant throughout follow-up.
+
+Examples:
+
+- **Donor type**
+- **Sex**
+- **Age at transplant**
+- **Baseline eGFR**
+
+
+**Time-Varying Covariates:**
+
+A **time-varying covariate** is a variable whose **value itself changes over time**.
+
+Examples:
+
+- **eGFR measured repeatedly after transplant**
+- **Blood pressure**
+- **Medication use**
+- **Biomarkers measured at follow-up visits**
+
+:::
+
+
+::: {.callout-warning}
+Time-varying covariates are different from **time-varying effects**.
+
+- **Time-varying effect:** the *coefficient* changes with time  
+- **Time-varying covariate:** the *value of the covariate* changes with time
+:::
+
+
+
+**Why Time-Varying Covariates Can Cause PH Violation**  
+
+
+If we treat a changing covariate as fixed at baseline:
+
+- We ignore important changes in a patient’s risk profile
+- The model may show **non-proportional hazards**
+- Early and late risks are incorrectly averaged
+
+For example:
+
+- eGFR at transplant may be similar between patients
+- Over time, eGFR may decline at different rates
+- Current kidney function is more relevant than baseline eGFR
+
+
+**Extended Cox Model (Time-Varying Covariates)**  
+
+The **extended Cox model** explicitly allows covariate values to change over time.
+
+
+::: {.callout-note}
+### Intuition
+
+- Split each subject’s follow-up into **time intervals**
+- Update the covariate value within each interval
+- Model the hazard using the **current covariate value**
+
+:::
+
+
+The model is written as:
+
+$$
+h(t \mid X(t)) = h_0(t)\exp\left(\beta_1 X_1(t) + \beta_2 X_2 + \cdots\right)
+$$
+
+
+
+
+::: {.callout-tip}
+### When to Use It
+
+- A predictor **changes over time**
+- The **current value** of the predictor matters for risk *right now*
+- Treating the variable as baseline-only is unrealistic
+
+Examples:
+
+- “eGFR at year 2 predicts risk between year 2 and 3”
+- “If eGFR worsens, the risk of graft failure increases after that”
+:::
+
+
+
+
+
+## Example: 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+::: {.callout-warning}
+The extended Cox model treats time-varying covariates as **external**.
+
+If the covariate is influenced by the underlying disease process
+(e.g. declining eGFR because the graft is failing),
+this assumption may be violated — motivating **joint models**.
 :::
