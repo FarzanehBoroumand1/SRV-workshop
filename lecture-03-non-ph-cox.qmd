@@ -533,88 +533,6 @@ summary(cox_timevary)
 
 
 
-**How to Interpret the Model**
-
-<table style="width:100%; table-layout: fixed;">
-<colgroup>
-  <col style="width:12%">
-  <col style="width:10%">
-  <col style="width:12%">
-  <col style="width:10%">
-  <col style="width:56%">
-</colgroup>
-<thead>
-<tr>
-  <th>Variable</th>
-  <th>HR<br>(exp(coef))</th>
-  <th>95% CI</th>
-  <th>p-value</th>
-  <th>Interpretation</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-  <td><strong>donor_live</strong></td>
-  <td>0.50</td>
-  <td>0.25 – 1.01</td>
-  <td>0.054 (≈ 0.05)</td>
-  <td>
-    At the <strong>start of follow-up</strong> (when $\log(t) \approx 0$),
-    recipients of a <strong>living donor</strong> kidney have about
-    <strong>50% lower hazard</strong> of graft failure compared to
-    deceased-donor recipients.
-  </td>
-</tr>
-
-<tr>
-  <td><strong>tt(donor_live)</strong></td>
-  <td>3.53</td>
-  <td>2.15 – 5.79</td>
-  <td>&lt; 0.001 ***</td>
-  <td>
-    The <strong>effect of living donor changes significantly over time</strong>.
-    The hazard ratio increases by roughly a factor of <strong>3.5</strong>
-    for each unit increase in $\log(t)$.
-    In other words, the early advantage from living donors
-    <strong>diminishes as time goes on</strong>.
-  </td>
-</tr>
-
-<tr>
-  <td><strong>donor_age</strong></td>
-  <td>1.01</td>
-  <td>1.00 – 1.03</td>
-  <td>0.14</td>
-  <td>
-    Older donor age shows a <strong>small, non-significant trend</strong>
-    toward higher hazard of graft failure.
-  </td>
-</tr>
-
-<tr>
-  <td><strong>recipient_gender (male)</strong></td>
-  <td>1.58</td>
-  <td>1.16 – 2.13</td>
-  <td>0.003 **</td>
-  <td>
-    Male recipients have about <strong>58% higher hazard</strong>
-    of graft failure than females, adjusting for other factors.
-  </td>
-</tr>
-
-<tr>
-  <td><strong>egfr_baseline</strong></td>
-  <td>0.99</td>
-  <td>0.97 – 1.00</td>
-  <td>0.032 *</td>
-  <td>
-    Each 1-unit higher baseline eGFR reduces the hazard of graft failure
-    by roughly <strong>1–2%</strong>, indicating better baseline kidney
-    function is <strong>protective</strong>.
-  </td>
-</tr>
-</tbody>
-</table>
 
 
 
@@ -732,9 +650,6 @@ Within donor type, a 10-unit higher baseline eGFR at transplant is associated wi
 
 **Overall interpretation:**  
 The time-varying Cox model shows that the **effect of donor type is strongest early after transplant and weakens over time**, while recipient gender and baseline kidney function remain important predictors of graft failure.
-
-
-
 
 
 
@@ -919,6 +834,58 @@ This format allows the model to use the **current eGFR** at each time interval.
 
 :::
 
+**Change of eGFR over time by donor type**  
+
+```{r, message=FALSE, warning=FALSE}
+
+#-----plot egfr change over time 
+library(ggplot2)
+library(dplyr)
+
+long_data<-read.csv("egfr_long_data.CSV")
+
+# Compute mean ± SE by donor type and start time
+egfr_summary <- long_data %>%
+  group_by(donor_type, start) %>%
+  summarise(
+    mean_egfr = mean(egfr_current, na.rm = TRUE),
+    se_egfr   = sd(egfr_current, na.rm = TRUE) / sqrt(n())
+  )
+
+ggplot(egfr_summary, aes(x = start, y = mean_egfr,
+                         colour = donor_type, group = donor_type)) +
+  geom_line(linewidth = 1.2) +     # changed from size → linewidth
+  geom_point(size = 2) +
+  geom_ribbon(aes(ymin = mean_egfr - se_egfr,
+                  ymax = mean_egfr + se_egfr,
+                  fill = donor_type),
+              alpha = 0.2, colour = NA) +
+  scale_colour_manual(values = c("deceased" = "#377eb8",
+                                 "living"   = "#e41a1c")) +
+  scale_fill_manual(values = c("deceased" = "#377eb8",
+                               "living"   = "#e41a1c")) +
+  labs(
+    title  = "Average eGFR trajectory over time by donor type",
+    x      = "Years since transplant",
+    y      = "Mean eGFR (mL/min/1.73m²)",
+    colour = "Donor type",
+    fill   = "Donor type"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    panel.grid.major = element_line(colour = "grey90"),
+    panel.grid.minor = element_blank(),
+    plot.title       = element_text(face = "bold", hjust = 0.5)
+  )
+
+
+```
+
+
+
+
+
+
 
 **Fitting the Extended Cox Model**
 
@@ -986,16 +953,145 @@ Accounting for changes in kidney function over time substantially alters the int
  
 
 
+```{r, message=FALSE, warning=FALSE}
+
+library(survival)
+library(ggplot2)
+library(dplyr)
+
+# Choose fixed values (you can edit if you prefer):
+ref_donor_type      <- factor("deceased", levels = levels(as.factor(long_data$donor_type)))
+ref_donor_age       <- 50
+ref_recipient_sex   <- factor("female", levels = levels(as.factor(long_data$recipient_gender)))
+
+new_e30 <- data.frame(
+  start = 0,
+  stop = 1,  # dummy, survfit won't use start/stop here
+  status = 0,
+  egfr_current = 30,
+  donor_type = ref_donor_type,
+  donor_age = ref_donor_age,
+  recipient_gender = ref_recipient_sex
+)
+
+new_e60 <- new_e30; new_e60$egfr_current <- 60
+new_e90 <- new_e30; new_e90$egfr_current <- 90
 
 
+sf_e30 <- survfit(cox_extended, newdata = new_e30)
+sf_e60 <- survfit(cox_extended, newdata = new_e60)
+sf_e90 <- survfit(cox_extended, newdata = new_e90)
 
 
+df_e30 <- data.frame(
+  time  = sf_e30$time,
+  surv  = sf_e30$surv,
+  lower = sf_e30$lower,
+  upper = sf_e30$upper,
+  egfr_label = "eGFR = 30"
+)
+
+df_e60 <- data.frame(
+  time  = sf_e60$time,
+  surv  = sf_e60$surv,
+  lower = sf_e60$lower,
+  upper = sf_e60$upper,
+  egfr_label = "eGFR = 60"
+)
+
+df_e90 <- data.frame(
+  time  = sf_e90$time,
+  surv  = sf_e90$surv,
+  lower = sf_e90$lower,
+  upper = sf_e90$upper,
+  egfr_label = "eGFR = 90"
+)
+
+surv_plot_df <- bind_rows(df_e30, df_e60, df_e90)
 
 
+ggplot(surv_plot_df,
+       aes(x = time,
+           y = surv,
+           colour = egfr_label,
+           fill   = egfr_label)) +
+  
+  # confidence band
+  geom_ribbon(aes(ymin = lower, ymax = upper),
+              alpha = 0.18,
+              linewidth = 0,
+              show.legend = FALSE) +
+  
+  # survival curve (step)
+  geom_step(linewidth = 1.2) +
+  
+  scale_colour_manual(
+    values = c(
+      "eGFR = 30" = "#d7301f",  # dark-ish red / high risk
+      "eGFR = 60" = "#fc8d59",  # orange
+      "eGFR = 90" = "#1a9850"   # green / low risk
+    )
+  ) +
+  scale_fill_manual(
+    values = c(
+      "eGFR = 30" = "#d7301f",
+      "eGFR = 60" = "#fc8d59",
+      "eGFR = 90" = "#1a9850"
+    )
+  ) +
+  
+  labs(
+    title = "Predicted graft survival under different kidney function levels",
+    subtitle = "Extended Cox model with time-updated eGFR",
+    x = "Time since transplant (years)",
+    y = "Survival probability",
+    colour = "Assumed current eGFR"
+  ) +
+  coord_cartesian(ylim = c(0.72, 1)) +
+  theme_grey(base_size = 14) +
+  theme(
+    plot.title    = element_text(face = "bold", hjust = 0.5),
+    plot.subtitle = element_text(hjust = 0.5),
+    legend.position = "right",
+    panel.grid.minor = element_blank()
+  )
 
 
+```
 
+::: {.callout-tip}
+### Interpretation of Predicted Survival by Current eGFR Level
 
+The extended Cox model allows us to interpret graft survival **conditional on the current level of kidney function**, updated over time.
+
+---
+
+✅ **eGFR = 90 (green)**
+
+Predicted graft survival is **very stable over time**.  
+The survival curve remains close to **1.0**, indicating that patients maintaining this level of kidney function have a **very low risk of graft failure** throughout follow-up.
+
+---
+
+✅ **eGFR = 60 (orange)**
+
+Graft survival remains **high**, although slightly lower than at eGFR = 90.  
+The probability of graft survival stays above **95% over 8 years**, suggesting a **modest increase in risk**, but overall good long-term outcomes.
+
+---
+
+✅ **eGFR = 30 (red)**
+
+Graft survival is **markedly reduced**.  
+The survival curve declines more steeply, showing a **pronounced increase in the risk of graft loss over time**.  
+This highlights low current eGFR as a **strong indicator of poor prognosis**.
+
+---
+
+**Overall interpretation:**  
+In the extended Cox model, **current eGFR is a powerful, time-updated predictor of graft survival**.  
+Lower eGFR values are associated with **substantially worse survival trajectories**, reinforcing the importance of modelling kidney function as a **time-varying covariate** rather than a baseline-only measure.
+:::
 
 
 
