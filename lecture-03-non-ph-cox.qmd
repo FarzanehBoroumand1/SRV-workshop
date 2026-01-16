@@ -395,4 +395,228 @@ grid.arrange(
 ```
 
 
+## Including Time-Varying Effects
 
+When the proportional hazards (PH) assumption is violated, **stratification is not the only solution**.
+
+In some settings, we still want to:
+
+- **Keep the covariate in the model**
+- **Obtain an explicit effect estimate**
+- **Allow the effect to change over time**
+
+This leads to a **time-varying coefficient Cox model**.
+
+
+### When to Use Time-Varying Effects
+
+Use a time-varying effect when:
+
+- The PH assumption is violated for a variable (e.g. **donor type**)
+- The variable is scientifically important
+- You believe the **effect itself changes over time**
+
+For example:
+
+- Early after transplant, **living donors may be protective**
+- Later, that advantage may **diminish or reverse**
+
+### Model Idea
+
+## Including Time-Varying Effects
+
+In the **standard Cox model**:
+
+$$
+h(t \mid X) = h_0(t)\exp(\beta_1 X_1 + \beta_2 X_2 + \cdots)
+$$
+
+the coefficients ($\beta$) are assumed to be **constant over time**, which leads to the **proportional hazards (PH) assumption**.
+
+---
+
+If a covariate’s effect **changes over time**, we can allow its coefficient to depend on time:
+
+$$
+h(t \mid X) = h_0(t)\exp\left(\beta_1(t) X_1 + \beta_2 X_2 + \cdots\right)
+$$
+
+This allows the **hazard ratio for $X_1$ to vary with time**.
+
+:::{.callout-note}
+
+### Intuition
+
+Instead of assuming the two groups keep the same relative risk forever,  
+we allow the **risk difference between groups to change over time**.
+
+:::
+
+::: {.callout-tip}
+### When to Use It
+
+- You detect a **proportional hazards (PH) violation** for a variable (e.g. **donor type**) but you **still want an explicit effect estimate**, rather than stratifying it away.
+- For example:
+  - **Early after transplant**, living donors may be **protective**
+  - **Later**, that advantage may **diminish or reverse**
+
+:::
+
+
+
+
+## Worked Example: Time-Varying Effect of Donor Type
+
+We return to the kidney transplant example:
+
+- **Outcome:** time to graft failure  
+- **Exposure:** donor type (living vs deceased)  
+- **Covariates:** donor age, recipient gender, baseline eGFR  
+
+Previously, we showed that **donor type violates the PH assumption**.
+
+We introduce an **interaction between the covariate and time**, most commonly:
+
+- **donor type × log(time)**  
+- **donor type × time**
+
+This allows the model to estimate **how the effect changes with time**.
+
+The Cox model becomes:
+
+$$
+h(t) = h_0(t)\exp\left[\beta_1 \,\text{donor\_type} + \beta_2 \left(\text{donor\_type} \times \log(t)\right) + \cdots \right]
+$$
+
+Where:
+
+- $\beta_1$ represents the **baseline (early) effect** of donor type  
+- $\beta_2$ represents **how that effect changes over time**
+
+
+
+
+
+### Step 1: Fit a Cox Model With a Time-Varying Coefficient
+
+```{r, message=FALSE, warning=FALSE}
+library(survival)
+
+kidney_violate <- read.csv("stratified_kidney_data.csv")
+
+kidney_violate$donor_live <- ifelse(kidney_violate$donor_type == "living", 1, 0)
+
+cox_timevary <- coxph(
+  Surv(time, status) ~ donor_live +
+    donor_age +
+    recipient_gender +
+    egfr_baseline +
+    tt(donor_live),
+  data = kidney_violate,
+  tt = function(x, t, ...) {
+    x * log(t + 0.01)
+  }
+)
+
+summary(cox_timevary)
+```
+
+::: {.callout-note}
+
+- donor_live represents the baseline effect  
+
+- tt(donor_live) allows the effect to change with time  
+
+- $\log(t)$ captures gradual, nonlinear change  
+:::
+
+
+::: {.callout-tip}
+### How to Interpret the Model
+
+### Interpretation of the Time-Varying Cox Model
+
+| Variable                  | HR (exp(coef)) | 95% CI        | p-value        | Interpretation |
+|---------------------------|---------------|---------------|----------------|----------------|
+| **donor_live**            | 0.50          | 0.25 – 1.01   | 0.054 (≈ 0.05) | At the **start of follow-up** (when $\log(t) \approx 0$), recipients of a **living donor** kidney have about **50% lower hazard** of graft failure compared to deceased-donor recipients. |
+| **tt(donor_live)**        | 3.53          | 2.15 – 5.79   | < 0.001 ***    | The **effect of living donor changes significantly over time**. The hazard ratio increases by roughly a factor of **3.5** for each unit increase in $\log(t)$. In other words, the early advantage from living donors **diminishes as time goes on**. |
+| **donor_age**             | 1.01          | 1.00 – 1.03   | 0.14           | Older donor age shows a **small, non-significant trend** toward higher hazard of graft failure. |
+| **recipient_gender (male)** | 1.58        | 1.16 – 2.13   | 0.003 **       | Male recipients have about **58% higher hazard** of graft failure than females, after adjusting for other factors. |
+| **egfr_baseline**         | 0.99          | 0.97 – 1.00   | 0.032 *        | Each 1-unit higher baseline eGFR reduces the hazard of graft failure by roughly **1.5%**, indicating better baseline kidney function is **protective**. |
+
+
+:::
+
+### Visualising the Time-Varying Hazard Ratio
+
+```{r, message=FALSE, warning=FALSE}
+library(ggplot2)
+
+b <- coef(cox_timevary)
+v <- vcov(cox_timevary)
+
+beta1 <- b["donor_live"]
+beta2 <- b["tt(donor_live)"]
+
+var_beta1 <- v["donor_live", "donor_live"]
+var_beta2 <- v["tt(donor_live)", "tt(donor_live)"]
+cov_b1b2  <- v["donor_live", "tt(donor_live)"]
+
+t_seq <- seq(0.5, 8, by = 0.1)
+log_t <- log(t_seq + 0.01)
+
+lp <- beta1 + beta2 * log_t
+var_lp <- var_beta1 + (log_t^2) * var_beta2 + 2 * log_t * cov_b1b2
+se_lp <- sqrt(var_lp)
+
+hr_df <- data.frame(
+  time  = t_seq,
+  HR    = exp(lp),
+  lower = exp(lp - 1.96 * se_lp),
+  upper = exp(lp + 1.96 * se_lp)
+)
+
+ggplot(hr_df, aes(x = time, y = HR)) +
+  geom_ribbon(aes(ymin = lower, ymax = upper),
+              alpha = 0.2, fill = "#c75b87") +
+  geom_line(linewidth = 1.2, colour = "#c75b87") +
+  geom_hline(yintercept = 1,
+             linetype = "dashed",
+             colour = "grey50") +
+  labs(
+    title = "Time-varying effect of donor type",
+    subtitle = "Hazard ratio: living vs deceased donor",
+    x = "Time since transplant (years)",
+    y = "Hazard ratio"
+  ) +
+  theme_grey(base_size = 14) +
+  theme(
+    plot.title = element_text(face = "bold", hjust = 0.5),
+    plot.subtitle = element_text(hjust = 0.5),
+    panel.grid.minor = element_blank()
+  )
+```
+
+
+
+
+
+::: {.callout-tip}
+
+### Interpretation
+
+Early follow-up: HR < 1 → protective effect of living donors
+
+Later follow-up: HR increases and may exceed 1
+
+Uncertainty increases at longer follow-up due to fewer events
+
+
+The HR steadily increases and crosses 1 after roughly 1–2 years, indicating the early survival advantage of living donors diminishes.  
+
+By 5–8 years, the HR > 2–3, suggesting higher hazard among living-donor grafts in the later period.  
+
+The confidence band widens with time because there are fewer events and greater uncertainty at longer follow-up. 
+
+
+:::
