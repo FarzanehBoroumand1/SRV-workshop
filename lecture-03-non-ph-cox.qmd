@@ -408,7 +408,7 @@ In some settings, we still want to:
 This leads to a **time-varying coefficient Cox model**.
 
 
-### When to Use Time-Varying Effects
+ **When to Use Time-Varying Effects**  
 
 Use a time-varying effect when:
 
@@ -421,7 +421,7 @@ For example:
 - Early after transplant, **living donors may be protective**
 - Later, that advantage may **diminish or reverse**
 
-### Model Idea
+**Model Idea**  
 
 ## Including Time-Varying Effects
 
@@ -433,7 +433,7 @@ $$
 
 the coefficients ($\beta$) are assumed to be **constant over time**, which leads to the **proportional hazards (PH) assumption**.
 
----
+
 
 If a covariate’s effect **changes over time**, we can allow its coefficient to depend on time:
 
@@ -465,7 +465,7 @@ we allow the **risk difference between groups to change over time**.
 
 
 
-## Worked Example: Time-Varying Effect of Donor Type
+## Example: Time-Varying Effect of Donor Type
 
 We return to the kidney transplant example:
 
@@ -494,10 +494,6 @@ Where:
 - $\beta_2$ represents **how that effect changes over time**
 
 
-
-
-
-### Step 1: Fit a Cox Model With a Time-Varying Coefficient
 
 ```{r, message=FALSE, warning=FALSE}
 library(survival)
@@ -531,23 +527,95 @@ summary(cox_timevary)
 :::
 
 
-::: {.callout-tip}
-### How to Interpret the Model
 
-### Interpretation of the Time-Varying Cox Model
+**How to Interpret the Model**
 
-| Variable                  | HR (exp(coef)) | 95% CI        | p-value        | Interpretation |
-|---------------------------|---------------|---------------|----------------|----------------|
-| **donor_live**            | 0.50          | 0.25 – 1.01   | 0.054 (≈ 0.05) | At the **start of follow-up** (when $\log(t) \approx 0$), recipients of a **living donor** kidney have about **50% lower hazard** of graft failure compared to deceased-donor recipients. |
-| **tt(donor_live)**        | 3.53          | 2.15 – 5.79   | < 0.001 ***    | The **effect of living donor changes significantly over time**. The hazard ratio increases by roughly a factor of **3.5** for each unit increase in $\log(t)$. In other words, the early advantage from living donors **diminishes as time goes on**. |
-| **donor_age**             | 1.01          | 1.00 – 1.03   | 0.14           | Older donor age shows a **small, non-significant trend** toward higher hazard of graft failure. |
-| **recipient_gender (male)** | 1.58        | 1.16 – 2.13   | 0.003 **       | Male recipients have about **58% higher hazard** of graft failure than females, after adjusting for other factors. |
-| **egfr_baseline**         | 0.99          | 0.97 – 1.00   | 0.032 *        | Each 1-unit higher baseline eGFR reduces the hazard of graft failure by roughly **1.5%**, indicating better baseline kidney function is **protective**. |
+<table style="width:100%; table-layout: fixed;">
+<colgroup>
+  <col style="width:12%">
+  <col style="width:10%">
+  <col style="width:12%">
+  <col style="width:10%">
+  <col style="width:56%">
+</colgroup>
+<thead>
+<tr>
+  <th>Variable</th>
+  <th>HR<br>(exp(coef))</th>
+  <th>95% CI</th>
+  <th>p-value</th>
+  <th>Interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+  <td><strong>donor_live</strong></td>
+  <td>0.50</td>
+  <td>0.25 – 1.01</td>
+  <td>0.054 (≈ 0.05)</td>
+  <td>
+    At the <strong>start of follow-up</strong> (when $\log(t) \approx 0$),
+    recipients of a <strong>living donor</strong> kidney have about
+    <strong>50% lower hazard</strong> of graft failure compared to
+    deceased-donor recipients.
+  </td>
+</tr>
+
+<tr>
+  <td><strong>tt(donor_live)</strong></td>
+  <td>3.53</td>
+  <td>2.15 – 5.79</td>
+  <td>&lt; 0.001 ***</td>
+  <td>
+    The <strong>effect of living donor changes significantly over time</strong>.
+    The hazard ratio increases by roughly a factor of <strong>3.5</strong>
+    for each unit increase in $\log(t)$.
+    In other words, the early advantage from living donors
+    <strong>diminishes as time goes on</strong>.
+  </td>
+</tr>
+
+<tr>
+  <td><strong>donor_age</strong></td>
+  <td>1.01</td>
+  <td>1.00 – 1.03</td>
+  <td>0.14</td>
+  <td>
+    Older donor age shows a <strong>small, non-significant trend</strong>
+    toward higher hazard of graft failure.
+  </td>
+</tr>
+
+<tr>
+  <td><strong>recipient_gender (male)</strong></td>
+  <td>1.58</td>
+  <td>1.16 – 2.13</td>
+  <td>0.003 **</td>
+  <td>
+    Male recipients have about <strong>58% higher hazard</strong>
+    of graft failure than females, adjusting for other factors.
+  </td>
+</tr>
+
+<tr>
+  <td><strong>egfr_baseline</strong></td>
+  <td>0.99</td>
+  <td>0.97 – 1.00</td>
+  <td>0.032 *</td>
+  <td>
+    Each 1-unit higher baseline eGFR reduces the hazard of graft failure
+    by roughly <strong>1–2%</strong>, indicating better baseline kidney
+    function is <strong>protective</strong>.
+  </td>
+</tr>
+</tbody>
+</table>
 
 
-:::
 
-### Visualising the Time-Varying Hazard Ratio
+
+
+**Visualising the Time-Varying Hazard Ratio**
 
 ```{r, message=FALSE, warning=FALSE}
 library(ggplot2)

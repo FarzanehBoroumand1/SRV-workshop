@@ -217,17 +217,9 @@ window.Quarto = {
   <li><a href="#what-if-proportional-hazards-does-not-hold" id="toc-what-if-proportional-hazards-does-not-hold" class="nav-link" data-scroll-target="#what-if-proportional-hazards-does-not-hold"><span class="header-section-number">3</span> What If Proportional Hazards Does Not Hold?</a></li>
   <li><a href="#stratified-cox-model" id="toc-stratified-cox-model" class="nav-link" data-scroll-target="#stratified-cox-model"><span class="header-section-number">4</span> Stratified Cox model</a></li>
   <li><a href="#example-handling-non-proportional-hazards-using-stratified-cox-model" id="toc-example-handling-non-proportional-hazards-using-stratified-cox-model" class="nav-link" data-scroll-target="#example-handling-non-proportional-hazards-using-stratified-cox-model"><span class="header-section-number">5</span> Example: Handling Non-Proportional Hazards Using Stratified Cox Model</a></li>
-  <li><a href="#including-time-varying-effects" id="toc-including-time-varying-effects" class="nav-link" data-scroll-target="#including-time-varying-effects"><span class="header-section-number">6</span> Including Time-Varying Effects</a>
-  <ul class="collapse">
-  <li><a href="#when-to-use-time-varying-effects" id="toc-when-to-use-time-varying-effects" class="nav-link" data-scroll-target="#when-to-use-time-varying-effects"><span class="header-section-number">6.1</span> When to Use Time-Varying Effects</a></li>
-  <li><a href="#model-idea" id="toc-model-idea" class="nav-link" data-scroll-target="#model-idea"><span class="header-section-number">6.2</span> Model Idea</a></li>
-  </ul></li>
+  <li><a href="#including-time-varying-effects" id="toc-including-time-varying-effects" class="nav-link" data-scroll-target="#including-time-varying-effects"><span class="header-section-number">6</span> Including Time-Varying Effects</a></li>
   <li><a href="#including-time-varying-effects-1" id="toc-including-time-varying-effects-1" class="nav-link" data-scroll-target="#including-time-varying-effects-1"><span class="header-section-number">7</span> Including Time-Varying Effects</a></li>
-  <li><a href="#worked-example-time-varying-effect-of-donor-type" id="toc-worked-example-time-varying-effect-of-donor-type" class="nav-link" data-scroll-target="#worked-example-time-varying-effect-of-donor-type"><span class="header-section-number">8</span> Worked Example: Time-Varying Effect of Donor Type</a>
-  <ul class="collapse">
-  <li><a href="#step-1-fit-a-cox-model-with-a-time-varying-coefficient" id="toc-step-1-fit-a-cox-model-with-a-time-varying-coefficient" class="nav-link" data-scroll-target="#step-1-fit-a-cox-model-with-a-time-varying-coefficient"><span class="header-section-number">8.1</span> Step 1: Fit a Cox Model With a Time-Varying Coefficient</a></li>
-  <li><a href="#visualising-the-time-varying-hazard-ratio" id="toc-visualising-the-time-varying-hazard-ratio" class="nav-link" data-scroll-target="#visualising-the-time-varying-hazard-ratio"><span class="header-section-number">8.3</span> Visualising the Time-Varying Hazard Ratio</a></li>
-  </ul></li>
+  <li><a href="#example-time-varying-effect-of-donor-type" id="toc-example-time-varying-effect-of-donor-type" class="nav-link" data-scroll-target="#example-time-varying-effect-of-donor-type"><span class="header-section-number">8</span> Example: Time-Varying Effect of Donor Type</a></li>
   </ul>
 </nav>
     </div>
@@ -731,8 +723,7 @@ Why Ignoring PH Violations Can Be Misleading
 <li><strong>Allow the effect to change over time</strong></li>
 </ul>
 <p>This leads to a <strong>time-varying coefficient Cox model</strong>.</p>
-<section id="when-to-use-time-varying-effects" class="level3" data-number="6.1">
-<h3 data-number="6.1" class="anchored" data-anchor-id="when-to-use-time-varying-effects"><span class="header-section-number">6.1</span> When to Use Time-Varying Effects</h3>
+<p><strong>When to Use Time-Varying Effects</strong></p>
 <p>Use a time-varying effect when:</p>
 <ul>
 <li>The PH assumption is violated for a variable (e.g.&nbsp;<strong>donor type</strong>)</li>
@@ -744,10 +735,7 @@ Why Ignoring PH Violations Can Be Misleading
 <li>Early after transplant, <strong>living donors may be protective</strong></li>
 <li>Later, that advantage may <strong>diminish or reverse</strong></li>
 </ul>
-</section>
-<section id="model-idea" class="level3" data-number="6.2">
-<h3 data-number="6.2" class="anchored" data-anchor-id="model-idea"><span class="header-section-number">6.2</span> Model Idea</h3>
-</section>
+<p><strong>Model Idea</strong></p>
 </section>
 <section id="including-time-varying-effects-1" class="level2" data-number="7">
 <h2 data-number="7" class="anchored" data-anchor-id="including-time-varying-effects-1"><span class="header-section-number">7</span> Including Time-Varying Effects</h2>
@@ -756,7 +744,6 @@ Why Ignoring PH Violations Can Be Misleading
 h(t \mid X) = h_0(t)\exp(\beta_1 X_1 + \beta_2 X_2 + \cdots)
 \]</span></p>
 <p>the coefficients (<span class="math inline">\(\beta\)</span>) are assumed to be <strong>constant over time</strong>, which leads to the <strong>proportional hazards (PH) assumption</strong>.</p>
-<hr>
 <p>If a covariate’s effect <strong>changes over time</strong>, we can allow its coefficient to depend on time:</p>
 <p><span class="math display">\[
 h(t \mid X) = h_0(t)\exp\left(\beta_1(t) X_1 + \beta_2 X_2 + \cdots\right)
@@ -797,8 +784,8 @@ When to Use It
 </div>
 </div>
 </section>
-<section id="worked-example-time-varying-effect-of-donor-type" class="level2" data-number="8">
-<h2 data-number="8" class="anchored" data-anchor-id="worked-example-time-varying-effect-of-donor-type"><span class="header-section-number">8</span> Worked Example: Time-Varying Effect of Donor Type</h2>
+<section id="example-time-varying-effect-of-donor-type" class="level2" data-number="8">
+<h2 data-number="8" class="anchored" data-anchor-id="example-time-varying-effect-of-donor-type"><span class="header-section-number">8</span> Example: Time-Varying Effect of Donor Type</h2>
 <p>We return to the kidney transplant example:</p>
 <ul>
 <li><strong>Outcome:</strong> time to graft failure<br>
@@ -825,8 +812,6 @@ h(t) = h_0(t)\exp\left[\beta_1 \,\text{donor\_type} + \beta_2 \left(\text{donor\
 </li>
 <li><span class="math inline">\(\beta_2\)</span> represents <strong>how that effect changes over time</strong></li>
 </ul>
-<section id="step-1-fit-a-cox-model-with-a-time-varying-coefficient" class="level3" data-number="8.1">
-<h3 data-number="8.1" class="anchored" data-anchor-id="step-1-fit-a-cox-model-with-a-time-varying-coefficient"><span class="header-section-number">8.1</span> Step 1: Fit a Cox Model With a Time-Varying Coefficient</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>Show R code</summary>
@@ -900,77 +885,123 @@ Note
 </ul>
 </div>
 </div>
-<div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-How to Interpret the Model
-</div>
-</div>
-<section id="interpretation-of-the-time-varying-cox-model" class="level3 callout-body-container callout-body" data-number="8.2">
-<h3 data-number="8.2" class="anchored" data-anchor-id="interpretation-of-the-time-varying-cox-model"><span class="header-section-number">8.2</span> Interpretation of the Time-Varying Cox Model</h3>
-<table class="caption-top table">
+<p><strong>How to Interpret the Model</strong></p>
+<table style="width:100%; table-layout: fixed;">
 <colgroup>
-<col style="width: 30%">
-<col style="width: 16%">
-<col style="width: 16%">
-<col style="width: 17%">
-<col style="width: 17%">
+<col style="width:12%">
+<col style="width:10%">
+<col style="width:12%">
+<col style="width:10%">
+<col style="width:56%">
 </colgroup>
 <thead>
-<tr class="header">
-<th>Variable</th>
-<th>HR (exp(coef))</th>
-<th>95% CI</th>
-<th>p-value</th>
-<th>Interpretation</th>
+<tr>
+<th>
+Variable
+</th>
+<th>
+HR<br>(exp(coef))
+</th>
+<th>
+95% CI
+</th>
+<th>
+p-value
+</th>
+<th>
+Interpretation
+</th>
 </tr>
 </thead>
 <tbody>
-<tr class="odd">
-<td><strong>donor_live</strong></td>
-<td>0.50</td>
-<td>0.25 – 1.01</td>
-<td>0.054 (≈ 0.05)</td>
-<td>At the <strong>start of follow-up</strong> (when <span class="math inline">\(\log(t) \approx 0\)</span>), recipients of a <strong>living donor</strong> kidney have about <strong>50% lower hazard</strong> of graft failure compared to deceased-donor recipients.</td>
+<tr>
+<td>
+<strong>donor_live</strong>
+</td>
+<td>
+0.50
+</td>
+<td>
+0.25 – 1.01
+</td>
+<td>
+0.054 (≈ 0.05)
+</td>
+<td>
+At the <strong>start of follow-up</strong> (when <span class="math inline">\(\log(t) \approx 0\)</span>), recipients of a <strong>living donor</strong> kidney have about <strong>50% lower hazard</strong> of graft failure compared to deceased-donor recipients.
+</td>
 </tr>
-<tr class="even">
-<td><strong>tt(donor_live)</strong></td>
-<td>3.53</td>
-<td>2.15 – 5.79</td>
-<td>&lt; 0.001 ***</td>
-<td>The <strong>effect of living donor changes significantly over time</strong>. The hazard ratio increases by roughly a factor of <strong>3.5</strong> for each unit increase in <span class="math inline">\(\log(t)\)</span>. In other words, the early advantage from living donors <strong>diminishes as time goes on</strong>.</td>
+<tr>
+<td>
+<strong>tt(donor_live)</strong>
+</td>
+<td>
+3.53
+</td>
+<td>
+2.15 – 5.79
+</td>
+<td>
+&lt; 0.001 ***
+</td>
+<td>
+The <strong>effect of living donor changes significantly over time</strong>. The hazard ratio increases by roughly a factor of <strong>3.5</strong> for each unit increase in <span class="math inline">\(\log(t)\)</span>. In other words, the early advantage from living donors <strong>diminishes as time goes on</strong>.
+</td>
 </tr>
-<tr class="odd">
-<td><strong>donor_age</strong></td>
-<td>1.01</td>
-<td>1.00 – 1.03</td>
-<td>0.14</td>
-<td>Older donor age shows a <strong>small, non-significant trend</strong> toward higher hazard of graft failure.</td>
+<tr>
+<td>
+<strong>donor_age</strong>
+</td>
+<td>
+1.01
+</td>
+<td>
+1.00 – 1.03
+</td>
+<td>
+0.14
+</td>
+<td>
+Older donor age shows a <strong>small, non-significant trend</strong> toward higher hazard of graft failure.
+</td>
 </tr>
-<tr class="even">
-<td><strong>recipient_gender (male)</strong></td>
-<td>1.58</td>
-<td>1.16 – 2.13</td>
-<td>0.003 **</td>
-<td>Male recipients have about <strong>58% higher hazard</strong> of graft failure than females, after adjusting for other factors.</td>
+<tr>
+<td>
+<strong>recipient_gender (male)</strong>
+</td>
+<td>
+1.58
+</td>
+<td>
+1.16 – 2.13
+</td>
+<td>
+0.003 **
+</td>
+<td>
+Male recipients have about <strong>58% higher hazard</strong> of graft failure than females, adjusting for other factors.
+</td>
 </tr>
-<tr class="odd">
-<td><strong>egfr_baseline</strong></td>
-<td>0.99</td>
-<td>0.97 – 1.00</td>
-<td>0.032 *</td>
-<td>Each 1-unit higher baseline eGFR reduces the hazard of graft failure by roughly <strong>1.5%</strong>, indicating better baseline kidney function is <strong>protective</strong>.</td>
+<tr>
+<td>
+<strong>egfr_baseline</strong>
+</td>
+<td>
+0.99
+</td>
+<td>
+0.97 – 1.00
+</td>
+<td>
+0.032 *
+</td>
+<td>
+Each 1-unit higher baseline eGFR reduces the hazard of graft failure by roughly <strong>1–2%</strong>, indicating better baseline kidney function is <strong>protective</strong>.
+</td>
 </tr>
 </tbody>
 </table>
-</section>
-</div>
-</section>
-<section id="visualising-the-time-varying-hazard-ratio" class="level3" data-number="8.3">
-<h3 data-number="8.3" class="anchored" data-anchor-id="visualising-the-time-varying-hazard-ratio"><span class="header-section-number">8.3</span> Visualising the Time-Varying Hazard Ratio</h3>
+<p><strong>Visualising the Time-Varying Hazard Ratio</strong></p>
 <div class="cell">
 <details class="code-fold">
 <summary>Show R code</summary>
@@ -1050,7 +1081,6 @@ Interpretation
 
 <!-- -->
 
-</section>
 </section>
 
 </main> <!-- /main -->
@@ -1935,7 +1965,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb11-408"><a href="#cb11-408" aria-hidden="true" tabindex="-1"></a>This leads to a **time-varying coefficient Cox model**.</span>
 <span id="cb11-409"><a href="#cb11-409" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-410"><a href="#cb11-410" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-411"><a href="#cb11-411" aria-hidden="true" tabindex="-1"></a><span class="fu">### When to Use Time-Varying Effects</span></span>
+<span id="cb11-411"><a href="#cb11-411" aria-hidden="true" tabindex="-1"></a> **When to Use Time-Varying Effects**  </span>
 <span id="cb11-412"><a href="#cb11-412" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-413"><a href="#cb11-413" aria-hidden="true" tabindex="-1"></a>Use a time-varying effect when:</span>
 <span id="cb11-414"><a href="#cb11-414" aria-hidden="true" tabindex="-1"></a></span>
@@ -1948,7 +1978,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb11-421"><a href="#cb11-421" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Early after transplant, **living donors may be protective**</span>
 <span id="cb11-422"><a href="#cb11-422" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Later, that advantage may **diminish or reverse**</span>
 <span id="cb11-423"><a href="#cb11-423" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-424"><a href="#cb11-424" aria-hidden="true" tabindex="-1"></a><span class="fu">### Model Idea</span></span>
+<span id="cb11-424"><a href="#cb11-424" aria-hidden="true" tabindex="-1"></a>**Model Idea**  </span>
 <span id="cb11-425"><a href="#cb11-425" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-426"><a href="#cb11-426" aria-hidden="true" tabindex="-1"></a><span class="fu">## Including Time-Varying Effects</span></span>
 <span id="cb11-427"><a href="#cb11-427" aria-hidden="true" tabindex="-1"></a></span>
@@ -1960,7 +1990,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb11-433"><a href="#cb11-433" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-434"><a href="#cb11-434" aria-hidden="true" tabindex="-1"></a>the coefficients ($\beta$) are assumed to be **constant over time**, which leads to the **proportional hazards (PH) assumption**.</span>
 <span id="cb11-435"><a href="#cb11-435" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-436"><a href="#cb11-436" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb11-436"><a href="#cb11-436" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-437"><a href="#cb11-437" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-438"><a href="#cb11-438" aria-hidden="true" tabindex="-1"></a>If a covariate’s effect **changes over time**, we can allow its coefficient to depend on time:</span>
 <span id="cb11-439"><a href="#cb11-439" aria-hidden="true" tabindex="-1"></a></span>
@@ -1992,7 +2022,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb11-465"><a href="#cb11-465" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-466"><a href="#cb11-466" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-467"><a href="#cb11-467" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-468"><a href="#cb11-468" aria-hidden="true" tabindex="-1"></a><span class="fu">## Worked Example: Time-Varying Effect of Donor Type</span></span>
+<span id="cb11-468"><a href="#cb11-468" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example: Time-Varying Effect of Donor Type</span></span>
 <span id="cb11-469"><a href="#cb11-469" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-470"><a href="#cb11-470" aria-hidden="true" tabindex="-1"></a>We return to the kidney transplant example:</span>
 <span id="cb11-471"><a href="#cb11-471" aria-hidden="true" tabindex="-1"></a></span>
@@ -2022,131 +2052,199 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb11-495"><a href="#cb11-495" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-496"><a href="#cb11-496" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-497"><a href="#cb11-497" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-498"><a href="#cb11-498" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-499"><a href="#cb11-499" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-500"><a href="#cb11-500" aria-hidden="true" tabindex="-1"></a><span class="fu">### Step 1: Fit a Cox Model With a Time-Varying Coefficient</span></span>
-<span id="cb11-501"><a href="#cb11-501" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-502"><a href="#cb11-502" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, message=FALSE, warning=FALSE}</span></span>
-<span id="cb11-503"><a href="#cb11-503" aria-hidden="true" tabindex="-1"></a><span class="in">library(survival)</span></span>
+<span id="cb11-498"><a href="#cb11-498" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, message=FALSE, warning=FALSE}</span></span>
+<span id="cb11-499"><a href="#cb11-499" aria-hidden="true" tabindex="-1"></a><span class="in">library(survival)</span></span>
+<span id="cb11-500"><a href="#cb11-500" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-501"><a href="#cb11-501" aria-hidden="true" tabindex="-1"></a><span class="in">kidney_violate &lt;- read.csv("stratified_kidney_data.csv")</span></span>
+<span id="cb11-502"><a href="#cb11-502" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-503"><a href="#cb11-503" aria-hidden="true" tabindex="-1"></a><span class="in">kidney_violate$donor_live &lt;- ifelse(kidney_violate$donor_type == "living", 1, 0)</span></span>
 <span id="cb11-504"><a href="#cb11-504" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-505"><a href="#cb11-505" aria-hidden="true" tabindex="-1"></a><span class="in">kidney_violate &lt;- read.csv("stratified_kidney_data.csv")</span></span>
-<span id="cb11-506"><a href="#cb11-506" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-507"><a href="#cb11-507" aria-hidden="true" tabindex="-1"></a><span class="in">kidney_violate$donor_live &lt;- ifelse(kidney_violate$donor_type == "living", 1, 0)</span></span>
-<span id="cb11-508"><a href="#cb11-508" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-509"><a href="#cb11-509" aria-hidden="true" tabindex="-1"></a><span class="in">cox_timevary &lt;- coxph(</span></span>
-<span id="cb11-510"><a href="#cb11-510" aria-hidden="true" tabindex="-1"></a><span class="in">  Surv(time, status) ~ donor_live +</span></span>
-<span id="cb11-511"><a href="#cb11-511" aria-hidden="true" tabindex="-1"></a><span class="in">    donor_age +</span></span>
-<span id="cb11-512"><a href="#cb11-512" aria-hidden="true" tabindex="-1"></a><span class="in">    recipient_gender +</span></span>
-<span id="cb11-513"><a href="#cb11-513" aria-hidden="true" tabindex="-1"></a><span class="in">    egfr_baseline +</span></span>
-<span id="cb11-514"><a href="#cb11-514" aria-hidden="true" tabindex="-1"></a><span class="in">    tt(donor_live),</span></span>
-<span id="cb11-515"><a href="#cb11-515" aria-hidden="true" tabindex="-1"></a><span class="in">  data = kidney_violate,</span></span>
-<span id="cb11-516"><a href="#cb11-516" aria-hidden="true" tabindex="-1"></a><span class="in">  tt = function(x, t, ...) {</span></span>
-<span id="cb11-517"><a href="#cb11-517" aria-hidden="true" tabindex="-1"></a><span class="in">    x * log(t + 0.01)</span></span>
-<span id="cb11-518"><a href="#cb11-518" aria-hidden="true" tabindex="-1"></a><span class="in">  }</span></span>
-<span id="cb11-519"><a href="#cb11-519" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
-<span id="cb11-520"><a href="#cb11-520" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-521"><a href="#cb11-521" aria-hidden="true" tabindex="-1"></a><span class="in">summary(cox_timevary)</span></span>
-<span id="cb11-522"><a href="#cb11-522" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-505"><a href="#cb11-505" aria-hidden="true" tabindex="-1"></a><span class="in">cox_timevary &lt;- coxph(</span></span>
+<span id="cb11-506"><a href="#cb11-506" aria-hidden="true" tabindex="-1"></a><span class="in">  Surv(time, status) ~ donor_live +</span></span>
+<span id="cb11-507"><a href="#cb11-507" aria-hidden="true" tabindex="-1"></a><span class="in">    donor_age +</span></span>
+<span id="cb11-508"><a href="#cb11-508" aria-hidden="true" tabindex="-1"></a><span class="in">    recipient_gender +</span></span>
+<span id="cb11-509"><a href="#cb11-509" aria-hidden="true" tabindex="-1"></a><span class="in">    egfr_baseline +</span></span>
+<span id="cb11-510"><a href="#cb11-510" aria-hidden="true" tabindex="-1"></a><span class="in">    tt(donor_live),</span></span>
+<span id="cb11-511"><a href="#cb11-511" aria-hidden="true" tabindex="-1"></a><span class="in">  data = kidney_violate,</span></span>
+<span id="cb11-512"><a href="#cb11-512" aria-hidden="true" tabindex="-1"></a><span class="in">  tt = function(x, t, ...) {</span></span>
+<span id="cb11-513"><a href="#cb11-513" aria-hidden="true" tabindex="-1"></a><span class="in">    x * log(t + 0.01)</span></span>
+<span id="cb11-514"><a href="#cb11-514" aria-hidden="true" tabindex="-1"></a><span class="in">  }</span></span>
+<span id="cb11-515"><a href="#cb11-515" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
+<span id="cb11-516"><a href="#cb11-516" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-517"><a href="#cb11-517" aria-hidden="true" tabindex="-1"></a><span class="in">summary(cox_timevary)</span></span>
+<span id="cb11-518"><a href="#cb11-518" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-519"><a href="#cb11-519" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-520"><a href="#cb11-520" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb11-521"><a href="#cb11-521" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-522"><a href="#cb11-522" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>donor_live represents the baseline effect  </span>
 <span id="cb11-523"><a href="#cb11-523" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-524"><a href="#cb11-524" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb11-524"><a href="#cb11-524" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>tt(donor_live) allows the effect to change with time  </span>
 <span id="cb11-525"><a href="#cb11-525" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-526"><a href="#cb11-526" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>donor_live represents the baseline effect  </span>
-<span id="cb11-527"><a href="#cb11-527" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-528"><a href="#cb11-528" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>tt(donor_live) allows the effect to change with time  </span>
+<span id="cb11-526"><a href="#cb11-526" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\log(t)$ captures gradual, nonlinear change  </span>
+<span id="cb11-527"><a href="#cb11-527" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb11-528"><a href="#cb11-528" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-529"><a href="#cb11-529" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-530"><a href="#cb11-530" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\log(t)$ captures gradual, nonlinear change  </span>
-<span id="cb11-531"><a href="#cb11-531" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb11-530"><a href="#cb11-530" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-531"><a href="#cb11-531" aria-hidden="true" tabindex="-1"></a>**How to Interpret the Model**</span>
 <span id="cb11-532"><a href="#cb11-532" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-533"><a href="#cb11-533" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-534"><a href="#cb11-534" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
-<span id="cb11-535"><a href="#cb11-535" aria-hidden="true" tabindex="-1"></a><span class="fu">### How to Interpret the Model</span></span>
-<span id="cb11-536"><a href="#cb11-536" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-537"><a href="#cb11-537" aria-hidden="true" tabindex="-1"></a><span class="fu">### Interpretation of the Time-Varying Cox Model</span></span>
-<span id="cb11-538"><a href="#cb11-538" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-539"><a href="#cb11-539" aria-hidden="true" tabindex="-1"></a>| Variable                  | HR (exp(coef)) | 95% CI        | p-value        | Interpretation |</span>
-<span id="cb11-540"><a href="#cb11-540" aria-hidden="true" tabindex="-1"></a>|---------------------------|---------------|---------------|----------------|----------------|</span>
-<span id="cb11-541"><a href="#cb11-541" aria-hidden="true" tabindex="-1"></a>| **donor_live**            | 0.50          | 0.25 – 1.01   | 0.054 (≈ 0.05) | At the **start of follow-up** (when $\log(t) \approx 0$), recipients of a **living donor** kidney have about **50% lower hazard** of graft failure compared to deceased-donor recipients. |</span>
-<span id="cb11-542"><a href="#cb11-542" aria-hidden="true" tabindex="-1"></a>| **tt(donor_live)**        | 3.53          | 2.15 – 5.79   | &lt; 0.001 ***    | The **effect of living donor changes significantly over time**. The hazard ratio increases by roughly a factor of **3.5** for each unit increase in $\log(t)$. In other words, the early advantage from living donors **diminishes as time goes on**. |</span>
-<span id="cb11-543"><a href="#cb11-543" aria-hidden="true" tabindex="-1"></a>| **donor_age**             | 1.01          | 1.00 – 1.03   | 0.14           | Older donor age shows a **small, non-significant trend** toward higher hazard of graft failure. |</span>
-<span id="cb11-544"><a href="#cb11-544" aria-hidden="true" tabindex="-1"></a>| **recipient_gender (male)** | 1.58        | 1.16 – 2.13   | 0.003 **       | Male recipients have about **58% higher hazard** of graft failure than females, after adjusting for other factors. |</span>
-<span id="cb11-545"><a href="#cb11-545" aria-hidden="true" tabindex="-1"></a>| **egfr_baseline**         | 0.99          | 0.97 – 1.00   | 0.032 *        | Each 1-unit higher baseline eGFR reduces the hazard of graft failure by roughly **1.5%**, indicating better baseline kidney function is **protective**. |</span>
-<span id="cb11-546"><a href="#cb11-546" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-547"><a href="#cb11-547" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-548"><a href="#cb11-548" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb11-549"><a href="#cb11-549" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-550"><a href="#cb11-550" aria-hidden="true" tabindex="-1"></a><span class="fu">### Visualising the Time-Varying Hazard Ratio</span></span>
-<span id="cb11-551"><a href="#cb11-551" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-552"><a href="#cb11-552" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, message=FALSE, warning=FALSE}</span></span>
-<span id="cb11-553"><a href="#cb11-553" aria-hidden="true" tabindex="-1"></a><span class="in">library(ggplot2)</span></span>
-<span id="cb11-554"><a href="#cb11-554" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-555"><a href="#cb11-555" aria-hidden="true" tabindex="-1"></a><span class="in">b &lt;- coef(cox_timevary)</span></span>
-<span id="cb11-556"><a href="#cb11-556" aria-hidden="true" tabindex="-1"></a><span class="in">v &lt;- vcov(cox_timevary)</span></span>
-<span id="cb11-557"><a href="#cb11-557" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-558"><a href="#cb11-558" aria-hidden="true" tabindex="-1"></a><span class="in">beta1 &lt;- b["donor_live"]</span></span>
-<span id="cb11-559"><a href="#cb11-559" aria-hidden="true" tabindex="-1"></a><span class="in">beta2 &lt;- b["tt(donor_live)"]</span></span>
-<span id="cb11-560"><a href="#cb11-560" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-561"><a href="#cb11-561" aria-hidden="true" tabindex="-1"></a><span class="in">var_beta1 &lt;- v["donor_live", "donor_live"]</span></span>
-<span id="cb11-562"><a href="#cb11-562" aria-hidden="true" tabindex="-1"></a><span class="in">var_beta2 &lt;- v["tt(donor_live)", "tt(donor_live)"]</span></span>
-<span id="cb11-563"><a href="#cb11-563" aria-hidden="true" tabindex="-1"></a><span class="in">cov_b1b2  &lt;- v["donor_live", "tt(donor_live)"]</span></span>
-<span id="cb11-564"><a href="#cb11-564" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-565"><a href="#cb11-565" aria-hidden="true" tabindex="-1"></a><span class="in">t_seq &lt;- seq(0.5, 8, by = 0.1)</span></span>
-<span id="cb11-566"><a href="#cb11-566" aria-hidden="true" tabindex="-1"></a><span class="in">log_t &lt;- log(t_seq + 0.01)</span></span>
-<span id="cb11-567"><a href="#cb11-567" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-568"><a href="#cb11-568" aria-hidden="true" tabindex="-1"></a><span class="in">lp &lt;- beta1 + beta2 * log_t</span></span>
-<span id="cb11-569"><a href="#cb11-569" aria-hidden="true" tabindex="-1"></a><span class="in">var_lp &lt;- var_beta1 + (log_t^2) * var_beta2 + 2 * log_t * cov_b1b2</span></span>
-<span id="cb11-570"><a href="#cb11-570" aria-hidden="true" tabindex="-1"></a><span class="in">se_lp &lt;- sqrt(var_lp)</span></span>
-<span id="cb11-571"><a href="#cb11-571" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-572"><a href="#cb11-572" aria-hidden="true" tabindex="-1"></a><span class="in">hr_df &lt;- data.frame(</span></span>
-<span id="cb11-573"><a href="#cb11-573" aria-hidden="true" tabindex="-1"></a><span class="in">  time  = t_seq,</span></span>
-<span id="cb11-574"><a href="#cb11-574" aria-hidden="true" tabindex="-1"></a><span class="in">  HR    = exp(lp),</span></span>
-<span id="cb11-575"><a href="#cb11-575" aria-hidden="true" tabindex="-1"></a><span class="in">  lower = exp(lp - 1.96 * se_lp),</span></span>
-<span id="cb11-576"><a href="#cb11-576" aria-hidden="true" tabindex="-1"></a><span class="in">  upper = exp(lp + 1.96 * se_lp)</span></span>
-<span id="cb11-577"><a href="#cb11-577" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
-<span id="cb11-578"><a href="#cb11-578" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-579"><a href="#cb11-579" aria-hidden="true" tabindex="-1"></a><span class="in">ggplot(hr_df, aes(x = time, y = HR)) +</span></span>
-<span id="cb11-580"><a href="#cb11-580" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_ribbon(aes(ymin = lower, ymax = upper),</span></span>
-<span id="cb11-581"><a href="#cb11-581" aria-hidden="true" tabindex="-1"></a><span class="in">              alpha = 0.2, fill = "#c75b87") +</span></span>
-<span id="cb11-582"><a href="#cb11-582" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_line(linewidth = 1.2, colour = "#c75b87") +</span></span>
-<span id="cb11-583"><a href="#cb11-583" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_hline(yintercept = 1,</span></span>
-<span id="cb11-584"><a href="#cb11-584" aria-hidden="true" tabindex="-1"></a><span class="in">             linetype = "dashed",</span></span>
-<span id="cb11-585"><a href="#cb11-585" aria-hidden="true" tabindex="-1"></a><span class="in">             colour = "grey50") +</span></span>
-<span id="cb11-586"><a href="#cb11-586" aria-hidden="true" tabindex="-1"></a><span class="in">  labs(</span></span>
-<span id="cb11-587"><a href="#cb11-587" aria-hidden="true" tabindex="-1"></a><span class="in">    title = "Time-varying effect of donor type",</span></span>
-<span id="cb11-588"><a href="#cb11-588" aria-hidden="true" tabindex="-1"></a><span class="in">    subtitle = "Hazard ratio: living vs deceased donor",</span></span>
-<span id="cb11-589"><a href="#cb11-589" aria-hidden="true" tabindex="-1"></a><span class="in">    x = "Time since transplant (years)",</span></span>
-<span id="cb11-590"><a href="#cb11-590" aria-hidden="true" tabindex="-1"></a><span class="in">    y = "Hazard ratio"</span></span>
-<span id="cb11-591"><a href="#cb11-591" aria-hidden="true" tabindex="-1"></a><span class="in">  ) +</span></span>
-<span id="cb11-592"><a href="#cb11-592" aria-hidden="true" tabindex="-1"></a><span class="in">  theme_grey(base_size = 14) +</span></span>
-<span id="cb11-593"><a href="#cb11-593" aria-hidden="true" tabindex="-1"></a><span class="in">  theme(</span></span>
-<span id="cb11-594"><a href="#cb11-594" aria-hidden="true" tabindex="-1"></a><span class="in">    plot.title = element_text(face = "bold", hjust = 0.5),</span></span>
-<span id="cb11-595"><a href="#cb11-595" aria-hidden="true" tabindex="-1"></a><span class="in">    plot.subtitle = element_text(hjust = 0.5),</span></span>
-<span id="cb11-596"><a href="#cb11-596" aria-hidden="true" tabindex="-1"></a><span class="in">    panel.grid.minor = element_blank()</span></span>
-<span id="cb11-597"><a href="#cb11-597" aria-hidden="true" tabindex="-1"></a><span class="in">  )</span></span>
-<span id="cb11-598"><a href="#cb11-598" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-533"><a href="#cb11-533" aria-hidden="true" tabindex="-1"></a>&lt;table style="width:100%; table-layout: fixed;"&gt;</span>
+<span id="cb11-534"><a href="#cb11-534" aria-hidden="true" tabindex="-1"></a>&lt;colgroup&gt;</span>
+<span id="cb11-535"><a href="#cb11-535" aria-hidden="true" tabindex="-1"></a>  &lt;col style="width:12%"&gt;</span>
+<span id="cb11-536"><a href="#cb11-536" aria-hidden="true" tabindex="-1"></a>  &lt;col style="width:10%"&gt;</span>
+<span id="cb11-537"><a href="#cb11-537" aria-hidden="true" tabindex="-1"></a>  &lt;col style="width:12%"&gt;</span>
+<span id="cb11-538"><a href="#cb11-538" aria-hidden="true" tabindex="-1"></a>  &lt;col style="width:10%"&gt;</span>
+<span id="cb11-539"><a href="#cb11-539" aria-hidden="true" tabindex="-1"></a>  &lt;col style="width:56%"&gt;</span>
+<span id="cb11-540"><a href="#cb11-540" aria-hidden="true" tabindex="-1"></a>&lt;/colgroup&gt;</span>
+<span id="cb11-541"><a href="#cb11-541" aria-hidden="true" tabindex="-1"></a>&lt;thead&gt;</span>
+<span id="cb11-542"><a href="#cb11-542" aria-hidden="true" tabindex="-1"></a>&lt;tr&gt;</span>
+<span id="cb11-543"><a href="#cb11-543" aria-hidden="true" tabindex="-1"></a>  &lt;th&gt;Variable&lt;/th&gt;</span>
+<span id="cb11-544"><a href="#cb11-544" aria-hidden="true" tabindex="-1"></a>  &lt;th&gt;HR&lt;br&gt;(exp(coef))&lt;/th&gt;</span>
+<span id="cb11-545"><a href="#cb11-545" aria-hidden="true" tabindex="-1"></a>  &lt;th&gt;95% CI&lt;/th&gt;</span>
+<span id="cb11-546"><a href="#cb11-546" aria-hidden="true" tabindex="-1"></a>  &lt;th&gt;p-value&lt;/th&gt;</span>
+<span id="cb11-547"><a href="#cb11-547" aria-hidden="true" tabindex="-1"></a>  &lt;th&gt;Interpretation&lt;/th&gt;</span>
+<span id="cb11-548"><a href="#cb11-548" aria-hidden="true" tabindex="-1"></a>&lt;/tr&gt;</span>
+<span id="cb11-549"><a href="#cb11-549" aria-hidden="true" tabindex="-1"></a>&lt;/thead&gt;</span>
+<span id="cb11-550"><a href="#cb11-550" aria-hidden="true" tabindex="-1"></a>&lt;tbody&gt;</span>
+<span id="cb11-551"><a href="#cb11-551" aria-hidden="true" tabindex="-1"></a>&lt;tr&gt;</span>
+<span id="cb11-552"><a href="#cb11-552" aria-hidden="true" tabindex="-1"></a>  &lt;td&gt;&lt;strong&gt;donor_live&lt;/strong&gt;&lt;/td&gt;</span>
+<span id="cb11-553"><a href="#cb11-553" aria-hidden="true" tabindex="-1"></a>  &lt;td&gt;0.50&lt;/td&gt;</span>
+<span id="cb11-554"><a href="#cb11-554" aria-hidden="true" tabindex="-1"></a>  &lt;td&gt;0.25 – 1.01&lt;/td&gt;</span>
+<span id="cb11-555"><a href="#cb11-555" aria-hidden="true" tabindex="-1"></a>  &lt;td&gt;0.054 (≈ 0.05)&lt;/td&gt;</span>
+<span id="cb11-556"><a href="#cb11-556" aria-hidden="true" tabindex="-1"></a>  &lt;td&gt;</span>
+<span id="cb11-557"><a href="#cb11-557" aria-hidden="true" tabindex="-1"></a>    At the &lt;strong&gt;start of follow-up&lt;/strong&gt; (when $\log(t) \approx 0$),</span>
+<span id="cb11-558"><a href="#cb11-558" aria-hidden="true" tabindex="-1"></a>    recipients of a &lt;strong&gt;living donor&lt;/strong&gt; kidney have about</span>
+<span id="cb11-559"><a href="#cb11-559" aria-hidden="true" tabindex="-1"></a>    &lt;strong&gt;50% lower hazard&lt;/strong&gt; of graft failure compared to</span>
+<span id="cb11-560"><a href="#cb11-560" aria-hidden="true" tabindex="-1"></a>    deceased-donor recipients.</span>
+<span id="cb11-561"><a href="#cb11-561" aria-hidden="true" tabindex="-1"></a>  &lt;/td&gt;</span>
+<span id="cb11-562"><a href="#cb11-562" aria-hidden="true" tabindex="-1"></a>&lt;/tr&gt;</span>
+<span id="cb11-563"><a href="#cb11-563" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-564"><a href="#cb11-564" aria-hidden="true" tabindex="-1"></a>&lt;tr&gt;</span>
+<span id="cb11-565"><a href="#cb11-565" aria-hidden="true" tabindex="-1"></a>  &lt;td&gt;&lt;strong&gt;tt(donor_live)&lt;/strong&gt;&lt;/td&gt;</span>
+<span id="cb11-566"><a href="#cb11-566" aria-hidden="true" tabindex="-1"></a>  &lt;td&gt;3.53&lt;/td&gt;</span>
+<span id="cb11-567"><a href="#cb11-567" aria-hidden="true" tabindex="-1"></a>  &lt;td&gt;2.15 – 5.79&lt;/td&gt;</span>
+<span id="cb11-568"><a href="#cb11-568" aria-hidden="true" tabindex="-1"></a>  &lt;td&gt;<span class="dv">&amp;lt;</span> 0.001 ***&lt;/td&gt;</span>
+<span id="cb11-569"><a href="#cb11-569" aria-hidden="true" tabindex="-1"></a>  &lt;td&gt;</span>
+<span id="cb11-570"><a href="#cb11-570" aria-hidden="true" tabindex="-1"></a>    The &lt;strong&gt;effect of living donor changes significantly over time&lt;/strong&gt;.</span>
+<span id="cb11-571"><a href="#cb11-571" aria-hidden="true" tabindex="-1"></a>    The hazard ratio increases by roughly a factor of &lt;strong&gt;3.5&lt;/strong&gt;</span>
+<span id="cb11-572"><a href="#cb11-572" aria-hidden="true" tabindex="-1"></a>    for each unit increase in $\log(t)$.</span>
+<span id="cb11-573"><a href="#cb11-573" aria-hidden="true" tabindex="-1"></a>    In other words, the early advantage from living donors</span>
+<span id="cb11-574"><a href="#cb11-574" aria-hidden="true" tabindex="-1"></a>    &lt;strong&gt;diminishes as time goes on&lt;/strong&gt;.</span>
+<span id="cb11-575"><a href="#cb11-575" aria-hidden="true" tabindex="-1"></a>  &lt;/td&gt;</span>
+<span id="cb11-576"><a href="#cb11-576" aria-hidden="true" tabindex="-1"></a>&lt;/tr&gt;</span>
+<span id="cb11-577"><a href="#cb11-577" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-578"><a href="#cb11-578" aria-hidden="true" tabindex="-1"></a>&lt;tr&gt;</span>
+<span id="cb11-579"><a href="#cb11-579" aria-hidden="true" tabindex="-1"></a>  &lt;td&gt;&lt;strong&gt;donor_age&lt;/strong&gt;&lt;/td&gt;</span>
+<span id="cb11-580"><a href="#cb11-580" aria-hidden="true" tabindex="-1"></a>  &lt;td&gt;1.01&lt;/td&gt;</span>
+<span id="cb11-581"><a href="#cb11-581" aria-hidden="true" tabindex="-1"></a>  &lt;td&gt;1.00 – 1.03&lt;/td&gt;</span>
+<span id="cb11-582"><a href="#cb11-582" aria-hidden="true" tabindex="-1"></a>  &lt;td&gt;0.14&lt;/td&gt;</span>
+<span id="cb11-583"><a href="#cb11-583" aria-hidden="true" tabindex="-1"></a>  &lt;td&gt;</span>
+<span id="cb11-584"><a href="#cb11-584" aria-hidden="true" tabindex="-1"></a>    Older donor age shows a &lt;strong&gt;small, non-significant trend&lt;/strong&gt;</span>
+<span id="cb11-585"><a href="#cb11-585" aria-hidden="true" tabindex="-1"></a>    toward higher hazard of graft failure.</span>
+<span id="cb11-586"><a href="#cb11-586" aria-hidden="true" tabindex="-1"></a>  &lt;/td&gt;</span>
+<span id="cb11-587"><a href="#cb11-587" aria-hidden="true" tabindex="-1"></a>&lt;/tr&gt;</span>
+<span id="cb11-588"><a href="#cb11-588" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-589"><a href="#cb11-589" aria-hidden="true" tabindex="-1"></a>&lt;tr&gt;</span>
+<span id="cb11-590"><a href="#cb11-590" aria-hidden="true" tabindex="-1"></a>  &lt;td&gt;&lt;strong&gt;recipient_gender (male)&lt;/strong&gt;&lt;/td&gt;</span>
+<span id="cb11-591"><a href="#cb11-591" aria-hidden="true" tabindex="-1"></a>  &lt;td&gt;1.58&lt;/td&gt;</span>
+<span id="cb11-592"><a href="#cb11-592" aria-hidden="true" tabindex="-1"></a>  &lt;td&gt;1.16 – 2.13&lt;/td&gt;</span>
+<span id="cb11-593"><a href="#cb11-593" aria-hidden="true" tabindex="-1"></a>  &lt;td&gt;0.003 **&lt;/td&gt;</span>
+<span id="cb11-594"><a href="#cb11-594" aria-hidden="true" tabindex="-1"></a>  &lt;td&gt;</span>
+<span id="cb11-595"><a href="#cb11-595" aria-hidden="true" tabindex="-1"></a>    Male recipients have about &lt;strong&gt;58% higher hazard&lt;/strong&gt;</span>
+<span id="cb11-596"><a href="#cb11-596" aria-hidden="true" tabindex="-1"></a>    of graft failure than females, adjusting for other factors.</span>
+<span id="cb11-597"><a href="#cb11-597" aria-hidden="true" tabindex="-1"></a>  &lt;/td&gt;</span>
+<span id="cb11-598"><a href="#cb11-598" aria-hidden="true" tabindex="-1"></a>&lt;/tr&gt;</span>
 <span id="cb11-599"><a href="#cb11-599" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-600"><a href="#cb11-600" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-601"><a href="#cb11-601" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-602"><a href="#cb11-602" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-603"><a href="#cb11-603" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-604"><a href="#cb11-604" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
-<span id="cb11-605"><a href="#cb11-605" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-606"><a href="#cb11-606" aria-hidden="true" tabindex="-1"></a><span class="fu">### Interpretation</span></span>
-<span id="cb11-607"><a href="#cb11-607" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-608"><a href="#cb11-608" aria-hidden="true" tabindex="-1"></a>Early follow-up: HR &lt; 1 → protective effect of living donors</span>
-<span id="cb11-609"><a href="#cb11-609" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-610"><a href="#cb11-610" aria-hidden="true" tabindex="-1"></a>Later follow-up: HR increases and may exceed 1</span>
-<span id="cb11-611"><a href="#cb11-611" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-612"><a href="#cb11-612" aria-hidden="true" tabindex="-1"></a>Uncertainty increases at longer follow-up due to fewer events</span>
+<span id="cb11-600"><a href="#cb11-600" aria-hidden="true" tabindex="-1"></a>&lt;tr&gt;</span>
+<span id="cb11-601"><a href="#cb11-601" aria-hidden="true" tabindex="-1"></a>  &lt;td&gt;&lt;strong&gt;egfr_baseline&lt;/strong&gt;&lt;/td&gt;</span>
+<span id="cb11-602"><a href="#cb11-602" aria-hidden="true" tabindex="-1"></a>  &lt;td&gt;0.99&lt;/td&gt;</span>
+<span id="cb11-603"><a href="#cb11-603" aria-hidden="true" tabindex="-1"></a>  &lt;td&gt;0.97 – 1.00&lt;/td&gt;</span>
+<span id="cb11-604"><a href="#cb11-604" aria-hidden="true" tabindex="-1"></a>  &lt;td&gt;0.032 *&lt;/td&gt;</span>
+<span id="cb11-605"><a href="#cb11-605" aria-hidden="true" tabindex="-1"></a>  &lt;td&gt;</span>
+<span id="cb11-606"><a href="#cb11-606" aria-hidden="true" tabindex="-1"></a>    Each 1-unit higher baseline eGFR reduces the hazard of graft failure</span>
+<span id="cb11-607"><a href="#cb11-607" aria-hidden="true" tabindex="-1"></a>    by roughly &lt;strong&gt;1–2%&lt;/strong&gt;, indicating better baseline kidney</span>
+<span id="cb11-608"><a href="#cb11-608" aria-hidden="true" tabindex="-1"></a>    function is &lt;strong&gt;protective&lt;/strong&gt;.</span>
+<span id="cb11-609"><a href="#cb11-609" aria-hidden="true" tabindex="-1"></a>  &lt;/td&gt;</span>
+<span id="cb11-610"><a href="#cb11-610" aria-hidden="true" tabindex="-1"></a>&lt;/tr&gt;</span>
+<span id="cb11-611"><a href="#cb11-611" aria-hidden="true" tabindex="-1"></a>&lt;/tbody&gt;</span>
+<span id="cb11-612"><a href="#cb11-612" aria-hidden="true" tabindex="-1"></a>&lt;/table&gt;</span>
 <span id="cb11-613"><a href="#cb11-613" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-614"><a href="#cb11-614" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-615"><a href="#cb11-615" aria-hidden="true" tabindex="-1"></a>The HR steadily increases and crosses 1 after roughly 1–2 years, indicating the early survival advantage of living donors diminishes.  </span>
+<span id="cb11-615"><a href="#cb11-615" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-616"><a href="#cb11-616" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-617"><a href="#cb11-617" aria-hidden="true" tabindex="-1"></a>By 5–8 years, the HR &gt; 2–3, suggesting higher hazard among living-donor grafts in the later period.  </span>
-<span id="cb11-618"><a href="#cb11-618" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-619"><a href="#cb11-619" aria-hidden="true" tabindex="-1"></a>The confidence band widens with time because there are fewer events and greater uncertainty at longer follow-up. </span>
-<span id="cb11-620"><a href="#cb11-620" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-621"><a href="#cb11-621" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-622"><a href="#cb11-622" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb11-617"><a href="#cb11-617" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-618"><a href="#cb11-618" aria-hidden="true" tabindex="-1"></a>**Visualising the Time-Varying Hazard Ratio**</span>
+<span id="cb11-619"><a href="#cb11-619" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-620"><a href="#cb11-620" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, message=FALSE, warning=FALSE}</span></span>
+<span id="cb11-621"><a href="#cb11-621" aria-hidden="true" tabindex="-1"></a><span class="in">library(ggplot2)</span></span>
+<span id="cb11-622"><a href="#cb11-622" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-623"><a href="#cb11-623" aria-hidden="true" tabindex="-1"></a><span class="in">b &lt;- coef(cox_timevary)</span></span>
+<span id="cb11-624"><a href="#cb11-624" aria-hidden="true" tabindex="-1"></a><span class="in">v &lt;- vcov(cox_timevary)</span></span>
+<span id="cb11-625"><a href="#cb11-625" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-626"><a href="#cb11-626" aria-hidden="true" tabindex="-1"></a><span class="in">beta1 &lt;- b["donor_live"]</span></span>
+<span id="cb11-627"><a href="#cb11-627" aria-hidden="true" tabindex="-1"></a><span class="in">beta2 &lt;- b["tt(donor_live)"]</span></span>
+<span id="cb11-628"><a href="#cb11-628" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-629"><a href="#cb11-629" aria-hidden="true" tabindex="-1"></a><span class="in">var_beta1 &lt;- v["donor_live", "donor_live"]</span></span>
+<span id="cb11-630"><a href="#cb11-630" aria-hidden="true" tabindex="-1"></a><span class="in">var_beta2 &lt;- v["tt(donor_live)", "tt(donor_live)"]</span></span>
+<span id="cb11-631"><a href="#cb11-631" aria-hidden="true" tabindex="-1"></a><span class="in">cov_b1b2  &lt;- v["donor_live", "tt(donor_live)"]</span></span>
+<span id="cb11-632"><a href="#cb11-632" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-633"><a href="#cb11-633" aria-hidden="true" tabindex="-1"></a><span class="in">t_seq &lt;- seq(0.5, 8, by = 0.1)</span></span>
+<span id="cb11-634"><a href="#cb11-634" aria-hidden="true" tabindex="-1"></a><span class="in">log_t &lt;- log(t_seq + 0.01)</span></span>
+<span id="cb11-635"><a href="#cb11-635" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-636"><a href="#cb11-636" aria-hidden="true" tabindex="-1"></a><span class="in">lp &lt;- beta1 + beta2 * log_t</span></span>
+<span id="cb11-637"><a href="#cb11-637" aria-hidden="true" tabindex="-1"></a><span class="in">var_lp &lt;- var_beta1 + (log_t^2) * var_beta2 + 2 * log_t * cov_b1b2</span></span>
+<span id="cb11-638"><a href="#cb11-638" aria-hidden="true" tabindex="-1"></a><span class="in">se_lp &lt;- sqrt(var_lp)</span></span>
+<span id="cb11-639"><a href="#cb11-639" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-640"><a href="#cb11-640" aria-hidden="true" tabindex="-1"></a><span class="in">hr_df &lt;- data.frame(</span></span>
+<span id="cb11-641"><a href="#cb11-641" aria-hidden="true" tabindex="-1"></a><span class="in">  time  = t_seq,</span></span>
+<span id="cb11-642"><a href="#cb11-642" aria-hidden="true" tabindex="-1"></a><span class="in">  HR    = exp(lp),</span></span>
+<span id="cb11-643"><a href="#cb11-643" aria-hidden="true" tabindex="-1"></a><span class="in">  lower = exp(lp - 1.96 * se_lp),</span></span>
+<span id="cb11-644"><a href="#cb11-644" aria-hidden="true" tabindex="-1"></a><span class="in">  upper = exp(lp + 1.96 * se_lp)</span></span>
+<span id="cb11-645"><a href="#cb11-645" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
+<span id="cb11-646"><a href="#cb11-646" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-647"><a href="#cb11-647" aria-hidden="true" tabindex="-1"></a><span class="in">ggplot(hr_df, aes(x = time, y = HR)) +</span></span>
+<span id="cb11-648"><a href="#cb11-648" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_ribbon(aes(ymin = lower, ymax = upper),</span></span>
+<span id="cb11-649"><a href="#cb11-649" aria-hidden="true" tabindex="-1"></a><span class="in">              alpha = 0.2, fill = "#c75b87") +</span></span>
+<span id="cb11-650"><a href="#cb11-650" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_line(linewidth = 1.2, colour = "#c75b87") +</span></span>
+<span id="cb11-651"><a href="#cb11-651" aria-hidden="true" tabindex="-1"></a><span class="in">  geom_hline(yintercept = 1,</span></span>
+<span id="cb11-652"><a href="#cb11-652" aria-hidden="true" tabindex="-1"></a><span class="in">             linetype = "dashed",</span></span>
+<span id="cb11-653"><a href="#cb11-653" aria-hidden="true" tabindex="-1"></a><span class="in">             colour = "grey50") +</span></span>
+<span id="cb11-654"><a href="#cb11-654" aria-hidden="true" tabindex="-1"></a><span class="in">  labs(</span></span>
+<span id="cb11-655"><a href="#cb11-655" aria-hidden="true" tabindex="-1"></a><span class="in">    title = "Time-varying effect of donor type",</span></span>
+<span id="cb11-656"><a href="#cb11-656" aria-hidden="true" tabindex="-1"></a><span class="in">    subtitle = "Hazard ratio: living vs deceased donor",</span></span>
+<span id="cb11-657"><a href="#cb11-657" aria-hidden="true" tabindex="-1"></a><span class="in">    x = "Time since transplant (years)",</span></span>
+<span id="cb11-658"><a href="#cb11-658" aria-hidden="true" tabindex="-1"></a><span class="in">    y = "Hazard ratio"</span></span>
+<span id="cb11-659"><a href="#cb11-659" aria-hidden="true" tabindex="-1"></a><span class="in">  ) +</span></span>
+<span id="cb11-660"><a href="#cb11-660" aria-hidden="true" tabindex="-1"></a><span class="in">  theme_grey(base_size = 14) +</span></span>
+<span id="cb11-661"><a href="#cb11-661" aria-hidden="true" tabindex="-1"></a><span class="in">  theme(</span></span>
+<span id="cb11-662"><a href="#cb11-662" aria-hidden="true" tabindex="-1"></a><span class="in">    plot.title = element_text(face = "bold", hjust = 0.5),</span></span>
+<span id="cb11-663"><a href="#cb11-663" aria-hidden="true" tabindex="-1"></a><span class="in">    plot.subtitle = element_text(hjust = 0.5),</span></span>
+<span id="cb11-664"><a href="#cb11-664" aria-hidden="true" tabindex="-1"></a><span class="in">    panel.grid.minor = element_blank()</span></span>
+<span id="cb11-665"><a href="#cb11-665" aria-hidden="true" tabindex="-1"></a><span class="in">  )</span></span>
+<span id="cb11-666"><a href="#cb11-666" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb11-667"><a href="#cb11-667" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-668"><a href="#cb11-668" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-669"><a href="#cb11-669" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-670"><a href="#cb11-670" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-671"><a href="#cb11-671" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-672"><a href="#cb11-672" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb11-673"><a href="#cb11-673" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-674"><a href="#cb11-674" aria-hidden="true" tabindex="-1"></a><span class="fu">### Interpretation</span></span>
+<span id="cb11-675"><a href="#cb11-675" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-676"><a href="#cb11-676" aria-hidden="true" tabindex="-1"></a>Early follow-up: HR &lt; 1 → protective effect of living donors</span>
+<span id="cb11-677"><a href="#cb11-677" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-678"><a href="#cb11-678" aria-hidden="true" tabindex="-1"></a>Later follow-up: HR increases and may exceed 1</span>
+<span id="cb11-679"><a href="#cb11-679" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-680"><a href="#cb11-680" aria-hidden="true" tabindex="-1"></a>Uncertainty increases at longer follow-up due to fewer events</span>
+<span id="cb11-681"><a href="#cb11-681" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-682"><a href="#cb11-682" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-683"><a href="#cb11-683" aria-hidden="true" tabindex="-1"></a>The HR steadily increases and crosses 1 after roughly 1–2 years, indicating the early survival advantage of living donors diminishes.  </span>
+<span id="cb11-684"><a href="#cb11-684" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-685"><a href="#cb11-685" aria-hidden="true" tabindex="-1"></a>By 5–8 years, the HR &gt; 2–3, suggesting higher hazard among living-donor grafts in the later period.  </span>
+<span id="cb11-686"><a href="#cb11-686" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-687"><a href="#cb11-687" aria-hidden="true" tabindex="-1"></a>The confidence band widens with time because there are fewer events and greater uncertainty at longer follow-up. </span>
+<span id="cb11-688"><a href="#cb11-688" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-689"><a href="#cb11-689" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-690"><a href="#cb11-690" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
