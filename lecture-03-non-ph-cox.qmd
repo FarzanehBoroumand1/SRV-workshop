@@ -767,6 +767,11 @@ The **extended Cox model** explicitly allows covariate values to change over tim
 - Update the covariate value within each interval
 - Model the hazard using the **current covariate value**
 
+**Why this addresses PH violation:**  
+
+- PH was violated partly because “risk profile changes over time.”  
+- The extended Cox model explicitly updates the covariates over time instead of pretending they’re frozen at baseline.  
+- This is different from stratification and different from adding x × time: here the value itself is time-dependent.  
 :::
 
 
@@ -796,13 +801,129 @@ Examples:
 
 
 
-## Example: 
+## Example: Extended Cox Model (Time-Varying Covariates)
+
+This example demonstrates how to fit an **extended Cox model** when a covariate
+(e.g. **eGFR**) **changes over time**.
+
+We create a dataset in **start–stop format**, where each individual contributes
+multiple time intervals.
+
+For each interval we record:
+
+- **start:** beginning of the time interval  
+- **stop:** end of the time interval  
+- **status:** did graft failure occur at `stop`  
+- **egfr_current:** eGFR measured at the **start of that interval**
+
+The extended Cox model uses the **current value** of the covariate:
+
+$$
+h(t) = h_0(t)\exp\left(\beta_1 \,\text{egfr\_current}(t)
++ \beta_2 \,\text{donor\_type}
++ \cdots \right)
+$$
+
+Here:
+
+- **egfr\_current(t)** is updated over time  
+- The hazard reflects the patient’s **current kidney function**, not baseline values
+
+::: {.callout-warning}
+
+### Data Structure: Wide vs Long Format
+
+**Wide (Baseline-Only) Format**
+
+Each subject has **one row**, with multiple eGFR measurements stored in columns.
+
+- `egfr0`, `egfr2`, `egfr4`, `egfr6` represent measurements at fixed times  
+- This format is **not suitable** for extended Cox models
 
 
 
+**Long (Start–Stop) Format**
+
+Each subject contributes **multiple rows**, one per interval.
+
+Key columns:
+
+- **id**
+- **start**
+- **stop**
+- **status**
+- **egfr_current**
+- **baseline covariates** (donor type, age, sex)
+
+This format allows the model to use the **current eGFR** at each time interval.
+
+:::
 
 
+**Fitting the Extended Cox Model**
 
+```{r, message=FALSE, warning=FALSE}
+library(survival)
+
+long_data<-read.csv("egfr_long_data.CSV")
+
+cox_extended <- coxph(
+  Surv(start, stop, status) ~
+    egfr_current +
+    donor_type +
+    donor_age +
+    recipient_gender,
+  data = long_data
+)
+
+summary(cox_extended)
+
+```
+
+
+::: {.callout-tip}
+### Interpretation
+
+We interpret the results of the **extended Cox model (time-varying covariates)** as follows:
+
+✅ **Current eGFR**
+
+HR ≈ 0.92 (95% CI: 0.86–0.98, P-value = 0.01), **Statistically significant**.  
+Each 1 mL/min/1.73 m² higher **current eGFR** is associated with about an **8% lower instantaneous hazard** of graft failure, holding donor type, donor age, and recipient gender constant.
+
+This means that **the patient’s current kidney function**, rather than baseline eGFR, is strongly predictive of graft failure risk.
+
+---
+
+✅ **Donor type (living vs deceased)**
+
+HR ≈ 1.28 (95% CI: 0.24–6.83, P-value = 0.77), **Not statistically significant**.  
+Once **time-updated eGFR** is included in the model, there is **no evidence of a direct effect** of donor type on graft failure.
+
+**Interpretation:**  
+The apparent advantage of living donors observed earlier appears to operate **through better kidney function over time**, rather than through an independent direct effect.
+
+---
+
+✅ **Donor age**
+
+HR ≈ 1.03 (95% CI: 0.97–1.09, P-value = 0.39), **Not statistically significant**.  
+There is no strong evidence that donor age is associated with graft failure once current eGFR and other covariates are accounted for.
+
+---
+
+✅ **Recipient gender (male vs female)**
+
+HR ≈ 1.36 (95% CI: 0.45–4.10, P-value = 0.58), **Not statistically significant**.  
+After adjusting for time-updated eGFR and other covariates, there is no clear evidence of a gender difference in graft failure risk.
+
+---
+
+**Overall interpretation:**  
+The extended Cox model highlights that **time-updated eGFR is the dominant predictor of graft failure**.  
+Accounting for changes in kidney function over time substantially alters the interpretation of other covariate effects and provides a more realistic representation of evolving risk.
+:::
+ 
 
 
 
