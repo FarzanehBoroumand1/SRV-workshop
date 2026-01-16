@@ -1122,7 +1122,7 @@ this assumption may be violated.
 
 ::: {.callout-question}
 
-**Think about the following before moving on:**
+**🧠 Think about the following before moving on:**
 
 What if the decline in eGFR over time reflects underlying changes in other clinical factors, rather than acting as an isolated predictor?
 

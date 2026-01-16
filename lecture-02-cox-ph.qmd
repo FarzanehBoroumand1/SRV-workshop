@@ -375,7 +375,7 @@ This motivates using RMST as an alternative or complement to Cox models.
 
 ::: {.callout-question}
 
-**Think about the following before moving on:**
+**🧠 Think about the following before moving on:**
 
 What should we do if the proportional hazards assumption is violated?
 

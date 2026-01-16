@@ -431,7 +431,7 @@ Each unit increase in eGFR at the time of transplant is associated with an addit
 
 ::: {.callout-question}
 
-**Think about the following before moving on:**
+**🧠 Think about the following before moving on:**
 
 
 - Why do we need to choose a truncation time $τ$?
