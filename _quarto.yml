@@ -15,6 +15,7 @@ website:
           - lecture-01-intro-km-rmst.qmd
           - lecture-02-cox-ph.qmd
           - lecture-03-non-ph-cox.qmd
+          - lecture-04-joint-model.qmd
 format:
   html:
     mathjax: true
