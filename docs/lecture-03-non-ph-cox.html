@@ -1088,6 +1088,39 @@ Interpretation
 </div>
 </div>
 <div class="callout-body-container callout-body">
+<p>We interpret the results of the <strong>time-varying coefficient Cox model</strong> as follows:</p>
+<p>✅ <strong>Donor type (living vs deceased) — baseline effect</strong></p>
+<p>HR ≈ 0.50 (95% CI: 0.25–1.01, P-value ≈ 0.05).<br>
+At the <strong>start of follow-up</strong> (when <span class="math inline">\(\log(t) \approx 0\)</span>), recipients of a <strong>living donor</strong> kidney have about a <strong>50% lower hazard</strong> of graft failure compared to recipients of deceased-donor kidneys.</p>
+<p>This represents the <strong>early effect</strong> of donor type.</p>
+<hr>
+<p>✅ <strong>Time-varying effect of donor type</strong> (<code>tt(donor_live)</code>)</p>
+<p>HR ≈ 3.53 (95% CI: 2.15–5.79, P-value &lt; 0.001), <strong>Statistically significant</strong>.<br>
+The effect of <strong>living donor changes significantly over time</strong>.<br>
+For each one-unit increase in <span class="math inline">\(\log(t)\)</span>, the hazard ratio increases by a factor of about <strong>3.5</strong>.</p>
+<p><strong>Interpretation:</strong><br>
+The early protective effect of living donation <strong>diminishes as time goes on</strong>, explaining why a single constant hazard ratio would be misleading.</p>
+<hr>
+<p>✅ <strong>Donor age</strong></p>
+<p>HR ≈ 1.01 (95% CI: 1.00–1.03, P-value = 0.14), <strong>Not statistically significant</strong>.<br>
+Donor age shows a small, non-significant trend toward higher hazard of graft failure.</p>
+<hr>
+<p>✅ <strong>Recipient gender (male vs female)</strong></p>
+<p>HR ≈ 1.58 (95% CI: 1.16–2.13, P-value = 0.003), <strong>Statistically significant</strong>.<br>
+Male recipients have about a <strong>58% higher hazard</strong> of graft failure compared to females, adjusting for donor age, donor type, and baseline eGFR.</p>
+<hr>
+<p>✅ <strong>Baseline eGFR</strong></p>
+<p>HR ≈ 0.99 (95% CI: 0.97–1.00, P-value = 0.032), <strong>Statistically significant</strong>.<br>
+Each 1-unit increase in baseline eGFR is associated with about a <strong>1–2% lower hazard</strong> of graft failure.</p>
+<p>To improve interpretability, we can express the effect per <strong>10-unit increase</strong> in eGFR:</p>
+<p><span class="math display">\[
+HR_{10\text{-unit}} = 0.99^{10} \approx 0.90
+\]</span></p>
+<p><strong>Interpretation:</strong><br>
+Within donor type, a 10-unit higher baseline eGFR at transplant is associated with approximately a <strong>10% lower hazard of graft failure</strong>, after adjusting for other covariates.</p>
+<hr>
+<p><strong>Overall interpretation:</strong><br>
+The time-varying Cox model shows that the <strong>effect of donor type is strongest early after transplant and weakens over time</strong>, while recipient gender and baseline kidney function remain important predictors of graft failure.</p>
 <p>Early follow-up: HR &lt; 1 → protective effect of living donors</p>
 <p>Later follow-up: HR increases and may exceed 1</p>
 <p>Uncertainty increases at longer follow-up due to fewer events</p>
@@ -2526,274 +2559,334 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb13-678"><a href="#cb13-678" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-679"><a href="#cb13-679" aria-hidden="true" tabindex="-1"></a><span class="fu">### Interpretation</span></span>
 <span id="cb13-680"><a href="#cb13-680" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-681"><a href="#cb13-681" aria-hidden="true" tabindex="-1"></a>Early follow-up: HR &lt; 1 → protective effect of living donors</span>
+<span id="cb13-681"><a href="#cb13-681" aria-hidden="true" tabindex="-1"></a>We interpret the results of the **time-varying coefficient Cox model** as follows:</span>
 <span id="cb13-682"><a href="#cb13-682" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-683"><a href="#cb13-683" aria-hidden="true" tabindex="-1"></a>Later follow-up: HR increases and may exceed 1</span>
+<span id="cb13-683"><a href="#cb13-683" aria-hidden="true" tabindex="-1"></a>✅ **Donor type (living vs deceased) — baseline effect**</span>
 <span id="cb13-684"><a href="#cb13-684" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-685"><a href="#cb13-685" aria-hidden="true" tabindex="-1"></a>Uncertainty increases at longer follow-up due to fewer events</span>
-<span id="cb13-686"><a href="#cb13-686" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-685"><a href="#cb13-685" aria-hidden="true" tabindex="-1"></a>HR ≈ 0.50 (95% CI: 0.25–1.01, P-value ≈ 0.05).  </span>
+<span id="cb13-686"><a href="#cb13-686" aria-hidden="true" tabindex="-1"></a>At the **start of follow-up** (when $\log(t) \approx 0$), recipients of a **living donor** kidney have about a **50% lower hazard** of graft failure compared to recipients of deceased-donor kidneys.</span>
 <span id="cb13-687"><a href="#cb13-687" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-688"><a href="#cb13-688" aria-hidden="true" tabindex="-1"></a>The HR steadily increases and crosses 1 after roughly 1–2 years, indicating the early survival advantage of living donors diminishes.  </span>
+<span id="cb13-688"><a href="#cb13-688" aria-hidden="true" tabindex="-1"></a>This represents the **early effect** of donor type.</span>
 <span id="cb13-689"><a href="#cb13-689" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-690"><a href="#cb13-690" aria-hidden="true" tabindex="-1"></a>By 5–8 years, the HR &gt; 2–3, suggesting higher hazard among living-donor grafts in the later period.  </span>
+<span id="cb13-690"><a href="#cb13-690" aria-hidden="true" tabindex="-1"></a>---</span>
 <span id="cb13-691"><a href="#cb13-691" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-692"><a href="#cb13-692" aria-hidden="true" tabindex="-1"></a>The confidence band widens with time because there are fewer events and greater uncertainty at longer follow-up. </span>
+<span id="cb13-692"><a href="#cb13-692" aria-hidden="true" tabindex="-1"></a>✅ **Time-varying effect of donor type** (<span class="in">`tt(donor_live)`</span>)</span>
 <span id="cb13-693"><a href="#cb13-693" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-694"><a href="#cb13-694" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb13-695"><a href="#cb13-695" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-696"><a href="#cb13-696" aria-hidden="true" tabindex="-1"></a><span class="fu">## Extended Cox Model</span></span>
+<span id="cb13-694"><a href="#cb13-694" aria-hidden="true" tabindex="-1"></a>HR ≈ 3.53 (95% CI: 2.15–5.79, P-value &lt; 0.001), **Statistically significant**.  </span>
+<span id="cb13-695"><a href="#cb13-695" aria-hidden="true" tabindex="-1"></a>The effect of **living donor changes significantly over time**.  </span>
+<span id="cb13-696"><a href="#cb13-696" aria-hidden="true" tabindex="-1"></a>For each one-unit increase in $\log(t)$, the hazard ratio increases by a factor of about **3.5**.</span>
 <span id="cb13-697"><a href="#cb13-697" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-698"><a href="#cb13-698" aria-hidden="true" tabindex="-1"></a>Before introducing the **extended Cox model**, it is important to distinguish between</span>
-<span id="cb13-699"><a href="#cb13-699" aria-hidden="true" tabindex="-1"></a>**time-fixed covariates** and **time-varying covariates**.</span>
+<span id="cb13-698"><a href="#cb13-698" aria-hidden="true" tabindex="-1"></a>**Interpretation:**  </span>
+<span id="cb13-699"><a href="#cb13-699" aria-hidden="true" tabindex="-1"></a>The early protective effect of living donation **diminishes as time goes on**, explaining why a single constant hazard ratio would be misleading.</span>
 <span id="cb13-700"><a href="#cb13-700" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-701"><a href="#cb13-701" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-702"><a href="#cb13-702" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
-<span id="cb13-703"><a href="#cb13-703" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-704"><a href="#cb13-704" aria-hidden="true" tabindex="-1"></a><span class="fu">### Time-Fixed vs Time-Varying Covariates</span></span>
-<span id="cb13-705"><a href="#cb13-705" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-706"><a href="#cb13-706" aria-hidden="true" tabindex="-1"></a>**Time-Fixed Covariates:** </span>
+<span id="cb13-701"><a href="#cb13-701" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb13-702"><a href="#cb13-702" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-703"><a href="#cb13-703" aria-hidden="true" tabindex="-1"></a>✅ **Donor age**</span>
+<span id="cb13-704"><a href="#cb13-704" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-705"><a href="#cb13-705" aria-hidden="true" tabindex="-1"></a>HR ≈ 1.01 (95% CI: 1.00–1.03, P-value = 0.14), **Not statistically significant**.  </span>
+<span id="cb13-706"><a href="#cb13-706" aria-hidden="true" tabindex="-1"></a>Donor age shows a small, non-significant trend toward higher hazard of graft failure.</span>
 <span id="cb13-707"><a href="#cb13-707" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-708"><a href="#cb13-708" aria-hidden="true" tabindex="-1"></a>A **time-fixed covariate** is measured once (usually at baseline) and assumed to remain</span>
-<span id="cb13-709"><a href="#cb13-709" aria-hidden="true" tabindex="-1"></a>constant throughout follow-up.</span>
-<span id="cb13-710"><a href="#cb13-710" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-711"><a href="#cb13-711" aria-hidden="true" tabindex="-1"></a>Examples:</span>
-<span id="cb13-712"><a href="#cb13-712" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-713"><a href="#cb13-713" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Donor type**</span>
-<span id="cb13-714"><a href="#cb13-714" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Sex**</span>
-<span id="cb13-715"><a href="#cb13-715" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Age at transplant**</span>
-<span id="cb13-716"><a href="#cb13-716" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Baseline eGFR**</span>
-<span id="cb13-717"><a href="#cb13-717" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-708"><a href="#cb13-708" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb13-709"><a href="#cb13-709" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-710"><a href="#cb13-710" aria-hidden="true" tabindex="-1"></a>✅ **Recipient gender (male vs female)**</span>
+<span id="cb13-711"><a href="#cb13-711" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-712"><a href="#cb13-712" aria-hidden="true" tabindex="-1"></a>HR ≈ 1.58 (95% CI: 1.16–2.13, P-value = 0.003), **Statistically significant**.  </span>
+<span id="cb13-713"><a href="#cb13-713" aria-hidden="true" tabindex="-1"></a>Male recipients have about a **58% higher hazard** of graft failure compared to females, adjusting for donor age, donor type, and baseline eGFR.</span>
+<span id="cb13-714"><a href="#cb13-714" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-715"><a href="#cb13-715" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb13-716"><a href="#cb13-716" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-717"><a href="#cb13-717" aria-hidden="true" tabindex="-1"></a>✅ **Baseline eGFR**</span>
 <span id="cb13-718"><a href="#cb13-718" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-719"><a href="#cb13-719" aria-hidden="true" tabindex="-1"></a>**Time-Varying Covariates:**</span>
-<span id="cb13-720"><a href="#cb13-720" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-721"><a href="#cb13-721" aria-hidden="true" tabindex="-1"></a>A **time-varying covariate** is a variable whose **value itself changes over time**.</span>
-<span id="cb13-722"><a href="#cb13-722" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-723"><a href="#cb13-723" aria-hidden="true" tabindex="-1"></a>Examples:</span>
-<span id="cb13-724"><a href="#cb13-724" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-725"><a href="#cb13-725" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**eGFR measured repeatedly after transplant**</span>
-<span id="cb13-726"><a href="#cb13-726" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Blood pressure**</span>
-<span id="cb13-727"><a href="#cb13-727" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Medication use**</span>
-<span id="cb13-728"><a href="#cb13-728" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Biomarkers measured at follow-up visits**</span>
-<span id="cb13-729"><a href="#cb13-729" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-730"><a href="#cb13-730" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb13-731"><a href="#cb13-731" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-719"><a href="#cb13-719" aria-hidden="true" tabindex="-1"></a>HR ≈ 0.99 (95% CI: 0.97–1.00, P-value = 0.032), **Statistically significant**.  </span>
+<span id="cb13-720"><a href="#cb13-720" aria-hidden="true" tabindex="-1"></a>Each 1-unit increase in baseline eGFR is associated with about a **1–2% lower hazard** of graft failure.</span>
+<span id="cb13-721"><a href="#cb13-721" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-722"><a href="#cb13-722" aria-hidden="true" tabindex="-1"></a>To improve interpretability, we can express the effect per **10-unit increase** in eGFR:</span>
+<span id="cb13-723"><a href="#cb13-723" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-724"><a href="#cb13-724" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb13-725"><a href="#cb13-725" aria-hidden="true" tabindex="-1"></a>HR_{10\text{-unit}} = 0.99^{10} \approx 0.90</span>
+<span id="cb13-726"><a href="#cb13-726" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb13-727"><a href="#cb13-727" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-728"><a href="#cb13-728" aria-hidden="true" tabindex="-1"></a>**Interpretation:**  </span>
+<span id="cb13-729"><a href="#cb13-729" aria-hidden="true" tabindex="-1"></a>Within donor type, a 10-unit higher baseline eGFR at transplant is associated with approximately a **10% lower hazard of graft failure**, after adjusting for other covariates.</span>
+<span id="cb13-730"><a href="#cb13-730" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-731"><a href="#cb13-731" aria-hidden="true" tabindex="-1"></a>---</span>
 <span id="cb13-732"><a href="#cb13-732" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-733"><a href="#cb13-733" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning}</span>
-<span id="cb13-734"><a href="#cb13-734" aria-hidden="true" tabindex="-1"></a>Time-varying covariates are different from **time-varying effects**.</span>
+<span id="cb13-733"><a href="#cb13-733" aria-hidden="true" tabindex="-1"></a>**Overall interpretation:**  </span>
+<span id="cb13-734"><a href="#cb13-734" aria-hidden="true" tabindex="-1"></a>The time-varying Cox model shows that the **effect of donor type is strongest early after transplant and weakens over time**, while recipient gender and baseline kidney function remain important predictors of graft failure.</span>
 <span id="cb13-735"><a href="#cb13-735" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-736"><a href="#cb13-736" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Time-varying effect:** the *coefficient* changes with time  </span>
-<span id="cb13-737"><a href="#cb13-737" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Time-varying covariate:** the *value of the covariate* changes with time</span>
-<span id="cb13-738"><a href="#cb13-738" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb13-736"><a href="#cb13-736" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-737"><a href="#cb13-737" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-738"><a href="#cb13-738" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-739"><a href="#cb13-739" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-740"><a href="#cb13-740" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-741"><a href="#cb13-741" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-742"><a href="#cb13-742" aria-hidden="true" tabindex="-1"></a>**Why Time-Varying Covariates Can Cause PH Violation**  </span>
-<span id="cb13-743"><a href="#cb13-743" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-741"><a href="#cb13-741" aria-hidden="true" tabindex="-1"></a>Early follow-up: HR &lt; 1 → protective effect of living donors</span>
+<span id="cb13-742"><a href="#cb13-742" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-743"><a href="#cb13-743" aria-hidden="true" tabindex="-1"></a>Later follow-up: HR increases and may exceed 1</span>
 <span id="cb13-744"><a href="#cb13-744" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-745"><a href="#cb13-745" aria-hidden="true" tabindex="-1"></a>If we treat a changing covariate as fixed at baseline:</span>
+<span id="cb13-745"><a href="#cb13-745" aria-hidden="true" tabindex="-1"></a>Uncertainty increases at longer follow-up due to fewer events</span>
 <span id="cb13-746"><a href="#cb13-746" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-747"><a href="#cb13-747" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We ignore important changes in a patient’s risk profile</span>
-<span id="cb13-748"><a href="#cb13-748" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The model may show **non-proportional hazards**</span>
-<span id="cb13-749"><a href="#cb13-749" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Early and late risks are incorrectly averaged</span>
-<span id="cb13-750"><a href="#cb13-750" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-751"><a href="#cb13-751" aria-hidden="true" tabindex="-1"></a>For example:</span>
-<span id="cb13-752"><a href="#cb13-752" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-753"><a href="#cb13-753" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>eGFR at transplant may be similar between patients</span>
-<span id="cb13-754"><a href="#cb13-754" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Over time, eGFR may decline at different rates</span>
-<span id="cb13-755"><a href="#cb13-755" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Current kidney function is more relevant than baseline eGFR</span>
-<span id="cb13-756"><a href="#cb13-756" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-747"><a href="#cb13-747" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-748"><a href="#cb13-748" aria-hidden="true" tabindex="-1"></a>The HR steadily increases and crosses 1 after roughly 1–2 years, indicating the early survival advantage of living donors diminishes.  </span>
+<span id="cb13-749"><a href="#cb13-749" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-750"><a href="#cb13-750" aria-hidden="true" tabindex="-1"></a>By 5–8 years, the HR &gt; 2–3, suggesting higher hazard among living-donor grafts in the later period.  </span>
+<span id="cb13-751"><a href="#cb13-751" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-752"><a href="#cb13-752" aria-hidden="true" tabindex="-1"></a>The confidence band widens with time because there are fewer events and greater uncertainty at longer follow-up. </span>
+<span id="cb13-753"><a href="#cb13-753" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-754"><a href="#cb13-754" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb13-755"><a href="#cb13-755" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-756"><a href="#cb13-756" aria-hidden="true" tabindex="-1"></a><span class="fu">## Extended Cox Model</span></span>
 <span id="cb13-757"><a href="#cb13-757" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-758"><a href="#cb13-758" aria-hidden="true" tabindex="-1"></a>**Extended Cox Model (Time-Varying Covariates)**  </span>
-<span id="cb13-759"><a href="#cb13-759" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-760"><a href="#cb13-760" aria-hidden="true" tabindex="-1"></a>The **extended Cox model** explicitly allows covariate values to change over time.</span>
+<span id="cb13-758"><a href="#cb13-758" aria-hidden="true" tabindex="-1"></a>Before introducing the **extended Cox model**, it is important to distinguish between</span>
+<span id="cb13-759"><a href="#cb13-759" aria-hidden="true" tabindex="-1"></a>**time-fixed covariates** and **time-varying covariates**.</span>
+<span id="cb13-760"><a href="#cb13-760" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-761"><a href="#cb13-761" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-762"><a href="#cb13-762" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-763"><a href="#cb13-763" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
-<span id="cb13-764"><a href="#cb13-764" aria-hidden="true" tabindex="-1"></a><span class="fu">### Intuition</span></span>
+<span id="cb13-762"><a href="#cb13-762" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb13-763"><a href="#cb13-763" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-764"><a href="#cb13-764" aria-hidden="true" tabindex="-1"></a><span class="fu">### Time-Fixed vs Time-Varying Covariates</span></span>
 <span id="cb13-765"><a href="#cb13-765" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-766"><a href="#cb13-766" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Split each subject’s follow-up into **time intervals**</span>
-<span id="cb13-767"><a href="#cb13-767" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Update the covariate value within each interval</span>
-<span id="cb13-768"><a href="#cb13-768" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Model the hazard using the **current covariate value**</span>
-<span id="cb13-769"><a href="#cb13-769" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-770"><a href="#cb13-770" aria-hidden="true" tabindex="-1"></a>**Why this addresses PH violation:**  </span>
-<span id="cb13-771"><a href="#cb13-771" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-772"><a href="#cb13-772" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>PH was violated partly because “risk profile changes over time.”  </span>
-<span id="cb13-773"><a href="#cb13-773" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The extended Cox model explicitly updates the covariates over time instead of pretending they’re frozen at baseline.  </span>
-<span id="cb13-774"><a href="#cb13-774" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>This is different from stratification and different from adding x × time: here the value itself is time-dependent.  </span>
-<span id="cb13-775"><a href="#cb13-775" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb13-776"><a href="#cb13-776" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-766"><a href="#cb13-766" aria-hidden="true" tabindex="-1"></a>**Time-Fixed Covariates:** </span>
+<span id="cb13-767"><a href="#cb13-767" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-768"><a href="#cb13-768" aria-hidden="true" tabindex="-1"></a>A **time-fixed covariate** is measured once (usually at baseline) and assumed to remain</span>
+<span id="cb13-769"><a href="#cb13-769" aria-hidden="true" tabindex="-1"></a>constant throughout follow-up.</span>
+<span id="cb13-770"><a href="#cb13-770" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-771"><a href="#cb13-771" aria-hidden="true" tabindex="-1"></a>Examples:</span>
+<span id="cb13-772"><a href="#cb13-772" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-773"><a href="#cb13-773" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Donor type**</span>
+<span id="cb13-774"><a href="#cb13-774" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Sex**</span>
+<span id="cb13-775"><a href="#cb13-775" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Age at transplant**</span>
+<span id="cb13-776"><a href="#cb13-776" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Baseline eGFR**</span>
 <span id="cb13-777"><a href="#cb13-777" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-778"><a href="#cb13-778" aria-hidden="true" tabindex="-1"></a>The model is written as:</span>
-<span id="cb13-779"><a href="#cb13-779" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-780"><a href="#cb13-780" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb13-781"><a href="#cb13-781" aria-hidden="true" tabindex="-1"></a>h(t \mid X(t)) = h_0(t)\exp\left(\beta_1 X_1(t) + \beta_2 X_2 + \cdots\right)</span>
-<span id="cb13-782"><a href="#cb13-782" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb13-783"><a href="#cb13-783" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-778"><a href="#cb13-778" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-779"><a href="#cb13-779" aria-hidden="true" tabindex="-1"></a>**Time-Varying Covariates:**</span>
+<span id="cb13-780"><a href="#cb13-780" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-781"><a href="#cb13-781" aria-hidden="true" tabindex="-1"></a>A **time-varying covariate** is a variable whose **value itself changes over time**.</span>
+<span id="cb13-782"><a href="#cb13-782" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-783"><a href="#cb13-783" aria-hidden="true" tabindex="-1"></a>Examples:</span>
 <span id="cb13-784"><a href="#cb13-784" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-785"><a href="#cb13-785" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-786"><a href="#cb13-786" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-787"><a href="#cb13-787" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
-<span id="cb13-788"><a href="#cb13-788" aria-hidden="true" tabindex="-1"></a><span class="fu">### When to Use It</span></span>
+<span id="cb13-785"><a href="#cb13-785" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**eGFR measured repeatedly after transplant**</span>
+<span id="cb13-786"><a href="#cb13-786" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Blood pressure**</span>
+<span id="cb13-787"><a href="#cb13-787" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Medication use**</span>
+<span id="cb13-788"><a href="#cb13-788" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Biomarkers measured at follow-up visits**</span>
 <span id="cb13-789"><a href="#cb13-789" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-790"><a href="#cb13-790" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>A predictor **changes over time**</span>
-<span id="cb13-791"><a href="#cb13-791" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The **current value** of the predictor matters for risk *right now*</span>
-<span id="cb13-792"><a href="#cb13-792" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Treating the variable as baseline-only is unrealistic</span>
-<span id="cb13-793"><a href="#cb13-793" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-794"><a href="#cb13-794" aria-hidden="true" tabindex="-1"></a>Examples:</span>
+<span id="cb13-790"><a href="#cb13-790" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb13-791"><a href="#cb13-791" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-792"><a href="#cb13-792" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-793"><a href="#cb13-793" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning}</span>
+<span id="cb13-794"><a href="#cb13-794" aria-hidden="true" tabindex="-1"></a>Time-varying covariates are different from **time-varying effects**.</span>
 <span id="cb13-795"><a href="#cb13-795" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-796"><a href="#cb13-796" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>“eGFR at year 2 predicts risk between year 2 and 3”</span>
-<span id="cb13-797"><a href="#cb13-797" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>“If eGFR worsens, the risk of graft failure increases after that”</span>
+<span id="cb13-796"><a href="#cb13-796" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Time-varying effect:** the *coefficient* changes with time  </span>
+<span id="cb13-797"><a href="#cb13-797" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Time-varying covariate:** the *value of the covariate* changes with time</span>
 <span id="cb13-798"><a href="#cb13-798" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb13-799"><a href="#cb13-799" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-800"><a href="#cb13-800" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-801"><a href="#cb13-801" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-802"><a href="#cb13-802" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-802"><a href="#cb13-802" aria-hidden="true" tabindex="-1"></a>**Why Time-Varying Covariates Can Cause PH Violation**  </span>
 <span id="cb13-803"><a href="#cb13-803" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-804"><a href="#cb13-804" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example: Extended Cox Model (Time-Varying Covariates)</span></span>
-<span id="cb13-805"><a href="#cb13-805" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-806"><a href="#cb13-806" aria-hidden="true" tabindex="-1"></a>This example demonstrates how to fit an **extended Cox model** when a covariate</span>
-<span id="cb13-807"><a href="#cb13-807" aria-hidden="true" tabindex="-1"></a>(e.g. **eGFR**) **changes over time**.</span>
-<span id="cb13-808"><a href="#cb13-808" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-809"><a href="#cb13-809" aria-hidden="true" tabindex="-1"></a>We create a dataset in **start–stop format**, where each individual contributes</span>
-<span id="cb13-810"><a href="#cb13-810" aria-hidden="true" tabindex="-1"></a>multiple time intervals.</span>
-<span id="cb13-811"><a href="#cb13-811" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-812"><a href="#cb13-812" aria-hidden="true" tabindex="-1"></a>For each interval we record:</span>
-<span id="cb13-813"><a href="#cb13-813" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-814"><a href="#cb13-814" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**start:** beginning of the time interval  </span>
-<span id="cb13-815"><a href="#cb13-815" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**stop:** end of the time interval  </span>
-<span id="cb13-816"><a href="#cb13-816" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**status:** did graft failure occur at <span class="in">`stop`</span>  </span>
-<span id="cb13-817"><a href="#cb13-817" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**egfr_current:** eGFR measured at the **start of that interval**</span>
-<span id="cb13-818"><a href="#cb13-818" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-819"><a href="#cb13-819" aria-hidden="true" tabindex="-1"></a>The extended Cox model uses the **current value** of the covariate:</span>
-<span id="cb13-820"><a href="#cb13-820" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-821"><a href="#cb13-821" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb13-822"><a href="#cb13-822" aria-hidden="true" tabindex="-1"></a>h(t) = h_0(t)\exp\left(\beta_1 \,\text{egfr<span class="sc">\_</span>current}(t)</span>
-<span id="cb13-823"><a href="#cb13-823" aria-hidden="true" tabindex="-1"></a><span class="ss">+ </span>\beta_2 \,\text{donor<span class="sc">\_</span>type}</span>
-<span id="cb13-824"><a href="#cb13-824" aria-hidden="true" tabindex="-1"></a><span class="ss">+ </span>\cdots \right)</span>
-<span id="cb13-825"><a href="#cb13-825" aria-hidden="true" tabindex="-1"></a>$$</span>
-<span id="cb13-826"><a href="#cb13-826" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-827"><a href="#cb13-827" aria-hidden="true" tabindex="-1"></a>Here:</span>
-<span id="cb13-828"><a href="#cb13-828" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-829"><a href="#cb13-829" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**egfr\_current(t)** is updated over time  </span>
-<span id="cb13-830"><a href="#cb13-830" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The hazard reflects the patient’s **current kidney function**, not baseline values</span>
+<span id="cb13-804"><a href="#cb13-804" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-805"><a href="#cb13-805" aria-hidden="true" tabindex="-1"></a>If we treat a changing covariate as fixed at baseline:</span>
+<span id="cb13-806"><a href="#cb13-806" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-807"><a href="#cb13-807" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>We ignore important changes in a patient’s risk profile</span>
+<span id="cb13-808"><a href="#cb13-808" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The model may show **non-proportional hazards**</span>
+<span id="cb13-809"><a href="#cb13-809" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Early and late risks are incorrectly averaged</span>
+<span id="cb13-810"><a href="#cb13-810" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-811"><a href="#cb13-811" aria-hidden="true" tabindex="-1"></a>For example:</span>
+<span id="cb13-812"><a href="#cb13-812" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-813"><a href="#cb13-813" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>eGFR at transplant may be similar between patients</span>
+<span id="cb13-814"><a href="#cb13-814" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Over time, eGFR may decline at different rates</span>
+<span id="cb13-815"><a href="#cb13-815" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Current kidney function is more relevant than baseline eGFR</span>
+<span id="cb13-816"><a href="#cb13-816" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-817"><a href="#cb13-817" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-818"><a href="#cb13-818" aria-hidden="true" tabindex="-1"></a>**Extended Cox Model (Time-Varying Covariates)**  </span>
+<span id="cb13-819"><a href="#cb13-819" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-820"><a href="#cb13-820" aria-hidden="true" tabindex="-1"></a>The **extended Cox model** explicitly allows covariate values to change over time.</span>
+<span id="cb13-821"><a href="#cb13-821" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-822"><a href="#cb13-822" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-823"><a href="#cb13-823" aria-hidden="true" tabindex="-1"></a>::: {.callout-note}</span>
+<span id="cb13-824"><a href="#cb13-824" aria-hidden="true" tabindex="-1"></a><span class="fu">### Intuition</span></span>
+<span id="cb13-825"><a href="#cb13-825" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-826"><a href="#cb13-826" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Split each subject’s follow-up into **time intervals**</span>
+<span id="cb13-827"><a href="#cb13-827" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Update the covariate value within each interval</span>
+<span id="cb13-828"><a href="#cb13-828" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Model the hazard using the **current covariate value**</span>
+<span id="cb13-829"><a href="#cb13-829" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-830"><a href="#cb13-830" aria-hidden="true" tabindex="-1"></a>**Why this addresses PH violation:**  </span>
 <span id="cb13-831"><a href="#cb13-831" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-832"><a href="#cb13-832" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning}</span>
-<span id="cb13-833"><a href="#cb13-833" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-834"><a href="#cb13-834" aria-hidden="true" tabindex="-1"></a><span class="fu">### Data Structure: Wide vs Long Format</span></span>
-<span id="cb13-835"><a href="#cb13-835" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-836"><a href="#cb13-836" aria-hidden="true" tabindex="-1"></a>**Wide (Baseline-Only) Format**</span>
+<span id="cb13-832"><a href="#cb13-832" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>PH was violated partly because “risk profile changes over time.”  </span>
+<span id="cb13-833"><a href="#cb13-833" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The extended Cox model explicitly updates the covariates over time instead of pretending they’re frozen at baseline.  </span>
+<span id="cb13-834"><a href="#cb13-834" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>This is different from stratification and different from adding x × time: here the value itself is time-dependent.  </span>
+<span id="cb13-835"><a href="#cb13-835" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb13-836"><a href="#cb13-836" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-837"><a href="#cb13-837" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-838"><a href="#cb13-838" aria-hidden="true" tabindex="-1"></a>Each subject has **one row**, with multiple eGFR measurements stored in columns.</span>
+<span id="cb13-838"><a href="#cb13-838" aria-hidden="true" tabindex="-1"></a>The model is written as:</span>
 <span id="cb13-839"><a href="#cb13-839" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-840"><a href="#cb13-840" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`egfr0`</span>, <span class="in">`egfr2`</span>, <span class="in">`egfr4`</span>, <span class="in">`egfr6`</span> represent measurements at fixed times  </span>
-<span id="cb13-841"><a href="#cb13-841" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>This format is **not suitable** for extended Cox models</span>
-<span id="cb13-842"><a href="#cb13-842" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-840"><a href="#cb13-840" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb13-841"><a href="#cb13-841" aria-hidden="true" tabindex="-1"></a>h(t \mid X(t)) = h_0(t)\exp\left(\beta_1 X_1(t) + \beta_2 X_2 + \cdots\right)</span>
+<span id="cb13-842"><a href="#cb13-842" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb13-843"><a href="#cb13-843" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-844"><a href="#cb13-844" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-845"><a href="#cb13-845" aria-hidden="true" tabindex="-1"></a>**Long (Start–Stop) Format**</span>
+<span id="cb13-845"><a href="#cb13-845" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-846"><a href="#cb13-846" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-847"><a href="#cb13-847" aria-hidden="true" tabindex="-1"></a>Each subject contributes **multiple rows**, one per interval.</span>
-<span id="cb13-848"><a href="#cb13-848" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-849"><a href="#cb13-849" aria-hidden="true" tabindex="-1"></a>Key columns:</span>
-<span id="cb13-850"><a href="#cb13-850" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-851"><a href="#cb13-851" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**id**</span>
-<span id="cb13-852"><a href="#cb13-852" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**start**</span>
-<span id="cb13-853"><a href="#cb13-853" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**stop**</span>
-<span id="cb13-854"><a href="#cb13-854" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**status**</span>
-<span id="cb13-855"><a href="#cb13-855" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**egfr_current**</span>
-<span id="cb13-856"><a href="#cb13-856" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**baseline covariates** (donor type, age, sex)</span>
-<span id="cb13-857"><a href="#cb13-857" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-858"><a href="#cb13-858" aria-hidden="true" tabindex="-1"></a>This format allows the model to use the **current eGFR** at each time interval.</span>
+<span id="cb13-847"><a href="#cb13-847" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb13-848"><a href="#cb13-848" aria-hidden="true" tabindex="-1"></a><span class="fu">### When to Use It</span></span>
+<span id="cb13-849"><a href="#cb13-849" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-850"><a href="#cb13-850" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>A predictor **changes over time**</span>
+<span id="cb13-851"><a href="#cb13-851" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The **current value** of the predictor matters for risk *right now*</span>
+<span id="cb13-852"><a href="#cb13-852" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Treating the variable as baseline-only is unrealistic</span>
+<span id="cb13-853"><a href="#cb13-853" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-854"><a href="#cb13-854" aria-hidden="true" tabindex="-1"></a>Examples:</span>
+<span id="cb13-855"><a href="#cb13-855" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-856"><a href="#cb13-856" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>“eGFR at year 2 predicts risk between year 2 and 3”</span>
+<span id="cb13-857"><a href="#cb13-857" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>“If eGFR worsens, the risk of graft failure increases after that”</span>
+<span id="cb13-858"><a href="#cb13-858" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb13-859"><a href="#cb13-859" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-860"><a href="#cb13-860" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb13-860"><a href="#cb13-860" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-861"><a href="#cb13-861" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-862"><a href="#cb13-862" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-863"><a href="#cb13-863" aria-hidden="true" tabindex="-1"></a>**Fitting the Extended Cox Model**</span>
-<span id="cb13-864"><a href="#cb13-864" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-865"><a href="#cb13-865" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, message=FALSE, warning=FALSE}</span></span>
-<span id="cb13-866"><a href="#cb13-866" aria-hidden="true" tabindex="-1"></a><span class="in">library(survival)</span></span>
-<span id="cb13-867"><a href="#cb13-867" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-868"><a href="#cb13-868" aria-hidden="true" tabindex="-1"></a><span class="in">long_data&lt;-read.csv("egfr_long_data.CSV")</span></span>
-<span id="cb13-869"><a href="#cb13-869" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-870"><a href="#cb13-870" aria-hidden="true" tabindex="-1"></a><span class="in">cox_extended &lt;- coxph(</span></span>
-<span id="cb13-871"><a href="#cb13-871" aria-hidden="true" tabindex="-1"></a><span class="in">  Surv(start, stop, status) ~</span></span>
-<span id="cb13-872"><a href="#cb13-872" aria-hidden="true" tabindex="-1"></a><span class="in">    egfr_current +</span></span>
-<span id="cb13-873"><a href="#cb13-873" aria-hidden="true" tabindex="-1"></a><span class="in">    donor_type +</span></span>
-<span id="cb13-874"><a href="#cb13-874" aria-hidden="true" tabindex="-1"></a><span class="in">    donor_age +</span></span>
-<span id="cb13-875"><a href="#cb13-875" aria-hidden="true" tabindex="-1"></a><span class="in">    recipient_gender,</span></span>
-<span id="cb13-876"><a href="#cb13-876" aria-hidden="true" tabindex="-1"></a><span class="in">  data = long_data</span></span>
-<span id="cb13-877"><a href="#cb13-877" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
+<span id="cb13-863"><a href="#cb13-863" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-864"><a href="#cb13-864" aria-hidden="true" tabindex="-1"></a><span class="fu">## Example: Extended Cox Model (Time-Varying Covariates)</span></span>
+<span id="cb13-865"><a href="#cb13-865" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-866"><a href="#cb13-866" aria-hidden="true" tabindex="-1"></a>This example demonstrates how to fit an **extended Cox model** when a covariate</span>
+<span id="cb13-867"><a href="#cb13-867" aria-hidden="true" tabindex="-1"></a>(e.g. **eGFR**) **changes over time**.</span>
+<span id="cb13-868"><a href="#cb13-868" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-869"><a href="#cb13-869" aria-hidden="true" tabindex="-1"></a>We create a dataset in **start–stop format**, where each individual contributes</span>
+<span id="cb13-870"><a href="#cb13-870" aria-hidden="true" tabindex="-1"></a>multiple time intervals.</span>
+<span id="cb13-871"><a href="#cb13-871" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-872"><a href="#cb13-872" aria-hidden="true" tabindex="-1"></a>For each interval we record:</span>
+<span id="cb13-873"><a href="#cb13-873" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-874"><a href="#cb13-874" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**start:** beginning of the time interval  </span>
+<span id="cb13-875"><a href="#cb13-875" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**stop:** end of the time interval  </span>
+<span id="cb13-876"><a href="#cb13-876" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**status:** did graft failure occur at <span class="in">`stop`</span>  </span>
+<span id="cb13-877"><a href="#cb13-877" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**egfr_current:** eGFR measured at the **start of that interval**</span>
 <span id="cb13-878"><a href="#cb13-878" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-879"><a href="#cb13-879" aria-hidden="true" tabindex="-1"></a><span class="in">summary(cox_extended)</span></span>
+<span id="cb13-879"><a href="#cb13-879" aria-hidden="true" tabindex="-1"></a>The extended Cox model uses the **current value** of the covariate:</span>
 <span id="cb13-880"><a href="#cb13-880" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-881"><a href="#cb13-881" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb13-882"><a href="#cb13-882" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-883"><a href="#cb13-883" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-884"><a href="#cb13-884" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
-<span id="cb13-885"><a href="#cb13-885" aria-hidden="true" tabindex="-1"></a><span class="fu">### Interpretation</span></span>
+<span id="cb13-881"><a href="#cb13-881" aria-hidden="true" tabindex="-1"></a>$$</span>
+<span id="cb13-882"><a href="#cb13-882" aria-hidden="true" tabindex="-1"></a>h(t) = h_0(t)\exp\left(\beta_1 \,\text{egfr<span class="sc">\_</span>current}(t)</span>
+<span id="cb13-883"><a href="#cb13-883" aria-hidden="true" tabindex="-1"></a><span class="ss">+ </span>\beta_2 \,\text{donor<span class="sc">\_</span>type}</span>
+<span id="cb13-884"><a href="#cb13-884" aria-hidden="true" tabindex="-1"></a><span class="ss">+ </span>\cdots \right)</span>
+<span id="cb13-885"><a href="#cb13-885" aria-hidden="true" tabindex="-1"></a>$$</span>
 <span id="cb13-886"><a href="#cb13-886" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-887"><a href="#cb13-887" aria-hidden="true" tabindex="-1"></a>We interpret the results of the **extended Cox model (time-varying covariates)** as follows:</span>
+<span id="cb13-887"><a href="#cb13-887" aria-hidden="true" tabindex="-1"></a>Here:</span>
 <span id="cb13-888"><a href="#cb13-888" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-889"><a href="#cb13-889" aria-hidden="true" tabindex="-1"></a>✅ **Current eGFR**</span>
-<span id="cb13-890"><a href="#cb13-890" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-891"><a href="#cb13-891" aria-hidden="true" tabindex="-1"></a>HR ≈ 0.92 (95% CI: 0.86–0.98, P-value = 0.01), **Statistically significant**.  </span>
-<span id="cb13-892"><a href="#cb13-892" aria-hidden="true" tabindex="-1"></a>Each 1 mL/min/1.73 m² higher **current eGFR** is associated with about an **8% lower instantaneous hazard** of graft failure, holding donor type, donor age, and recipient gender constant.</span>
+<span id="cb13-889"><a href="#cb13-889" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**egfr\_current(t)** is updated over time  </span>
+<span id="cb13-890"><a href="#cb13-890" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>The hazard reflects the patient’s **current kidney function**, not baseline values</span>
+<span id="cb13-891"><a href="#cb13-891" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-892"><a href="#cb13-892" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning}</span>
 <span id="cb13-893"><a href="#cb13-893" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-894"><a href="#cb13-894" aria-hidden="true" tabindex="-1"></a>This means that **the patient’s current kidney function**, rather than baseline eGFR, is strongly predictive of graft failure risk.</span>
+<span id="cb13-894"><a href="#cb13-894" aria-hidden="true" tabindex="-1"></a><span class="fu">### Data Structure: Wide vs Long Format</span></span>
 <span id="cb13-895"><a href="#cb13-895" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-896"><a href="#cb13-896" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb13-896"><a href="#cb13-896" aria-hidden="true" tabindex="-1"></a>**Wide (Baseline-Only) Format**</span>
 <span id="cb13-897"><a href="#cb13-897" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-898"><a href="#cb13-898" aria-hidden="true" tabindex="-1"></a>✅ **Donor type (living vs deceased)**</span>
+<span id="cb13-898"><a href="#cb13-898" aria-hidden="true" tabindex="-1"></a>Each subject has **one row**, with multiple eGFR measurements stored in columns.</span>
 <span id="cb13-899"><a href="#cb13-899" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-900"><a href="#cb13-900" aria-hidden="true" tabindex="-1"></a>HR ≈ 1.28 (95% CI: 0.24–6.83, P-value = 0.77), **Not statistically significant**.  </span>
-<span id="cb13-901"><a href="#cb13-901" aria-hidden="true" tabindex="-1"></a>Once **time-updated eGFR** is included in the model, there is **no evidence of a direct effect** of donor type on graft failure.</span>
+<span id="cb13-900"><a href="#cb13-900" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span><span class="in">`egfr0`</span>, <span class="in">`egfr2`</span>, <span class="in">`egfr4`</span>, <span class="in">`egfr6`</span> represent measurements at fixed times  </span>
+<span id="cb13-901"><a href="#cb13-901" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>This format is **not suitable** for extended Cox models</span>
 <span id="cb13-902"><a href="#cb13-902" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-903"><a href="#cb13-903" aria-hidden="true" tabindex="-1"></a>**Interpretation:**  </span>
-<span id="cb13-904"><a href="#cb13-904" aria-hidden="true" tabindex="-1"></a>The apparent advantage of living donors observed earlier appears to operate **through better kidney function over time**, rather than through an independent direct effect.</span>
-<span id="cb13-905"><a href="#cb13-905" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-906"><a href="#cb13-906" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb13-907"><a href="#cb13-907" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-908"><a href="#cb13-908" aria-hidden="true" tabindex="-1"></a>✅ **Donor age**</span>
-<span id="cb13-909"><a href="#cb13-909" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-910"><a href="#cb13-910" aria-hidden="true" tabindex="-1"></a>HR ≈ 1.03 (95% CI: 0.97–1.09, P-value = 0.39), **Not statistically significant**.  </span>
-<span id="cb13-911"><a href="#cb13-911" aria-hidden="true" tabindex="-1"></a>There is no strong evidence that donor age is associated with graft failure once current eGFR and other covariates are accounted for.</span>
-<span id="cb13-912"><a href="#cb13-912" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-913"><a href="#cb13-913" aria-hidden="true" tabindex="-1"></a>---</span>
-<span id="cb13-914"><a href="#cb13-914" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-915"><a href="#cb13-915" aria-hidden="true" tabindex="-1"></a>✅ **Recipient gender (male vs female)**</span>
-<span id="cb13-916"><a href="#cb13-916" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-917"><a href="#cb13-917" aria-hidden="true" tabindex="-1"></a>HR ≈ 1.36 (95% CI: 0.45–4.10, P-value = 0.58), **Not statistically significant**.  </span>
-<span id="cb13-918"><a href="#cb13-918" aria-hidden="true" tabindex="-1"></a>After adjusting for time-updated eGFR and other covariates, there is no clear evidence of a gender difference in graft failure risk.</span>
+<span id="cb13-903"><a href="#cb13-903" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-904"><a href="#cb13-904" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-905"><a href="#cb13-905" aria-hidden="true" tabindex="-1"></a>**Long (Start–Stop) Format**</span>
+<span id="cb13-906"><a href="#cb13-906" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-907"><a href="#cb13-907" aria-hidden="true" tabindex="-1"></a>Each subject contributes **multiple rows**, one per interval.</span>
+<span id="cb13-908"><a href="#cb13-908" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-909"><a href="#cb13-909" aria-hidden="true" tabindex="-1"></a>Key columns:</span>
+<span id="cb13-910"><a href="#cb13-910" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-911"><a href="#cb13-911" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**id**</span>
+<span id="cb13-912"><a href="#cb13-912" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**start**</span>
+<span id="cb13-913"><a href="#cb13-913" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**stop**</span>
+<span id="cb13-914"><a href="#cb13-914" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**status**</span>
+<span id="cb13-915"><a href="#cb13-915" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**egfr_current**</span>
+<span id="cb13-916"><a href="#cb13-916" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**baseline covariates** (donor type, age, sex)</span>
+<span id="cb13-917"><a href="#cb13-917" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-918"><a href="#cb13-918" aria-hidden="true" tabindex="-1"></a>This format allows the model to use the **current eGFR** at each time interval.</span>
 <span id="cb13-919"><a href="#cb13-919" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-920"><a href="#cb13-920" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb13-920"><a href="#cb13-920" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb13-921"><a href="#cb13-921" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-922"><a href="#cb13-922" aria-hidden="true" tabindex="-1"></a>**Overall interpretation:**  </span>
-<span id="cb13-923"><a href="#cb13-923" aria-hidden="true" tabindex="-1"></a>The extended Cox model highlights that **time-updated eGFR is the dominant predictor of graft failure**.  </span>
-<span id="cb13-924"><a href="#cb13-924" aria-hidden="true" tabindex="-1"></a>Accounting for changes in kidney function over time substantially alters the interpretation of other covariate effects and provides a more realistic representation of evolving risk.</span>
-<span id="cb13-925"><a href="#cb13-925" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb13-926"><a href="#cb13-926" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb13-922"><a href="#cb13-922" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-923"><a href="#cb13-923" aria-hidden="true" tabindex="-1"></a>**Fitting the Extended Cox Model**</span>
+<span id="cb13-924"><a href="#cb13-924" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-925"><a href="#cb13-925" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, message=FALSE, warning=FALSE}</span></span>
+<span id="cb13-926"><a href="#cb13-926" aria-hidden="true" tabindex="-1"></a><span class="in">library(survival)</span></span>
 <span id="cb13-927"><a href="#cb13-927" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-928"><a href="#cb13-928" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-928"><a href="#cb13-928" aria-hidden="true" tabindex="-1"></a><span class="in">long_data&lt;-read.csv("egfr_long_data.CSV")</span></span>
 <span id="cb13-929"><a href="#cb13-929" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-930"><a href="#cb13-930" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-931"><a href="#cb13-931" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-932"><a href="#cb13-932" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-933"><a href="#cb13-933" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-934"><a href="#cb13-934" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-935"><a href="#cb13-935" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-936"><a href="#cb13-936" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-937"><a href="#cb13-937" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-930"><a href="#cb13-930" aria-hidden="true" tabindex="-1"></a><span class="in">cox_extended &lt;- coxph(</span></span>
+<span id="cb13-931"><a href="#cb13-931" aria-hidden="true" tabindex="-1"></a><span class="in">  Surv(start, stop, status) ~</span></span>
+<span id="cb13-932"><a href="#cb13-932" aria-hidden="true" tabindex="-1"></a><span class="in">    egfr_current +</span></span>
+<span id="cb13-933"><a href="#cb13-933" aria-hidden="true" tabindex="-1"></a><span class="in">    donor_type +</span></span>
+<span id="cb13-934"><a href="#cb13-934" aria-hidden="true" tabindex="-1"></a><span class="in">    donor_age +</span></span>
+<span id="cb13-935"><a href="#cb13-935" aria-hidden="true" tabindex="-1"></a><span class="in">    recipient_gender,</span></span>
+<span id="cb13-936"><a href="#cb13-936" aria-hidden="true" tabindex="-1"></a><span class="in">  data = long_data</span></span>
+<span id="cb13-937"><a href="#cb13-937" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
 <span id="cb13-938"><a href="#cb13-938" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-939"><a href="#cb13-939" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-939"><a href="#cb13-939" aria-hidden="true" tabindex="-1"></a><span class="in">summary(cox_extended)</span></span>
 <span id="cb13-940"><a href="#cb13-940" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-941"><a href="#cb13-941" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-942"><a href="#cb13-942" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning}</span>
-<span id="cb13-943"><a href="#cb13-943" aria-hidden="true" tabindex="-1"></a>The extended Cox model treats time-varying covariates as **external**.</span>
-<span id="cb13-944"><a href="#cb13-944" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-945"><a href="#cb13-945" aria-hidden="true" tabindex="-1"></a>If the covariate is influenced by the underlying disease process</span>
-<span id="cb13-946"><a href="#cb13-946" aria-hidden="true" tabindex="-1"></a>(e.g. declining eGFR because the graft is failing),</span>
-<span id="cb13-947"><a href="#cb13-947" aria-hidden="true" tabindex="-1"></a>this assumption may be violated — motivating **joint models**.</span>
-<span id="cb13-948"><a href="#cb13-948" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb13-941"><a href="#cb13-941" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb13-942"><a href="#cb13-942" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-943"><a href="#cb13-943" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-944"><a href="#cb13-944" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb13-945"><a href="#cb13-945" aria-hidden="true" tabindex="-1"></a><span class="fu">### Interpretation</span></span>
+<span id="cb13-946"><a href="#cb13-946" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-947"><a href="#cb13-947" aria-hidden="true" tabindex="-1"></a>We interpret the results of the **extended Cox model (time-varying covariates)** as follows:</span>
+<span id="cb13-948"><a href="#cb13-948" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-949"><a href="#cb13-949" aria-hidden="true" tabindex="-1"></a>✅ **Current eGFR**</span>
+<span id="cb13-950"><a href="#cb13-950" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-951"><a href="#cb13-951" aria-hidden="true" tabindex="-1"></a>HR ≈ 0.92 (95% CI: 0.86–0.98, P-value = 0.01), **Statistically significant**.  </span>
+<span id="cb13-952"><a href="#cb13-952" aria-hidden="true" tabindex="-1"></a>Each 1 mL/min/1.73 m² higher **current eGFR** is associated with about an **8% lower instantaneous hazard** of graft failure, holding donor type, donor age, and recipient gender constant.</span>
+<span id="cb13-953"><a href="#cb13-953" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-954"><a href="#cb13-954" aria-hidden="true" tabindex="-1"></a>This means that **the patient’s current kidney function**, rather than baseline eGFR, is strongly predictive of graft failure risk.</span>
+<span id="cb13-955"><a href="#cb13-955" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-956"><a href="#cb13-956" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb13-957"><a href="#cb13-957" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-958"><a href="#cb13-958" aria-hidden="true" tabindex="-1"></a>✅ **Donor type (living vs deceased)**</span>
+<span id="cb13-959"><a href="#cb13-959" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-960"><a href="#cb13-960" aria-hidden="true" tabindex="-1"></a>HR ≈ 1.28 (95% CI: 0.24–6.83, P-value = 0.77), **Not statistically significant**.  </span>
+<span id="cb13-961"><a href="#cb13-961" aria-hidden="true" tabindex="-1"></a>Once **time-updated eGFR** is included in the model, there is **no evidence of a direct effect** of donor type on graft failure.</span>
+<span id="cb13-962"><a href="#cb13-962" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-963"><a href="#cb13-963" aria-hidden="true" tabindex="-1"></a>**Interpretation:**  </span>
+<span id="cb13-964"><a href="#cb13-964" aria-hidden="true" tabindex="-1"></a>The apparent advantage of living donors observed earlier appears to operate **through better kidney function over time**, rather than through an independent direct effect.</span>
+<span id="cb13-965"><a href="#cb13-965" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-966"><a href="#cb13-966" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb13-967"><a href="#cb13-967" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-968"><a href="#cb13-968" aria-hidden="true" tabindex="-1"></a>✅ **Donor age**</span>
+<span id="cb13-969"><a href="#cb13-969" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-970"><a href="#cb13-970" aria-hidden="true" tabindex="-1"></a>HR ≈ 1.03 (95% CI: 0.97–1.09, P-value = 0.39), **Not statistically significant**.  </span>
+<span id="cb13-971"><a href="#cb13-971" aria-hidden="true" tabindex="-1"></a>There is no strong evidence that donor age is associated with graft failure once current eGFR and other covariates are accounted for.</span>
+<span id="cb13-972"><a href="#cb13-972" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-973"><a href="#cb13-973" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb13-974"><a href="#cb13-974" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-975"><a href="#cb13-975" aria-hidden="true" tabindex="-1"></a>✅ **Recipient gender (male vs female)**</span>
+<span id="cb13-976"><a href="#cb13-976" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-977"><a href="#cb13-977" aria-hidden="true" tabindex="-1"></a>HR ≈ 1.36 (95% CI: 0.45–4.10, P-value = 0.58), **Not statistically significant**.  </span>
+<span id="cb13-978"><a href="#cb13-978" aria-hidden="true" tabindex="-1"></a>After adjusting for time-updated eGFR and other covariates, there is no clear evidence of a gender difference in graft failure risk.</span>
+<span id="cb13-979"><a href="#cb13-979" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-980"><a href="#cb13-980" aria-hidden="true" tabindex="-1"></a>---</span>
+<span id="cb13-981"><a href="#cb13-981" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-982"><a href="#cb13-982" aria-hidden="true" tabindex="-1"></a>**Overall interpretation:**  </span>
+<span id="cb13-983"><a href="#cb13-983" aria-hidden="true" tabindex="-1"></a>The extended Cox model highlights that **time-updated eGFR is the dominant predictor of graft failure**.  </span>
+<span id="cb13-984"><a href="#cb13-984" aria-hidden="true" tabindex="-1"></a>Accounting for changes in kidney function over time substantially alters the interpretation of other covariate effects and provides a more realistic representation of evolving risk.</span>
+<span id="cb13-985"><a href="#cb13-985" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb13-986"><a href="#cb13-986" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb13-987"><a href="#cb13-987" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-988"><a href="#cb13-988" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-989"><a href="#cb13-989" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-990"><a href="#cb13-990" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-991"><a href="#cb13-991" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-992"><a href="#cb13-992" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-993"><a href="#cb13-993" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-994"><a href="#cb13-994" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-995"><a href="#cb13-995" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-996"><a href="#cb13-996" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-997"><a href="#cb13-997" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-998"><a href="#cb13-998" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-999"><a href="#cb13-999" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-1000"><a href="#cb13-1000" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-1001"><a href="#cb13-1001" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-1002"><a href="#cb13-1002" aria-hidden="true" tabindex="-1"></a>::: {.callout-warning}</span>
+<span id="cb13-1003"><a href="#cb13-1003" aria-hidden="true" tabindex="-1"></a>The extended Cox model treats time-varying covariates as **external**.</span>
+<span id="cb13-1004"><a href="#cb13-1004" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-1005"><a href="#cb13-1005" aria-hidden="true" tabindex="-1"></a>If the covariate is influenced by the underlying disease process</span>
+<span id="cb13-1006"><a href="#cb13-1006" aria-hidden="true" tabindex="-1"></a>(e.g. declining eGFR because the graft is failing),</span>
+<span id="cb13-1007"><a href="#cb13-1007" aria-hidden="true" tabindex="-1"></a>this assumption may be violated — motivating **joint models**.</span>
+<span id="cb13-1008"><a href="#cb13-1008" aria-hidden="true" tabindex="-1"></a>:::</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
