@@ -17,6 +17,83 @@ knitr::opts_chunk$set(
 ::: callout-note
 By the end of this lecture, you should be able to:
 
+- Understand **why joint models are needed** when time-dependent covariates are **internal**  
+- Distinguish between **extended Cox models** and **joint models**  
+- Describe the two components of a **joint model**:  
+  - a **longitudinal submodel** (e.g. eGFR over time)
+  - a **time-to-event submodel** (e.g. graft failure)
+- Explain how the **longitudinal process is linked to the survival process**  
+- Interpret key parameters from a **joint model**
+- Recognise situations where joint models provide **less biased and more realistic inference**
+
+:::
 
 
+## Why Do We Need Joint Models?
+
+In the **extended Cox model**, we allowed covariates to change over time.
+However, this approach relies on a key assumption:
+
+- The time-varying covariate is **external**
+- Its evolution is **not influenced by the underlying event process**
+
+This assumption is often unrealistic in medical and public health studies.
+
+
+### The Problem of Internal Time-Dependent Covariates
+
+A **time-dependent covariate is internal** if:
+
+- It is affected by the same disease process that leads to the event
+- It both **predicts** the event and is **influenced by** the event process
+
+A common example in transplantation studies is **eGFR**:
+
+- Declining eGFR increases the risk of graft failure
+- At the same time, eGFR declines **because the graft is failing**
+
+---
+
+::: {.callout-warning}
+When a time-dependent covariate is internal,  
+the extended Cox model may produce **biased estimates**.
+:::
+
+---
+
+### Why the Extended Cox Model Is Not Enough
+
+In the extended Cox model:
+
+- The longitudinal process (e.g. eGFR) is treated as **error-free**
+- Measurement error in repeated biomarker values is ignored
+- The feedback between the biomarker and the event is not modelled
+
+As a result:
+
+- The estimated effect of the biomarker may be biased
+- Standard errors may be underestimated
+- Interpretation can be misleading
+
+---
+
+## Enter Joint Models
+
+**Joint models** address these limitations by:
+
+- Modelling the **longitudinal trajectory** (e.g. eGFR over time)
+- Modelling the **time-to-event outcome** (e.g. graft failure)
+- Explicitly **linking the two processes**
+
+This allows us to:
+
+- Account for **measurement error** in the biomarker
+- Handle **internal time-dependent covariates**
+- Obtain more realistic estimates of risk
+
+---
+
+::: {.callout-note}
+Joint models provide a unified framework for analysing  
+**longitudinal measurements** and **time-to-event outcomes** together.
 :::

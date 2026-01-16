@@ -4,7 +4,7 @@
     "href": "lecture-04-joint-model.html",
     "title": "Lecture 4: Joint model (Cox model + linear mixed model)",
     "section": "",
-    "text": "Note\n\n\n\nBy the end of this lecture, you should be able to:",
+    "text": "Note\n\n\n\nBy the end of this lecture, you should be able to:\n\nUnderstand why joint models are needed when time-dependent covariates are internal\n\nDistinguish between extended Cox models and joint models\n\nDescribe the two components of a joint model:\n\na longitudinal submodel (e.g. eGFR over time)\na time-to-event submodel (e.g. graft failure)\n\nExplain how the longitudinal process is linked to the survival process\n\nInterpret key parameters from a joint model\nRecognise situations where joint models provide less biased and more realistic inference",
     "crumbs": [
       "Lectures",
       "Lecture 4: Joint model (Cox model + linear mixed model)"
@@ -15,7 +15,29 @@
     "href": "lecture-04-joint-model.html#learning-objectives",
     "title": "Lecture 4: Joint model (Cox model + linear mixed model)",
     "section": "",
-    "text": "Note\n\n\n\nBy the end of this lecture, you should be able to:",
+    "text": "Note\n\n\n\nBy the end of this lecture, you should be able to:\n\nUnderstand why joint models are needed when time-dependent covariates are internal\n\nDistinguish between extended Cox models and joint models\n\nDescribe the two components of a joint model:\n\na longitudinal submodel (e.g. eGFR over time)\na time-to-event submodel (e.g. graft failure)\n\nExplain how the longitudinal process is linked to the survival process\n\nInterpret key parameters from a joint model\nRecognise situations where joint models provide less biased and more realistic inference",
+    "crumbs": [
+      "Lectures",
+      "Lecture 4: Joint model (Cox model + linear mixed model)"
+    ]
+  },
+  {
+    "objectID": "lecture-04-joint-model.html#why-do-we-need-joint-models",
+    "href": "lecture-04-joint-model.html#why-do-we-need-joint-models",
+    "title": "Lecture 4: Joint model (Cox model + linear mixed model)",
+    "section": "2 Why Do We Need Joint Models?",
+    "text": "2 Why Do We Need Joint Models?\nIn the extended Cox model, we allowed covariates to change over time. However, this approach relies on a key assumption:\n\nThe time-varying covariate is external\nIts evolution is not influenced by the underlying event process\n\nThis assumption is often unrealistic in medical and public health studies.\n\n2.1 The Problem of Internal Time-Dependent Covariates\nA time-dependent covariate is internal if:\n\nIt is affected by the same disease process that leads to the event\nIt both predicts the event and is influenced by the event process\n\nA common example in transplantation studies is eGFR:\n\nDeclining eGFR increases the risk of graft failure\nAt the same time, eGFR declines because the graft is failing\n\n\n\n\n\n\n\n\nWarning\n\n\n\nWhen a time-dependent covariate is internal,\nthe extended Cox model may produce biased estimates.\n\n\n\n\n\n2.2 Why the Extended Cox Model Is Not Enough\nIn the extended Cox model:\n\nThe longitudinal process (e.g. eGFR) is treated as error-free\nMeasurement error in repeated biomarker values is ignored\nThe feedback between the biomarker and the event is not modelled\n\nAs a result:\n\nThe estimated effect of the biomarker may be biased\nStandard errors may be underestimated\nInterpretation can be misleading",
+    "crumbs": [
+      "Lectures",
+      "Lecture 4: Joint model (Cox model + linear mixed model)"
+    ]
+  },
+  {
+    "objectID": "lecture-04-joint-model.html#enter-joint-models",
+    "href": "lecture-04-joint-model.html#enter-joint-models",
+    "title": "Lecture 4: Joint model (Cox model + linear mixed model)",
+    "section": "3 Enter Joint Models",
+    "text": "3 Enter Joint Models\nJoint models address these limitations by:\n\nModelling the longitudinal trajectory (e.g. eGFR over time)\nModelling the time-to-event outcome (e.g. graft failure)\nExplicitly linking the two processes\n\nThis allows us to:\n\nAccount for measurement error in the biomarker\nHandle internal time-dependent covariates\nObtain more realistic estimates of risk\n\n\n\n\n\n\n\n\nNote\n\n\n\nJoint models provide a unified framework for analysing\nlongitudinal measurements and time-to-event outcomes together.",
     "crumbs": [
       "Lectures",
       "Lecture 4: Joint model (Cox model + linear mixed model)"
