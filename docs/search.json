@@ -26,7 +26,18 @@
     "href": "lecture-04-joint-model.html#why-do-we-need-joint-models",
     "title": "Lecture 4: Joint model (Cox model + linear mixed model)",
     "section": "2 Why Do We Need Joint Models?",
-    "text": "2 Why Do We Need Joint Models?\nIn the extended Cox model, we allowed covariates to change over time. However, this approach relies on a key assumption:\n\nThe time-varying covariate is external\nIts evolution is not influenced by the underlying event process\n\nThis assumption is often unrealistic in medical and public health studies.\n\n2.1 The Problem of Internal Time-Dependent Covariates\nA time-dependent covariate is internal if:\n\nIt is affected by the same disease process that leads to the event\nIt both predicts the event and is influenced by the event process\n\nA common example in transplantation studies is eGFR:\n\nDeclining eGFR increases the risk of graft failure\nAt the same time, eGFR declines because the graft is failing\n\n\n\n\n\n\n\n\nWarning\n\n\n\nWhen a time-dependent covariate is internal,\nthe extended Cox model may produce biased estimates.\n\n\n\n\n\n2.2 Why the Extended Cox Model Is Not Enough\nIn the extended Cox model:\n\nThe longitudinal process (e.g. eGFR) is treated as error-free\nMeasurement error in repeated biomarker values is ignored\nThe feedback between the biomarker and the event is not modelled\n\nAs a result:\n\nThe estimated effect of the biomarker may be biased\nStandard errors may be underestimated\nInterpretation can be misleading",
+    "text": "2 Why Do We Need Joint Models?\nIn the extended Cox model, we allowed covariates to change over time. However, this approach relies on a key assumption:\n\nThe time-varying covariate is external\nIts evolution is not influenced by the underlying event process\n\nThis assumption is often unrealistic in medical and public health studies.\n\n\n\n\n\n\nThe Problem of Internal Time-Dependent Covariates\n\n\n\nA time-dependent covariate is internal if:\n\nIt is affected by the same disease process that leads to the event\nIt both predicts the event and is influenced by the event process\n\nA common example in transplantation studies is eGFR:\n\nDeclining eGFR increases the risk of graft failure\nAt the same time, eGFR declines because the graft is failing\n\n\n\n\n\n\n\n\n\nWarning\n\n\n\nWhen a time-dependent covariate is internal,\nthe extended Cox model may produce biased estimates.",
+    "crumbs": [
+      "Lectures",
+      "Lecture 4: Joint model (Cox model + linear mixed model)"
+    ]
+  },
+  {
+    "objectID": "lecture-04-joint-model.html#why-the-extended-cox-model-is-not-enough",
+    "href": "lecture-04-joint-model.html#why-the-extended-cox-model-is-not-enough",
+    "title": "Lecture 4: Joint model (Cox model + linear mixed model)",
+    "section": "3 Why the Extended Cox Model Is Not Enough",
+    "text": "3 Why the Extended Cox Model Is Not Enough\nIn the extended Cox model:\n\nThe longitudinal process (e.g. eGFR) is treated as error-free\nMeasurement error in repeated biomarker values is ignored\nThe feedback between the biomarker and the event is not modelled\n\nAs a result:\n\nThe estimated effect of the biomarker may be biased\nStandard errors may be underestimated\nInterpretation can be misleading\n\n🫘 Graft function declines\n⬇️\n🧪 More clinical tests\n⬇️\n🧫 Lower eGFR measurements\n⬇️\n⚠️ Patient appears riskier\n⬇️\n📈 Effect is exaggerated",
     "crumbs": [
       "Lectures",
       "Lecture 4: Joint model (Cox model + linear mixed model)"
@@ -36,8 +47,19 @@
     "objectID": "lecture-04-joint-model.html#enter-joint-models",
     "href": "lecture-04-joint-model.html#enter-joint-models",
     "title": "Lecture 4: Joint model (Cox model + linear mixed model)",
-    "section": "3 Enter Joint Models",
-    "text": "3 Enter Joint Models\nJoint models address these limitations by:\n\nModelling the longitudinal trajectory (e.g. eGFR over time)\nModelling the time-to-event outcome (e.g. graft failure)\nExplicitly linking the two processes\n\nThis allows us to:\n\nAccount for measurement error in the biomarker\nHandle internal time-dependent covariates\nObtain more realistic estimates of risk\n\n\n\n\n\n\n\n\nNote\n\n\n\nJoint models provide a unified framework for analysing\nlongitudinal measurements and time-to-event outcomes together.",
+    "section": "4 Enter Joint Models",
+    "text": "4 Enter Joint Models\nJoint models address these limitations by:\n\nModelling the longitudinal trajectory (e.g. eGFR over time)\nModelling the time-to-event outcome (e.g. graft failure)\nExplicitly linking the two processes\n\nThis allows us to:\n\nAccount for measurement error in the biomarker\nHandle internal time-dependent covariates\nObtain more realistic estimates of risk",
+    "crumbs": [
+      "Lectures",
+      "Lecture 4: Joint model (Cox model + linear mixed model)"
+    ]
+  },
+  {
+    "objectID": "lecture-04-joint-model.html#visual-demonestraion-of-longitudinal-process-egfr-and-survival-process-time-to-graft-lost",
+    "href": "lecture-04-joint-model.html#visual-demonestraion-of-longitudinal-process-egfr-and-survival-process-time-to-graft-lost",
+    "title": "Lecture 4: Joint model (Cox model + linear mixed model)",
+    "section": "5 Visual demonestraion of longitudinal process (eGFR) and survival process (time to graft lost)",
+    "text": "5 Visual demonestraion of longitudinal process (eGFR) and survival process (time to graft lost)\nlongitudinal process\nThe following plot shows eGFR trajectories for a subset of patients.\n\n\nShow R code\nlibrary(ggplot2)\nlibrary(dplyr)\nlibrary(gridExtra)\n\n\ndat_long&lt;-read.csv(\"egfr_joint_data.CSV\")\n# sample 25 patients for visual clarity\nset.seed(20251113)\nids_sample &lt;- sample(unique(dat_long$id), 25)\n\np_traj &lt;- dat_long %&gt;%\n  filter(id %in% ids_sample) %&gt;%\n  ggplot(aes(x = time, y = egfr, group = id, colour = factor(id))) +\n  geom_line(size = 1.2, alpha = 0.85) +\n  geom_point(size = 2.2, alpha = 0.9) +\n  scale_colour_discrete(guide = \"none\") +  \n  labs(\n    x = \"Time since transplant (years)\",\n    y = \"eGFR (mL/min/1.73m²)\",\n    title = \"Individual eGFR Trajectories After Kidney Transplantation (only for 25 ids)\"\n  ) +\n  theme_minimal(base_size = 12) +\n  theme(\n    plot.title = element_text(face = \"bold\", size = 10),\n    axis.title = element_text(face = \"bold\")\n  )\n\n\n\n\np_traj_by_donor &lt;- dat_long %&gt;%\n  group_by(donor_type, time) %&gt;%\n  summarise(mean_egfr = mean(egfr), .groups = \"drop\") %&gt;%\n  ggplot(aes(x = time, y = mean_egfr,\n             colour = factor(donor_type),\n             group = donor_type)) +\n  geom_line(size = 1.8) +\n  geom_point(size = 3) +\n  scale_colour_manual(\n    values = c(\"0\" = \"#0072B2\",    # deceased = blue\n               \"1\" = \"#D55E00\"),   # living = red\n    labels = c(\"0\" = \"Deceased donor\",\n               \"1\" = \"Living donor\")\n  ) +\n  labs(\n    x = \"Time since transplant (years)\",\n    y = \"Mean eGFR\",\n    colour = \"Donor type\",\n    title = \"Mean eGFR Trajectory by Donor Type\"\n  ) +\n  theme_minimal(base_size = 12) +\n  theme(\n    plot.title = element_text(face = \"bold\", size = 12),\n    axis.title = element_text(face = \"bold\")\n  )\n\n\n\n\n# Arrange side by side\ngrid.arrange(\n  p_traj,\n  p_traj_by_donor,\n  ncol = 2\n)\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNote\n\n\n\nJoint models provide a unified framework for analysing\nlongitudinal measurements and time-to-event outcomes together.",
     "crumbs": [
       "Lectures",
       "Lecture 4: Joint model (Cox model + linear mixed model)"
