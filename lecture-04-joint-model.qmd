@@ -89,7 +89,7 @@ As a result:
 
 ---
 
-## Enter Joint Models
+## Joint Models
 
 **Joint models** address these limitations by:
 
@@ -105,9 +105,13 @@ This allows us to:
 
 ##  Visual demonestraion of longitudinal process (eGFR) and survival process (time to graft lost)
 
-**longitudinal process**
+**Figure 1: Individual and average eGFR trajectories after kidney transplantation**
 
-The following plot shows eGFR trajectories for a subset of patients.
+The left panel shows **individual longitudinal eGFR trajectories** for a subset of transplant recipients, illustrating substantial **between-patient heterogeneity** in both baseline kidney function and the rate of decline over time. Some patients experience relatively stable eGFR, while others show rapid deterioration, highlighting that kidney function evolves differently across individuals.
+
+The right panel displays the **average eGFR trajectory by donor type**. On average, recipients of **living-donor kidneys** start with higher eGFR and maintain better kidney function over follow-up compared with recipients of **deceased-donor kidneys**. However, both groups show a general **declining trend over time**.
+
+
 
 ```{r, warning=FALSE}
 
@@ -132,9 +136,9 @@ p_traj <- dat_long %>%
     y = "eGFR (mL/min/1.73m²)",
     title = "Individual eGFR Trajectories After Kidney Transplantation (only for 25 ids)"
   ) +
-  theme_minimal(base_size = 12) +
+  theme_minimal(base_size = 10) +
   theme(
-    plot.title = element_text(face = "bold", size = 10),
+    plot.title = element_text(face = "bold", size = 8),
     axis.title = element_text(face = "bold")
   )
 
@@ -161,9 +165,9 @@ p_traj_by_donor <- dat_long %>%
     colour = "Donor type",
     title = "Mean eGFR Trajectory by Donor Type"
   ) +
-  theme_minimal(base_size = 12) +
+  theme_minimal(base_size = 8) +
   theme(
-    plot.title = element_text(face = "bold", size = 12),
+    plot.title = element_text(face = "bold", size = 8),
     axis.title = element_text(face = "bold")
   )
 
@@ -181,8 +185,99 @@ grid.arrange(
 ```
 
 
+**Figure 2: KM curve of overal survival of graft and by donor type**
 
 
+```{r, warning=FALSE}
+library(survival)
+library(broom)
+
+dat_baseline<-read.csv("egfr_wide_data.CSV")
+
+
+# overall KM
+surv_obj <- Surv(time = dat_baseline$time, event = dat_baseline$status)
+
+fit_km <- survfit(surv_obj ~ 1)
+
+km_df <- data.frame(
+  time  = fit_km$time,
+  surv  = fit_km$surv,
+  lower = fit_km$lower,
+  upper = fit_km$upper
+)
+
+KM1<-ggplot(km_df, aes(x = time, y = surv)) +
+  geom_step(linewidth = 1.2, colour = "#365abd") +
+  geom_ribbon(aes(ymin = lower, ymax = upper),
+              alpha = 0.2,
+              fill = "#365abd") +
+  labs(
+    title = "Kaplan–Meier Curve for Time to Graft Failure",
+    x = "Time since transplant (years)",
+    y = "Graft survival probability"
+  ) +
+  coord_cartesian(ylim = c(0, 1)) +
+  theme_grey(base_size = 8) +
+  theme(
+    plot.title = element_text(face = "bold", hjust = 0.5),
+    panel.grid.minor = element_blank()
+  )
+
+
+
+#KM curve by donor type
+fit_km_donor <- survfit(Surv(time, status) ~ donor_type, data = dat_baseline)
+
+km_df <- tidy(fit_km_donor)
+
+p_km <- km_df %>%
+  mutate(
+    donor_type = factor(strata,
+                        labels = c("Deceased donor", "Living donor"))
+  ) %>%
+  ggplot(aes(x = time, y = estimate,
+             colour = donor_type, fill = donor_type)) +
+  geom_step(size = 1.6) +
+  geom_ribbon(aes(ymin = conf.low, ymax = conf.high),
+              alpha = 0.20, colour = NA) +
+  scale_colour_manual(
+    values = c("Deceased donor" = "#0072B2",
+               "Living donor"   = "#D55E00")
+  ) +
+  scale_fill_manual(
+    values = c("Deceased donor" = "#0072B2",
+               "Living donor"   = "#D55E00")
+  ) +
+  labs(
+    x = "Time since transplant (years)",
+    y = "Graft survival probability",
+    colour = "Donor type",
+    fill = "Donor type",
+    title = "Kaplan–Meier Curves by Donor Type"
+  ) +
+  theme_minimal(base_size = 8) +
+  theme(
+    plot.title = element_text(face = "bold", size = 8),
+    axis.title = element_text(face = "bold")
+  )
+
+
+
+
+
+# Arrange side by side
+grid.arrange(
+  KM1,
+  p_km,
+  ncol = 2
+)
+
+```
+
+
+
+Importantly, these plots illustrate that **eGFR is a time-varying, patient-specific process** that is closely linked to graft failure risk. Treating eGFR as a fixed baseline covariate or updating it naively in an extended Cox model may be inappropriate, as changes in eGFR can be driven by the underlying disease process itself. This motivates the use of **joint models**, which explicitly model the longitudinal eGFR process together with the time-to-event outcome.
 
 
 
