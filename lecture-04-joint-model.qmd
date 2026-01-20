@@ -1,5 +1,5 @@
 ---
-title: "Lecture 4: Joint model (Cox model + linear mixed model)"
+title: "Lecture 4: Joint model"
 toc: true
 toc-depth: 3
 ---
@@ -185,7 +185,13 @@ grid.arrange(
 ```
 
 
-**Figure 2: KM curve of overal survival of graft and by donor type**
+
+**Figure 2: Kaplan–Meier curves for time to graft failure**
+
+The **left panel** shows the **overall Kaplan–Meier curve** for time to graft failure, summarising graft survival for all transplant recipients combined. The stepwise nature of the curve reflects the occurrence of graft failure events over follow-up, while the shaded area represents the **95% confidence interval**.
+
+The **right panel** presents **Kaplan–Meier curves stratified by donor type**. A clear separation between the curves is observed over time, indicating differences in graft survival between groups. Recipients of **living-donor kidneys** consistently show **higher graft survival probabilities** compared with recipients of **deceased-donor kidneys** throughout follow-up.
+
 
 
 ```{r, warning=FALSE}
@@ -220,7 +226,7 @@ KM1<-ggplot(km_df, aes(x = time, y = surv)) +
   coord_cartesian(ylim = c(0, 1)) +
   theme_grey(base_size = 8) +
   theme(
-    plot.title = element_text(face = "bold", hjust = 0.5),
+    plot.title = element_text(face = "bold", size = 8),
     panel.grid.minor = element_blank()
   )
 
@@ -238,7 +244,7 @@ p_km <- km_df %>%
   ) %>%
   ggplot(aes(x = time, y = estimate,
              colour = donor_type, fill = donor_type)) +
-  geom_step(size = 1.6) +
+  geom_step(size = 1.2) +
   geom_ribbon(aes(ymin = conf.low, ymax = conf.high),
               alpha = 0.20, colour = NA) +
   scale_colour_manual(
@@ -287,4 +293,134 @@ Importantly, these plots illustrate that **eGFR is a time-varying, patient-speci
 ::: {.callout-note}
 Joint models provide a unified framework for analysing  
 **longitudinal measurements** and **time-to-event outcomes** together.
+
+- They allow eGFR to be an internal time-varying covariate  
+- They account for correlations between eGFR and risk of graft failure  
+- They handle varying measurement times  
+- They reduce bias caused by feedback loops  
+- They improve prediction of graft loss  
+
 :::
+
+
+
+## Joint Model Specification (Linear Mixed Model + Cox Model)
+
+A **joint model** links:
+
+1. a **longitudinal submodel** for repeated measurements (e.g. eGFR over time), and  
+2. a **survival submodel** for the time-to-event outcome (e.g. graft failure),
+
+through a **shared association structure**.
+
+---
+
+### Longitudinal Submodel (Linear Mixed Effects Model)
+
+Let $y_i(t)$ be the observed biomarker value (e.g. eGFR) for individual $i$ at time $t$.
+
+We model:
+
+$$
+y_i(t) = m_i(t) + \varepsilon_i(t),
+\qquad \varepsilon_i(t) \sim N(0, \sigma^2)
+$$
+
+where $m_i(t)$ is the **true underlying (latent) biomarker trajectory**.
+
+A common linear mixed model specification is:
+
+$$
+m_i(t) = \beta_0 + \beta_1 t + \beta_2^\top X_i + b_{0i} + b_{1i} t
+$$
+
+- $\beta_0, \beta_1, \beta_2$ are **fixed effects**
+- $X_i$ are baseline covariates (e.g. donor type, age, sex)
+- $b_{0i}, b_{1i}$ are **random effects** (subject-specific deviation)
+
+Assume the random effects follow:
+
+$$
+\begin{pmatrix}
+b_{0i}\\
+b_{1i}
+\end{pmatrix}
+\sim N
+\left(
+\begin{pmatrix}
+0\\
+0
+\end{pmatrix},
+D
+\right)
+$$
+
+---
+
+### Survival Submodel (Cox Proportional Hazards Model)
+
+Let $T_i$ be the event time and $h_i(t)$ the hazard for individual $i$ at time $t$.
+
+The Cox-type survival model is:
+
+$$
+h_i(t \mid \mathcal{M}_i(t), Z_i) = h_0(t)\exp\left(\gamma^\top Z_i + \alpha\, f\{m_i(t)\}\right)
+$$
+
+- $h_0(t)$ is the **baseline hazard**
+- $Z_i$ are baseline covariates (can overlap with $X_i$)
+- $m_i(t)$ is the **latent true biomarker value** from the longitudinal model
+- $\alpha$ quantifies the **association** between the biomarker process and event risk
+- $f\{\cdot\}$ defines how the longitudinal process enters the hazard
+
+---
+
+### The Link Between the Two Processes (Association Structures)
+
+The most common choice is the **current value association**:
+
+$$
+h_i(t) = h_0(t)\exp\left(\gamma^\top Z_i + \alpha\, m_i(t)\right)
+$$
+
+**Interpretation of $\alpha$**:  
+For a 1-unit higher **true underlying biomarker value** at time $t$, the hazard changes by:
+
+$$
+HR(t) = \exp(\alpha)
+$$
+
+---
+
+### Alternative links (optional)
+
+**(a) Current value + slope association**
+
+$$
+h_i(t) = h_0(t)\exp\left(\gamma^\top Z_i + \alpha_1 m_i(t) + \alpha_2 m_i'(t)\right)
+$$
+
+where $m_i'(t)$ is the **instantaneous rate of change** (slope).
+
+**(b) Cumulative (history) association**
+
+$$
+h_i(t) = h_0(t)\exp\left(\gamma^\top Z_i + \alpha \int_0^t m_i(s)\,ds\right)
+$$
+
+---
+
+::: {.callout-note}
+### Why this helps
+
+Unlike the extended Cox model, the joint model:
+
+- treats the biomarker as a **latent process** $m_i(t)$ rather than a noisy observed value $y_i(t)$
+- accounts for **measurement error**
+- correctly handles **internal time-dependent covariates** whose evolution is linked to event risk
+:::
+
+
+
+
+
