@@ -313,6 +313,15 @@ A **joint model** links:
 
 through a **shared association structure**.
 
+Here, we focus on a **joint model combining a linear mixed-effects model and a Cox proportional hazards model**.  
+More generally, the joint modelling framework is highly flexible and can be extended to:
+
+- a wide range of **longitudinal models**, including **linear and non-linear mixed models**, and  
+- different types of **survival models**, including **parametric** and **semi-parametric** models.
+
+The key idea is that the longitudinal and survival processes are modelled **simultaneously** and linked through shared subject-specific components.
+
+
 ---
 
 ### Longitudinal Submodel (Linear Mixed Effects Model)
@@ -392,7 +401,7 @@ $$
 
 ---
 
-### Alternative links (optional)
+### Alternative links 
 
 **(a) Current value + slope association**
 
