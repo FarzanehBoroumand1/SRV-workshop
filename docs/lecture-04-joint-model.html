@@ -792,7 +792,7 @@ chains: 3
 iterations per chain: 3500 
 burn-in per chain: 500 
 thinning: 1 
-time: 40 sec</code></pre>
+time: 22 sec</code></pre>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -805,7 +805,32 @@ Interpretation
 </div>
 </div>
 <div class="callout-body-container callout-body">
-
+<p><strong>Longitudinal Submodel: eGFR Trajectory</strong></p>
+<p>The longitudinal component models the <strong>underlying eGFR trajectory over time</strong> using a linear mixed-effects model.</p>
+<p>✅ <strong>Baseline eGFR (Intercept)</strong><br>
+The estimated baseline eGFR is approximately <strong>56.6 mL/min/1.73m²</strong> (95% CrI: 54.6–58.6), representing the average kidney function at transplant for a reference patient (deceased donor, female, donor age 50).</p>
+<p>✅ <strong>Time effect</strong><br>
+The coefficient for time is <strong>−2.42</strong>, indicating that eGFR declines by about <strong>2.4 mL/min/1.73m² per year</strong> on average.<br>
+This confirms a <strong>progressive deterioration of kidney function over follow-up</strong>.</p>
+<p>✅ <strong>Donor type</strong><br>
+Recipients of kidneys from living donors start with <strong>4.0 mL/min, higher eGFR levels over time</strong> compared with deceased-donor recipients, and maintain better function over time. after adjusting for other factors.</p>
+<p>✅ <strong>Recipient gender (male)</strong><br>
+Male recipients have, on average, <strong>lower eGFR trajectories by 3.84 units</strong> than females over follow-up.</p>
+<p>✅ <strong>Donor age</strong><br>
+Higher donor age is associated with <strong>lower longitudinal eGFR</strong>, suggesting poorer graft function when kidneys are obtained from older donors. For each 10 years older donor (relative to age 50), eGFR is ~2.4 units lower.</p>
+<p>✅ <strong>Random effects</strong><br>
+There is substantial <strong>between-patient variability</strong> in both baseline eGFR and the rate of change over time, justifying the use of a mixed-effects model.</p>
+<p><strong>Survival Submodel: Time to Graft Failure</strong></p>
+<p>The survival component models the <strong>hazard of graft failure</strong>, linking it to the <strong>latent eGFR process</strong> from the longitudinal model.</p>
+<p>✅ <strong>Association with eGFR (value effect)</strong><br>
+The coefficient for the current underlying eGFR is <strong>negative</strong>, indicating that <strong>lower true eGFR values are associated with a higher risk of graft failure</strong>.<br>
+In other words, patients with declining kidney function face an <strong>increased instantaneous hazard</strong> of graft loss. But effect is small (0.0025) and not significant.</p>
+<p>✅ <strong>Donor type</strong><br>
+Holding the <em>underlying eGFR trajectory</em> and other covariates constant, recipients of a <strong>living-donor kidney</strong> have approximately a <strong>75% lower instantaneous hazard of graft failure</strong> compared with recipients of a deceased-donor kidney <span class="math inline">\(HR = \exp(-1.396) \approx 0.25\)</span>.</p>
+<p>✅ <strong>Recipient gender (male)</strong><br>
+Male recipients exhibit a <strong>2.38-times higher hazard of graft failure</strong> compared with females after adjusting for kidney function and other covariates.</p>
+<p>✅ <strong>Donor age</strong><br>
+After adjusting for kidney function and other covariates, each <strong>10-year increase in donor age above 50 years</strong> is associated with an approximately <strong>58% higher hazard of graft failure</strong>.</p>
 </div>
 </div>
 
@@ -1776,10 +1801,54 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb5-488"><a href="#cb5-488" aria-hidden="true" tabindex="-1"></a><span class="fu">### Interpretation</span></span>
 <span id="cb5-489"><a href="#cb5-489" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-490"><a href="#cb5-490" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-491"><a href="#cb5-491" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-492"><a href="#cb5-492" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb5-493"><a href="#cb5-493" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb5-494"><a href="#cb5-494" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb5-491"><a href="#cb5-491" aria-hidden="true" tabindex="-1"></a>**Longitudinal Submodel: eGFR Trajectory**</span>
+<span id="cb5-492"><a href="#cb5-492" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-493"><a href="#cb5-493" aria-hidden="true" tabindex="-1"></a>The longitudinal component models the **underlying eGFR trajectory over time** using a linear mixed-effects model.</span>
+<span id="cb5-494"><a href="#cb5-494" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-495"><a href="#cb5-495" aria-hidden="true" tabindex="-1"></a>✅ **Baseline eGFR (Intercept)**  </span>
+<span id="cb5-496"><a href="#cb5-496" aria-hidden="true" tabindex="-1"></a>The estimated baseline eGFR is approximately **56.6 mL/min/1.73m²** (95% CrI: 54.6–58.6), representing the average kidney function at transplant for a reference patient (deceased donor, female, donor age 50).</span>
+<span id="cb5-497"><a href="#cb5-497" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-498"><a href="#cb5-498" aria-hidden="true" tabindex="-1"></a>✅ **Time effect**  </span>
+<span id="cb5-499"><a href="#cb5-499" aria-hidden="true" tabindex="-1"></a>The coefficient for time is **−2.42**, indicating that eGFR declines by about **2.4 mL/min/1.73m² per year** on average.  </span>
+<span id="cb5-500"><a href="#cb5-500" aria-hidden="true" tabindex="-1"></a>This confirms a **progressive deterioration of kidney function over follow-up**.</span>
+<span id="cb5-501"><a href="#cb5-501" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-502"><a href="#cb5-502" aria-hidden="true" tabindex="-1"></a>✅ **Donor type**  </span>
+<span id="cb5-503"><a href="#cb5-503" aria-hidden="true" tabindex="-1"></a>Recipients of kidneys from living donors start with **4.0 mL/min, higher eGFR levels over time** compared with deceased-donor recipients, and maintain better function over time. after adjusting for other factors.</span>
+<span id="cb5-504"><a href="#cb5-504" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-505"><a href="#cb5-505" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-506"><a href="#cb5-506" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-507"><a href="#cb5-507" aria-hidden="true" tabindex="-1"></a>✅ **Recipient gender (male)**  </span>
+<span id="cb5-508"><a href="#cb5-508" aria-hidden="true" tabindex="-1"></a>Male recipients have, on average, **lower eGFR trajectories by 3.84 units** than females over follow-up.</span>
+<span id="cb5-509"><a href="#cb5-509" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-510"><a href="#cb5-510" aria-hidden="true" tabindex="-1"></a>✅ **Donor age**  </span>
+<span id="cb5-511"><a href="#cb5-511" aria-hidden="true" tabindex="-1"></a>Higher donor age is associated with **lower longitudinal eGFR**, suggesting poorer graft function when kidneys are obtained from older donors. For each 10 years older donor (relative to age 50), eGFR is ~2.4 units lower.</span>
+<span id="cb5-512"><a href="#cb5-512" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-513"><a href="#cb5-513" aria-hidden="true" tabindex="-1"></a>✅ **Random effects**  </span>
+<span id="cb5-514"><a href="#cb5-514" aria-hidden="true" tabindex="-1"></a>There is substantial **between-patient variability** in both baseline eGFR and the rate of change over time, justifying the use of a mixed-effects model.</span>
+<span id="cb5-515"><a href="#cb5-515" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-516"><a href="#cb5-516" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-517"><a href="#cb5-517" aria-hidden="true" tabindex="-1"></a>**Survival Submodel: Time to Graft Failure**</span>
+<span id="cb5-518"><a href="#cb5-518" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-519"><a href="#cb5-519" aria-hidden="true" tabindex="-1"></a>The survival component models the **hazard of graft failure**, linking it to the **latent eGFR process** from the longitudinal model.</span>
+<span id="cb5-520"><a href="#cb5-520" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-521"><a href="#cb5-521" aria-hidden="true" tabindex="-1"></a>✅ **Association with eGFR (value effect)**  </span>
+<span id="cb5-522"><a href="#cb5-522" aria-hidden="true" tabindex="-1"></a>The coefficient for the current underlying eGFR is **negative**, indicating that **lower true eGFR values are associated with a higher risk of graft failure**.  </span>
+<span id="cb5-523"><a href="#cb5-523" aria-hidden="true" tabindex="-1"></a>In other words, patients with declining kidney function face an **increased instantaneous hazard** of graft loss. But effect is small (0.0025) and not significant.</span>
+<span id="cb5-524"><a href="#cb5-524" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-525"><a href="#cb5-525" aria-hidden="true" tabindex="-1"></a>✅ **Donor type**  </span>
+<span id="cb5-526"><a href="#cb5-526" aria-hidden="true" tabindex="-1"></a>Holding the *underlying eGFR trajectory* and other covariates constant, recipients of a **living-donor kidney** have approximately a **75% lower instantaneous hazard of graft failure** compared with recipients of a deceased-donor kidney $HR = \exp(-1.396) \approx 0.25$.</span>
+<span id="cb5-527"><a href="#cb5-527" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-528"><a href="#cb5-528" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-529"><a href="#cb5-529" aria-hidden="true" tabindex="-1"></a>✅ **Recipient gender (male)**  </span>
+<span id="cb5-530"><a href="#cb5-530" aria-hidden="true" tabindex="-1"></a>Male recipients exhibit a **2.38-times higher hazard of graft failure** compared with females after adjusting for kidney function and other covariates.</span>
+<span id="cb5-531"><a href="#cb5-531" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-532"><a href="#cb5-532" aria-hidden="true" tabindex="-1"></a>✅ **Donor age**  </span>
+<span id="cb5-533"><a href="#cb5-533" aria-hidden="true" tabindex="-1"></a>After adjusting for kidney function and other covariates, each **10-year increase in donor age above 50 years** is associated with an approximately **58% higher hazard of graft failure**.</span>
+<span id="cb5-534"><a href="#cb5-534" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-535"><a href="#cb5-535" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-536"><a href="#cb5-536" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb5-537"><a href="#cb5-537" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-538"><a href="#cb5-538" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
