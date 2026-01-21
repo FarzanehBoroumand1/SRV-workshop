@@ -459,21 +459,8 @@ lme_fit <- lme(
 #summary(lme_fit)
 
 #---cox model
-#data preparation for the cox model (wide format)
-dat_surv <- dat_long %>%
-  group_by(id) %>%
-  slice(1) %>%        # one row per patient
-  ungroup() %>%
-  transmute(
-    id,
-    donor_type,
-    donor_age,
-    recip_male,
-    donor_age_c,
-    time   = time_event,   # from your dat_long
-    status = ifelse(runif(n()) < 0.6, 1, 0) # placeholder if you *really* lost status
-  )
-
+#data for the cox model (wide format)
+dat_surv<-read.csv("egfr_joint_baseline.csv")
 
 cox_fit <- coxph(
   Surv(time, status) ~ donor_type + recip_male + donor_age_c,

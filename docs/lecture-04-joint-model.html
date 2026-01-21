@@ -729,40 +729,27 @@ Why this helps
 <span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="co">#summary(lme_fit)</span></span>
 <span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a><span class="co">#---cox model</span></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co">#data preparation for the cox model (wide format)</span></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>dat_surv <span class="ot">&lt;-</span> dat_long <span class="sc">%&gt;%</span></span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(id) <span class="sc">%&gt;%</span></span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="dv">1</span>) <span class="sc">%&gt;%</span>        <span class="co"># one row per patient</span></span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">transmute</span>(</span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    id,</span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    donor_type,</span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    donor_age,</span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    recip_male,</span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    donor_age_c,</span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    <span class="at">time   =</span> time_event,   <span class="co"># from your dat_long</span></span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>    <span class="at">status =</span> <span class="fu">ifelse</span>(<span class="fu">runif</span>(<span class="fu">n</span>()) <span class="sc">&lt;</span> <span class="fl">0.6</span>, <span class="dv">1</span>, <span class="dv">0</span>) <span class="co"># placeholder if you *really* lost status</span></span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>cox_fit <span class="ot">&lt;-</span> <span class="fu">coxph</span>(</span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Surv</span>(time, status) <span class="sc">~</span> donor_type <span class="sc">+</span> recip_male <span class="sc">+</span> donor_age_c,</span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> dat_surv,</span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>  <span class="at">x    =</span> <span class="cn">TRUE</span></span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a><span class="co">#summary(cox_fit)</span></span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a><span class="co">#--joint model</span></span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>jm_fit <span class="ot">&lt;-</span> <span class="fu">jm</span>(</span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>  cox_fit,</span>
-<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>  lme_fit,</span>
-<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>  <span class="at">time_var =</span> <span class="st">"time"</span>   <span class="co"># this is the time variable in dat_long</span></span>
-<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(jm_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a><span class="co">#data for the cox model (wide format)</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>dat_surv<span class="ot">&lt;-</span><span class="fu">read.csv</span>(<span class="st">"egfr_joint_baseline.csv"</span>)</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>cox_fit <span class="ot">&lt;-</span> <span class="fu">coxph</span>(</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">Surv</span>(time, status) <span class="sc">~</span> donor_type <span class="sc">+</span> recip_male <span class="sc">+</span> donor_age_c,</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> dat_surv,</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>  <span class="at">x    =</span> <span class="cn">TRUE</span></span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="co">#summary(cox_fit)</span></span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a><span class="co">#--joint model</span></span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>jm_fit <span class="ot">&lt;-</span> <span class="fu">jm</span>(</span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>  cox_fit,</span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>  lme_fit,</span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>  <span class="at">time_var =</span> <span class="st">"time"</span>   <span class="co"># this is the time variable in dat_long</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(jm_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -770,42 +757,42 @@ Call:
 jm(Surv_object = cox_fit, Mixed_objects = lme_fit, time_var = "time")
 
 Data Descriptives:
-Number of Groups: 300       Number of events: 169 (56.3%)
+Number of Groups: 300       Number of events: 33 (11%)
 Number of Observations:
   egfr: 1685
 
                  DIC     WAIC      LPML
-marginal    11875.22 11814.13 -5910.956
-conditional 14595.03 14425.91 -7447.485
+marginal    11496.76 11435.38 -5721.705
+conditional 14218.91 14048.51 -7243.756
 
 Random-effects covariance matrix:
                     
        StdDev   Corr
-(Intr) 9.1383 (Intr)
-time   1.6479 0.1494
+(Intr) 9.1332 (Intr)
+time   1.6643 0.1604
 
 Survival Outcome:
-               Mean  StDev    2.5%  97.5%      P   Rhat
-donor_type  -0.1351 0.2130 -0.5645 0.2729 0.5338 1.0077
-recip_male   0.0120 0.1706 -0.3126 0.3476 0.9500 1.0070
-donor_age_c -0.0245 0.0645 -0.1555 0.0990 0.7247 1.0098
-value(egfr) -0.0053 0.0072 -0.0191 0.0088 0.4682 1.0058
+               Mean  StDev    2.5%   97.5%      P   Rhat
+donor_type  -1.3961 0.6510 -2.8133 -0.2391 0.0102 1.0502
+recip_male   0.8670 0.3975  0.1230  1.6640 0.0204 1.0041
+donor_age_c  0.4566 0.1711  0.1099  0.7875 0.0073 1.0088
+value(egfr) -0.0025 0.0153 -0.0319  0.0270 0.8662 1.0039
 
 Longitudinal Outcome: egfr (family = gaussian, link = identity)
                Mean  StDev    2.5%   97.5%     P   Rhat
-(Intercept) 56.6201 1.0316 54.6448 58.6622 0e+00 1.0036
-time        -2.4220 0.1558 -2.7351 -2.1239 0e+00 1.0480
-donor_type   4.0053 1.1241  1.7935  6.1874 9e-04 0.9999
-recip_male  -3.8400 1.1171 -6.0474 -1.6386 2e-04 1.0008
-donor_age_c -2.3557 0.4652 -3.2710 -1.4510 0e+00 1.0012
-sigma        4.7384 0.0991  4.5451  4.9407 0e+00 1.0068
+(Intercept) 56.6120 1.0341 54.6252 58.6449 0e+00 1.0023
+time        -2.4174 0.1551 -2.7217 -2.1117 0e+00 1.0246
+donor_type   4.0256 1.1316  1.7748  6.2110 7e-04 1.0007
+recip_male  -3.8387 1.1179 -6.0347 -1.6406 7e-04 1.0003
+donor_age_c -2.3460 0.4633 -3.2580 -1.4518 0e+00 1.0007
+sigma        4.7351 0.0950  4.5469  4.9236 0e+00 1.0031
 
 MCMC summary:
 chains: 3 
 iterations per chain: 3500 
 burn-in per chain: 500 
 thinning: 1 
-time: 25 sec</code></pre>
+time: 40 sec</code></pre>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -1760,52 +1747,39 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb5-459"><a href="#cb5-459" aria-hidden="true" tabindex="-1"></a><span class="in">#summary(lme_fit)</span></span>
 <span id="cb5-460"><a href="#cb5-460" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-461"><a href="#cb5-461" aria-hidden="true" tabindex="-1"></a><span class="in">#---cox model</span></span>
-<span id="cb5-462"><a href="#cb5-462" aria-hidden="true" tabindex="-1"></a><span class="in">#data preparation for the cox model (wide format)</span></span>
-<span id="cb5-463"><a href="#cb5-463" aria-hidden="true" tabindex="-1"></a><span class="in">dat_surv &lt;- dat_long %&gt;%</span></span>
-<span id="cb5-464"><a href="#cb5-464" aria-hidden="true" tabindex="-1"></a><span class="in">  group_by(id) %&gt;%</span></span>
-<span id="cb5-465"><a href="#cb5-465" aria-hidden="true" tabindex="-1"></a><span class="in">  slice(1) %&gt;%        # one row per patient</span></span>
-<span id="cb5-466"><a href="#cb5-466" aria-hidden="true" tabindex="-1"></a><span class="in">  ungroup() %&gt;%</span></span>
-<span id="cb5-467"><a href="#cb5-467" aria-hidden="true" tabindex="-1"></a><span class="in">  transmute(</span></span>
-<span id="cb5-468"><a href="#cb5-468" aria-hidden="true" tabindex="-1"></a><span class="in">    id,</span></span>
-<span id="cb5-469"><a href="#cb5-469" aria-hidden="true" tabindex="-1"></a><span class="in">    donor_type,</span></span>
-<span id="cb5-470"><a href="#cb5-470" aria-hidden="true" tabindex="-1"></a><span class="in">    donor_age,</span></span>
-<span id="cb5-471"><a href="#cb5-471" aria-hidden="true" tabindex="-1"></a><span class="in">    recip_male,</span></span>
-<span id="cb5-472"><a href="#cb5-472" aria-hidden="true" tabindex="-1"></a><span class="in">    donor_age_c,</span></span>
-<span id="cb5-473"><a href="#cb5-473" aria-hidden="true" tabindex="-1"></a><span class="in">    time   = time_event,   # from your dat_long</span></span>
-<span id="cb5-474"><a href="#cb5-474" aria-hidden="true" tabindex="-1"></a><span class="in">    status = ifelse(runif(n()) &lt; 0.6, 1, 0) # placeholder if you *really* lost status</span></span>
-<span id="cb5-475"><a href="#cb5-475" aria-hidden="true" tabindex="-1"></a><span class="in">  )</span></span>
-<span id="cb5-476"><a href="#cb5-476" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-477"><a href="#cb5-477" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-478"><a href="#cb5-478" aria-hidden="true" tabindex="-1"></a><span class="in">cox_fit &lt;- coxph(</span></span>
-<span id="cb5-479"><a href="#cb5-479" aria-hidden="true" tabindex="-1"></a><span class="in">  Surv(time, status) ~ donor_type + recip_male + donor_age_c,</span></span>
-<span id="cb5-480"><a href="#cb5-480" aria-hidden="true" tabindex="-1"></a><span class="in">  data = dat_surv,</span></span>
-<span id="cb5-481"><a href="#cb5-481" aria-hidden="true" tabindex="-1"></a><span class="in">  x    = TRUE</span></span>
-<span id="cb5-482"><a href="#cb5-482" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
+<span id="cb5-462"><a href="#cb5-462" aria-hidden="true" tabindex="-1"></a><span class="in">#data for the cox model (wide format)</span></span>
+<span id="cb5-463"><a href="#cb5-463" aria-hidden="true" tabindex="-1"></a><span class="in">dat_surv&lt;-read.csv("egfr_joint_baseline.csv")</span></span>
+<span id="cb5-464"><a href="#cb5-464" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-465"><a href="#cb5-465" aria-hidden="true" tabindex="-1"></a><span class="in">cox_fit &lt;- coxph(</span></span>
+<span id="cb5-466"><a href="#cb5-466" aria-hidden="true" tabindex="-1"></a><span class="in">  Surv(time, status) ~ donor_type + recip_male + donor_age_c,</span></span>
+<span id="cb5-467"><a href="#cb5-467" aria-hidden="true" tabindex="-1"></a><span class="in">  data = dat_surv,</span></span>
+<span id="cb5-468"><a href="#cb5-468" aria-hidden="true" tabindex="-1"></a><span class="in">  x    = TRUE</span></span>
+<span id="cb5-469"><a href="#cb5-469" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
+<span id="cb5-470"><a href="#cb5-470" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-471"><a href="#cb5-471" aria-hidden="true" tabindex="-1"></a><span class="in">#summary(cox_fit)</span></span>
+<span id="cb5-472"><a href="#cb5-472" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-473"><a href="#cb5-473" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-474"><a href="#cb5-474" aria-hidden="true" tabindex="-1"></a><span class="in">#--joint model</span></span>
+<span id="cb5-475"><a href="#cb5-475" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-476"><a href="#cb5-476" aria-hidden="true" tabindex="-1"></a><span class="in">jm_fit &lt;- jm(</span></span>
+<span id="cb5-477"><a href="#cb5-477" aria-hidden="true" tabindex="-1"></a><span class="in">  cox_fit,</span></span>
+<span id="cb5-478"><a href="#cb5-478" aria-hidden="true" tabindex="-1"></a><span class="in">  lme_fit,</span></span>
+<span id="cb5-479"><a href="#cb5-479" aria-hidden="true" tabindex="-1"></a><span class="in">  time_var = "time"   # this is the time variable in dat_long</span></span>
+<span id="cb5-480"><a href="#cb5-480" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
+<span id="cb5-481"><a href="#cb5-481" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-482"><a href="#cb5-482" aria-hidden="true" tabindex="-1"></a><span class="in">summary(jm_fit)</span></span>
 <span id="cb5-483"><a href="#cb5-483" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-484"><a href="#cb5-484" aria-hidden="true" tabindex="-1"></a><span class="in">#summary(cox_fit)</span></span>
-<span id="cb5-485"><a href="#cb5-485" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-486"><a href="#cb5-486" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-487"><a href="#cb5-487" aria-hidden="true" tabindex="-1"></a><span class="in">#--joint model</span></span>
-<span id="cb5-488"><a href="#cb5-488" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-489"><a href="#cb5-489" aria-hidden="true" tabindex="-1"></a><span class="in">jm_fit &lt;- jm(</span></span>
-<span id="cb5-490"><a href="#cb5-490" aria-hidden="true" tabindex="-1"></a><span class="in">  cox_fit,</span></span>
-<span id="cb5-491"><a href="#cb5-491" aria-hidden="true" tabindex="-1"></a><span class="in">  lme_fit,</span></span>
-<span id="cb5-492"><a href="#cb5-492" aria-hidden="true" tabindex="-1"></a><span class="in">  time_var = "time"   # this is the time variable in dat_long</span></span>
-<span id="cb5-493"><a href="#cb5-493" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
-<span id="cb5-494"><a href="#cb5-494" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-495"><a href="#cb5-495" aria-hidden="true" tabindex="-1"></a><span class="in">summary(jm_fit)</span></span>
-<span id="cb5-496"><a href="#cb5-496" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-497"><a href="#cb5-497" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-498"><a href="#cb5-498" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb5-499"><a href="#cb5-499" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb5-500"><a href="#cb5-500" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
-<span id="cb5-501"><a href="#cb5-501" aria-hidden="true" tabindex="-1"></a><span class="fu">### Interpretation</span></span>
-<span id="cb5-502"><a href="#cb5-502" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-503"><a href="#cb5-503" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-504"><a href="#cb5-504" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-505"><a href="#cb5-505" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb5-506"><a href="#cb5-506" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb5-507"><a href="#cb5-507" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb5-484"><a href="#cb5-484" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-485"><a href="#cb5-485" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb5-486"><a href="#cb5-486" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-487"><a href="#cb5-487" aria-hidden="true" tabindex="-1"></a>::: {.callout-tip}</span>
+<span id="cb5-488"><a href="#cb5-488" aria-hidden="true" tabindex="-1"></a><span class="fu">### Interpretation</span></span>
+<span id="cb5-489"><a href="#cb5-489" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-490"><a href="#cb5-490" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-491"><a href="#cb5-491" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-492"><a href="#cb5-492" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb5-493"><a href="#cb5-493" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb5-494"><a href="#cb5-494" aria-hidden="true" tabindex="-1"></a></span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
