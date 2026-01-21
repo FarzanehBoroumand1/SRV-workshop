@@ -306,13 +306,6 @@ Joint models provide a unified framework for analysing
 
 ## Joint Model Specification (Linear Mixed Model + Cox Model)
 
-A **joint model** links:
-
-1. a **longitudinal submodel** for repeated measurements (e.g. eGFR over time), and  
-2. a **survival submodel** for the time-to-event outcome (e.g. graft failure),
-
-through a **shared association structure**.
-
 Here, we focus on a **joint model combining a linear mixed-effects model and a Cox proportional hazards model**.  
 More generally, the joint modelling framework is highly flexible and can be extended to:
 
