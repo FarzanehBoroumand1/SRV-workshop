@@ -423,6 +423,86 @@ Unlike the extended Cox model, the joint model:
 :::
 
 
+## Example 
+This example demonstrates how to fit a **joint model combining a linear mixed-effects model and a Cox proportional hazards model** using the dataset we have been working with so far.
 
+**Model components**
+
+- **Outcome:** Time to graft failure  
+- **Exposure:** Donor type (living vs deceased)  
+- **Covariates:**  
+  - Donor age  
+  - Recipient gender  
+  - Longitudinal eGFR measurements  
+  
+  
+```{r, warning=FALSE}
+
+library(dplyr)
+library(survival)
+library(lme4)
+library(JMbayes2)
+
+#-- data in long format
+dat_long<-read.csv("egfr_joint_data.CSV")
+
+#--longitudinal model
+
+lme_fit <- lme(
+  egfr ~ time + donor_type + recip_male + donor_age_c,
+  random = ~ time | id,
+  data   = dat_long,
+  na.action = na.omit,
+  control = lmeControl(opt = "optim")
+)
+
+#summary(lme_fit)
+
+#---cox model
+#data preparation for the cox model (wide format)
+dat_surv <- dat_long %>%
+  group_by(id) %>%
+  slice(1) %>%        # one row per patient
+  ungroup() %>%
+  transmute(
+    id,
+    donor_type,
+    donor_age,
+    recip_male,
+    donor_age_c,
+    time   = time_event,   # from your dat_long
+    status = ifelse(runif(n()) < 0.6, 1, 0) # placeholder if you *really* lost status
+  )
+
+
+cox_fit <- coxph(
+  Surv(time, status) ~ donor_type + recip_male + donor_age_c,
+  data = dat_surv,
+  x    = TRUE
+)
+
+#summary(cox_fit)
+
+
+#--joint model
+
+jm_fit <- jm(
+  cox_fit,
+  lme_fit,
+  time_var = "time"   # this is the time variable in dat_long
+)
+
+summary(jm_fit)
+
+
+```
+  
+::: {.callout-tip}
+### Interpretation
+
+
+
+:::
+  
 
 
