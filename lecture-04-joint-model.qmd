@@ -533,7 +533,73 @@ Male recipients exhibit a **2.38-times higher hazard of graft failure** compared
 After adjusting for kidney function and other covariates, each **10-year increase in donor age above 50 years** is associated with an approximately **58% higher hazard of graft failure**.
 
 
+**Overall**
+- In this joint model, eGFR declines over time and is strongly influenced by donor type, donor age, and recipient sex.  
+
+- The association between current eGFR and graft failure hazard is negative—as expected—but small and not strongly supported by the data.  
+
+- Random effects reveal substantial between-patient heterogeneity in baseline eGFR and rate of decline.  
+
 :::
   
+## Prediction plot
+
+The following plot presents **predicted trajectories for four randomly selected patient IDs**, illustrating subject-specific model predictions.
+
+
+- Observed eGFR values (black points)  
+- Fitted eGFR trajectory from the longitudinal mixed model (blue line)  
+- 95% posterior credible interval for the predicted trajectory (light blue shading)  
+
+
+
+```{r, warning=FALSE}
+
+
+library(dplyr)
+library(ggplot2)
+library(JMbayes2)
+
+# pick 4 ids as examples
+set.seed(123)
+ids_example <- sample(unique(dat_long$id), 4)
+
+# restrict to those patients
+dat_long_sub <- dat_long %>%
+  filter(id %in% ids_example) %>%
+  mutate(status = 0L)   
+
+# get subject-specific fitted eGFR at the observed times
+pred_long <- predict(
+  jm_fit,
+  newdata        = dat_long_sub,
+  process        = "longitudinal",
+  type           = "subject_specific",
+  type_pred      = "response",
+  control        = list(return_newdata = TRUE)
+)
+
+ggplot(pred_long, aes(x = time)) +
+  geom_point(aes(y = egfr, colour = "Observed"), alpha = 0.7) +
+  geom_line(aes(y = pred_egfr, colour = "Fitted"), linewidth = 1) +
+  geom_ribbon(aes(ymin = low_egfr, ymax = upp_egfr, fill = "95% CI"),
+              alpha = 0.15, colour = NA) +
+  facet_wrap(~ id, ncol = 2) +
+  scale_colour_manual(values = c("Observed" = "black",
+                                 "Fitted"   = "#1f78b4")) +
+  scale_fill_manual(values = c("95% CI" = "#1f78b4")) +
+  labs(
+    x = "Time since transplant (years)",
+    y = "eGFR (mL/min/1.73m²)",
+    colour = "",
+    fill   = "",
+    title  = "Observed vs fitted eGFR trajectories for ID= 14, 118, 179, 195"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(legend.position = "bottom")
+
+
+```
+
 
 
