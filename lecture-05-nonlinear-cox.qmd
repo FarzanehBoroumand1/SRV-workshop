@@ -215,19 +215,19 @@ Instead, we observe a systematic curved pattern, indicating that the effect of e
 
 This suggests that:
 
-The linearity assumption for eGFR at baseline and age is violated
+- The linearity assumption for eGFR at baseline and age is violated. 
 
-A standard Cox model with a linear eGFR term may be misspecified.
+- A standard Cox model with a linear eGFR term may be misspecified.  
 
-**Moving beyond linear effects**
+**✅ Moving beyond linear effects**
 
 To accommodate nonlinear relationships between a continuous covariate and the hazard, we can extend the Cox model using smooth functions, such as:
 
-Regression splines
+- Regression splines  
 
-Natural splines
+- Natural splines  
 
-Penalised splines
+- Penalised splines  
 
 In the next section, we fit a nonlinear Cox model that allows the effect of eGFR at baseline and age to vary smoothly across its range.
 
@@ -254,6 +254,17 @@ plot(gam_cox)
 ```
 
 
+
+
+we also could get the prediction plot using `ggplot2` as follows:
+
+✅ **eGFR at baseline**
+
+The effect of baseline eGFR on graft failure is clearly non-linear.Compared with eGFR = 40 (HR = 1):
+Very low eGFR (<30) is associated with a substantially higher hazard, indicating worse kidney function strongly increases risk.
+eGFR between ~30 and 50 shows risk decreasing, reaching its lowest point around ~50.
+High eGFR (>50) shows a gradual increase in hazard, suggesting a U-shaped or curved relationship.
+These predictions are for a male recipient receiving a kidney from a deceased donor, at median age.
 
 
 
@@ -331,7 +342,20 @@ ggplot(plot_age, aes(x = age_rec, y = HR)) +
     plot.title   = element_text(face = "bold", hjust = 0.5),
     panel.grid.minor = element_blank()
   )
+```
 
+
+
+✅  **Age**
+
+The effect of recipient age on graft failure is strongly non-linear. Compared with a 50-year-old recipient (HR = 1):
+Younger adults (<40) have a slightly lower hazard, but the protective effect is modest.
+Ages 50–60 show a gradual increase in hazard.
+Older ages (>60) display a rapid, accelerating increase in hazard, with much higher risk by age 75–80.
+These predictions are for a male recipient receiving a kidney from a deceased donor, at median of eGFR.
+
+
+```{r, warning=FALSE}
 
 #egfr
 egfr_seq <- seq(min(df$egfr0), max(df$egfr0), length.out = 200)
@@ -406,6 +430,19 @@ ggplot(plot_egfr, aes(x = egfr0, y = HR)) +
 
 
 
+::: {.callout-tip}
+### Interpretation of covariate effects (linear components)
+
+✅ **Donor type (living vs deceased)**  
+
+HR = 0.63, *P* < 0.001, Statistically significant.  
+Recipients of a **living donor kidney** have approximately a **37% lower hazard of graft failure** compared with recipients of deceased-donor kidneys, indicating a **strong protective effect**.
+
+✅ **Recipient sex (female vs male)**  
+
+HR = 1.07, *P* = 0.299, Not statistically significant.  
+Female recipients show a slightly higher estimated hazard compared with males, but this difference is **not statistically significant**, and there is **no strong evidence of a sex effect** on graft failure risk.
+:::
 
 
 
