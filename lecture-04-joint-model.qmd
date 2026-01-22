@@ -602,4 +602,125 @@ ggplot(pred_long, aes(x = time)) +
 ```
 
 
+the following plot show the dynamic predictions for one randomly selected id.
+
+```{r, warning=FALSE}
+
+library(nlme)
+library(survival)
+library(JM)
+library(animation)
+
+# data
+dat_long <- read.csv("egfr_joint_data.csv")          # long data with repeated eGFR
+dat_surv <- read.csv("egfr_joint_baseline.csv")      # wide / baseline survival data
+
+#Make sure factors are factors (important for JM)
+dat_long$donor_type <- factor(dat_long$donor_type)
+dat_surv$donor_type <- factor(dat_surv$donor_type, levels = levels(dat_long$donor_type))
+
+
+
+# Fit longitudinal model (LME)
+lmeFit <- lme(
+  egfr ~ time + donor_type + recip_male + donor_age_c,
+  random   = ~ time | id,
+  data     = dat_long,
+  na.action = na.omit,
+  control  = lmeControl(opt = "optim")
+)
+
+#Fit survival model (Cox) 
+survFit <- coxph(
+  Surv(time, status) ~ donor_type + recip_male + donor_age_c,
+  data = dat_surv,
+  x = TRUE
+)
+
+#Fit joint model (JM) 
+## method options include: "weibull-PH-aGH", "piecewise-PH-aGH", etc.
+jointFit <- jointModel(
+  lmeFit, survFit,
+  timeVar = "time",
+  method  = "piecewise-PH-aGH"
+)
+
+#Choose a patient ID
+set.seed(1)
+id_show <- sample(unique(dat_long$id), 1) #randomly select an ID
+
+id_show<-118 # i selected the ID =118
+
+dataP <- dat_long[dat_long$id == 14, ]
+dataP <- dataP[order(dataP$time), ]
+len_id <- nrow(dataP)
+
+## A helper time grid for plotting survival curves
+tmax <- max(dat_surv$time, na.rm = TRUE)
+
+
+saveGIF({
+  for (i in 1:len_id) {
+    
+    ## longitudinal history up to visit i
+    newdat_i <- dataP[1:i, ]
+    
+    ## dynamic survival prediction conditional on history up to i
+    sfit_i <- survfitJM(jointFit, newdata = newdat_i)
+    
+    ## ---- two-panel layout
+    par(mfrow = c(1, 2), mar = c(4.5, 4.5, 3.5, 1))
+    
+    
+    #Panel A: longitudinal data
+    plot(
+      x = newdat_i$time,
+      y = newdat_i$egfr,
+      pch = 16,
+      xlim = range(dataP$time, na.rm = TRUE),
+      ylim = range(dataP$egfr, na.rm = TRUE),
+      xlab = "Time since transplant (years)",
+      ylab = "eGFR (mL/min/1.73m²)",
+      main = paste0("Longitudinal eGFR (ID = ", id_show, ")\nUp to visit ", i)
+    )
+    lines(newdat_i$time, newdat_i$egfr, lwd = 2)
+    
+    #(Optional) add subject-specific fitted mean from the LME
+    tt <- seq(min(dataP$time), max(dataP$time), length.out = 100)
+    pred_df <- data.frame(
+      id = id_show,
+      time = tt,
+      donor_type  = newdat_i$donor_type[1],
+      recip_male  = newdat_i$recip_male[1],
+      donor_age_c = newdat_i$donor_age_c[1]
+    )
+    yhat <- predict(lmeFit, newdata = pred_df, level = 1)  # subject-specific
+    lines(tt, yhat, lwd = 2, lty = 2)
+    
+    
+    #Panel B: survival prediction
+    plot(
+      sfit_i,
+      estimator = "mean",
+      conf.int  = 0.95,
+      fill.area = TRUE,
+      col.area  = "lightblue",
+      include.y = FALSE,
+      xlim      = c(0, tmax),
+      xlab      = "Time since transplant (years)",
+      ylab      = "Predicted survival probability",
+      main      = "Dynamic survival prediction"
+    )
+  }
+}, ani.width = 900, ani.height = 420)
+
+
+
+#dir.create("images", showWarnings = FALSE)
+#file.rename("animation.gif", "images/animation.gif")
+
+```
+
+
+![](images/animation.gif){width=85%}
 
