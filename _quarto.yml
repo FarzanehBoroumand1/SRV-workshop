@@ -16,6 +16,7 @@ website:
           - lecture-02-cox-ph.qmd
           - lecture-03-non-ph-cox.qmd
           - lecture-04-joint-model.qmd
+          - lecture-05-nonlinear-cox.qmd
 format:
   html:
     mathjax: true
