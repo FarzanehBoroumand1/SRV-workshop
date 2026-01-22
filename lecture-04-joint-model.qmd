@@ -542,9 +542,9 @@ After adjusting for kidney function and other covariates, each **10-year increas
 
 :::
   
-## Prediction plot
+## Prediction plots
 
-The following plot presents **predicted trajectories for four randomly selected patient IDs**, illustrating subject-specific model predictions.
+Figure A presents **predicted trajectories for four randomly selected patient IDs**, illustrating subject-specific model predictions.
 
 
 - Observed eGFR values (black points)  
@@ -602,7 +602,9 @@ ggplot(pred_long, aes(x = time)) +
 ```
 
 
-the following plot show the dynamic predictions for one randomly selected id.
+Figure B shows **Dynamic joint-model predictions** for a randomly selected transplant recipient.
+The left panel shows the observed longitudinal eGFR measurements (solid points and lines) together with the subject-specific fitted trajectory from the linear mixed model (dashed line). The right panel displays the corresponding dynamic predicted graft survival probability, updated sequentially as new eGFR measurements become available. Shaded areas represent 95% credible intervals.
+
 
 ```{r, warning=FALSE}
 
@@ -715,12 +717,12 @@ saveGIF({
 }, ani.width = 900, ani.height = 420)
 
 
-
+#for showing the gif file in the output no need to run 
 #dir.create("images", showWarnings = FALSE)
 #file.rename("animation.gif", "images/animation.gif")
 
 ```
 
 
-![](images/animation.gif){width=85%}
+![](images/animation.gif){width=90%}
 

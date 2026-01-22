@@ -231,7 +231,7 @@ window.Quarto = {
   <li><a href="#alternative-links" id="toc-alternative-links" class="nav-link" data-scroll-target="#alternative-links"><span class="header-section-number">6.4</span> Alternative links</a></li>
   </ul></li>
   <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example"><span class="header-section-number">7</span> Example</a></li>
-  <li><a href="#prediction-plot" id="toc-prediction-plot" class="nav-link" data-scroll-target="#prediction-plot"><span class="header-section-number">8</span> Prediction plot</a></li>
+  <li><a href="#prediction-plots" id="toc-prediction-plots" class="nav-link" data-scroll-target="#prediction-plots"><span class="header-section-number">8</span> Prediction plots</a></li>
   </ul>
 </nav>
     </div>
@@ -793,7 +793,7 @@ chains: 3
 iterations per chain: 3500 
 burn-in per chain: 500 
 thinning: 1 
-time: 35 sec</code></pre>
+time: 50 sec</code></pre>
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
@@ -840,9 +840,9 @@ After adjusting for kidney function and other covariates, each <strong>10-year i
 </div>
 </div>
 </section>
-<section id="prediction-plot" class="level2" data-number="8">
-<h2 data-number="8" class="anchored" data-anchor-id="prediction-plot"><span class="header-section-number">8</span> Prediction plot</h2>
-<p>The following plot presents <strong>predicted trajectories for four randomly selected patient IDs</strong>, illustrating subject-specific model predictions.</p>
+<section id="prediction-plots" class="level2" data-number="8">
+<h2 data-number="8" class="anchored" data-anchor-id="prediction-plots"><span class="header-section-number">8</span> Prediction plots</h2>
+<p>Figure A presents <strong>predicted trajectories for four randomly selected patient IDs</strong>, illustrating subject-specific model predictions.</p>
 <ul>
 <li>Observed eGFR values (black points)<br>
 </li>
@@ -903,7 +903,7 @@ After adjusting for kidney function and other covariates, each <strong>10-year i
 </div>
 </div>
 </div>
-<p>the following plot show the dynamic predictions for one randomly selected id.</p>
+<p>Figure B shows <strong>Dynamic joint-model predictions</strong> for a randomly selected transplant recipient. The left panel shows the observed longitudinal eGFR measurements (solid points and lines) together with the subject-specific fitted trajectory from the linear mixed model (dashed line). The right panel displays the corresponding dynamic predicted graft survival probability, updated sequentially as new eGFR measurements become available. Shaded areas represent 95% credible intervals.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Show R code</summary>
@@ -1020,11 +1020,12 @@ After adjusting for kidney function and other covariates, each <strong>10-year i
 </div>
 <details class="code-fold">
 <summary>Show R code</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#dir.create("images", showWarnings = FALSE)</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#file.rename("animation.gif", "images/animation.gif")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">#for showing the gif file in the output no need to run </span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">#dir.create("images", showWarnings = FALSE)</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">#file.rename("animation.gif", "images/animation.gif")</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p><img src="images/animation.gif" class="img-fluid" style="width:85.0%"></p>
+<p><img src="images/animation.gif" class="img-fluid" style="width:90.0%"></p>
 
 
 <!-- -->
@@ -2047,9 +2048,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb9-542"><a href="#cb9-542" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-543"><a href="#cb9-543" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb9-544"><a href="#cb9-544" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb9-545"><a href="#cb9-545" aria-hidden="true" tabindex="-1"></a><span class="fu">## Prediction plot</span></span>
+<span id="cb9-545"><a href="#cb9-545" aria-hidden="true" tabindex="-1"></a><span class="fu">## Prediction plots</span></span>
 <span id="cb9-546"><a href="#cb9-546" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-547"><a href="#cb9-547" aria-hidden="true" tabindex="-1"></a>The following plot presents **predicted trajectories for four randomly selected patient IDs**, illustrating subject-specific model predictions.</span>
+<span id="cb9-547"><a href="#cb9-547" aria-hidden="true" tabindex="-1"></a>Figure A presents **predicted trajectories for four randomly selected patient IDs**, illustrating subject-specific model predictions.</span>
 <span id="cb9-548"><a href="#cb9-548" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-549"><a href="#cb9-549" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-550"><a href="#cb9-550" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Observed eGFR values (black points)  </span>
@@ -2107,127 +2108,129 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <span id="cb9-602"><a href="#cb9-602" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb9-603"><a href="#cb9-603" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-604"><a href="#cb9-604" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-605"><a href="#cb9-605" aria-hidden="true" tabindex="-1"></a>the following plot show the dynamic predictions for one randomly selected id.</span>
-<span id="cb9-606"><a href="#cb9-606" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-607"><a href="#cb9-607" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE}</span></span>
+<span id="cb9-605"><a href="#cb9-605" aria-hidden="true" tabindex="-1"></a>Figure B shows **Dynamic joint-model predictions** for a randomly selected transplant recipient.</span>
+<span id="cb9-606"><a href="#cb9-606" aria-hidden="true" tabindex="-1"></a>The left panel shows the observed longitudinal eGFR measurements (solid points and lines) together with the subject-specific fitted trajectory from the linear mixed model (dashed line). The right panel displays the corresponding dynamic predicted graft survival probability, updated sequentially as new eGFR measurements become available. Shaded areas represent 95% credible intervals.</span>
+<span id="cb9-607"><a href="#cb9-607" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-608"><a href="#cb9-608" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-609"><a href="#cb9-609" aria-hidden="true" tabindex="-1"></a><span class="in">library(nlme)</span></span>
-<span id="cb9-610"><a href="#cb9-610" aria-hidden="true" tabindex="-1"></a><span class="in">library(survival)</span></span>
-<span id="cb9-611"><a href="#cb9-611" aria-hidden="true" tabindex="-1"></a><span class="in">library(JM)</span></span>
-<span id="cb9-612"><a href="#cb9-612" aria-hidden="true" tabindex="-1"></a><span class="in">library(animation)</span></span>
-<span id="cb9-613"><a href="#cb9-613" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-614"><a href="#cb9-614" aria-hidden="true" tabindex="-1"></a><span class="in"># data</span></span>
-<span id="cb9-615"><a href="#cb9-615" aria-hidden="true" tabindex="-1"></a><span class="in">dat_long &lt;- read.csv("egfr_joint_data.csv")          # long data with repeated eGFR</span></span>
-<span id="cb9-616"><a href="#cb9-616" aria-hidden="true" tabindex="-1"></a><span class="in">dat_surv &lt;- read.csv("egfr_joint_baseline.csv")      # wide / baseline survival data</span></span>
-<span id="cb9-617"><a href="#cb9-617" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-618"><a href="#cb9-618" aria-hidden="true" tabindex="-1"></a><span class="in">#Make sure factors are factors (important for JM)</span></span>
-<span id="cb9-619"><a href="#cb9-619" aria-hidden="true" tabindex="-1"></a><span class="in">dat_long$donor_type &lt;- factor(dat_long$donor_type)</span></span>
-<span id="cb9-620"><a href="#cb9-620" aria-hidden="true" tabindex="-1"></a><span class="in">dat_surv$donor_type &lt;- factor(dat_surv$donor_type, levels = levels(dat_long$donor_type))</span></span>
-<span id="cb9-621"><a href="#cb9-621" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-622"><a href="#cb9-622" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-609"><a href="#cb9-609" aria-hidden="true" tabindex="-1"></a><span class="in">```{r, warning=FALSE}</span></span>
+<span id="cb9-610"><a href="#cb9-610" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-611"><a href="#cb9-611" aria-hidden="true" tabindex="-1"></a><span class="in">library(nlme)</span></span>
+<span id="cb9-612"><a href="#cb9-612" aria-hidden="true" tabindex="-1"></a><span class="in">library(survival)</span></span>
+<span id="cb9-613"><a href="#cb9-613" aria-hidden="true" tabindex="-1"></a><span class="in">library(JM)</span></span>
+<span id="cb9-614"><a href="#cb9-614" aria-hidden="true" tabindex="-1"></a><span class="in">library(animation)</span></span>
+<span id="cb9-615"><a href="#cb9-615" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-616"><a href="#cb9-616" aria-hidden="true" tabindex="-1"></a><span class="in"># data</span></span>
+<span id="cb9-617"><a href="#cb9-617" aria-hidden="true" tabindex="-1"></a><span class="in">dat_long &lt;- read.csv("egfr_joint_data.csv")          # long data with repeated eGFR</span></span>
+<span id="cb9-618"><a href="#cb9-618" aria-hidden="true" tabindex="-1"></a><span class="in">dat_surv &lt;- read.csv("egfr_joint_baseline.csv")      # wide / baseline survival data</span></span>
+<span id="cb9-619"><a href="#cb9-619" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-620"><a href="#cb9-620" aria-hidden="true" tabindex="-1"></a><span class="in">#Make sure factors are factors (important for JM)</span></span>
+<span id="cb9-621"><a href="#cb9-621" aria-hidden="true" tabindex="-1"></a><span class="in">dat_long$donor_type &lt;- factor(dat_long$donor_type)</span></span>
+<span id="cb9-622"><a href="#cb9-622" aria-hidden="true" tabindex="-1"></a><span class="in">dat_surv$donor_type &lt;- factor(dat_surv$donor_type, levels = levels(dat_long$donor_type))</span></span>
 <span id="cb9-623"><a href="#cb9-623" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-624"><a href="#cb9-624" aria-hidden="true" tabindex="-1"></a><span class="in"># Fit longitudinal model (LME)</span></span>
-<span id="cb9-625"><a href="#cb9-625" aria-hidden="true" tabindex="-1"></a><span class="in">lmeFit &lt;- lme(</span></span>
-<span id="cb9-626"><a href="#cb9-626" aria-hidden="true" tabindex="-1"></a><span class="in">  egfr ~ time + donor_type + recip_male + donor_age_c,</span></span>
-<span id="cb9-627"><a href="#cb9-627" aria-hidden="true" tabindex="-1"></a><span class="in">  random   = ~ time | id,</span></span>
-<span id="cb9-628"><a href="#cb9-628" aria-hidden="true" tabindex="-1"></a><span class="in">  data     = dat_long,</span></span>
-<span id="cb9-629"><a href="#cb9-629" aria-hidden="true" tabindex="-1"></a><span class="in">  na.action = na.omit,</span></span>
-<span id="cb9-630"><a href="#cb9-630" aria-hidden="true" tabindex="-1"></a><span class="in">  control  = lmeControl(opt = "optim")</span></span>
-<span id="cb9-631"><a href="#cb9-631" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
-<span id="cb9-632"><a href="#cb9-632" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-633"><a href="#cb9-633" aria-hidden="true" tabindex="-1"></a><span class="in">#Fit survival model (Cox) </span></span>
-<span id="cb9-634"><a href="#cb9-634" aria-hidden="true" tabindex="-1"></a><span class="in">survFit &lt;- coxph(</span></span>
-<span id="cb9-635"><a href="#cb9-635" aria-hidden="true" tabindex="-1"></a><span class="in">  Surv(time, status) ~ donor_type + recip_male + donor_age_c,</span></span>
-<span id="cb9-636"><a href="#cb9-636" aria-hidden="true" tabindex="-1"></a><span class="in">  data = dat_surv,</span></span>
-<span id="cb9-637"><a href="#cb9-637" aria-hidden="true" tabindex="-1"></a><span class="in">  x = TRUE</span></span>
-<span id="cb9-638"><a href="#cb9-638" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
-<span id="cb9-639"><a href="#cb9-639" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-640"><a href="#cb9-640" aria-hidden="true" tabindex="-1"></a><span class="in">#Fit joint model (JM) </span></span>
-<span id="cb9-641"><a href="#cb9-641" aria-hidden="true" tabindex="-1"></a><span class="in">## method options include: "weibull-PH-aGH", "piecewise-PH-aGH", etc.</span></span>
-<span id="cb9-642"><a href="#cb9-642" aria-hidden="true" tabindex="-1"></a><span class="in">jointFit &lt;- jointModel(</span></span>
-<span id="cb9-643"><a href="#cb9-643" aria-hidden="true" tabindex="-1"></a><span class="in">  lmeFit, survFit,</span></span>
-<span id="cb9-644"><a href="#cb9-644" aria-hidden="true" tabindex="-1"></a><span class="in">  timeVar = "time",</span></span>
-<span id="cb9-645"><a href="#cb9-645" aria-hidden="true" tabindex="-1"></a><span class="in">  method  = "piecewise-PH-aGH"</span></span>
-<span id="cb9-646"><a href="#cb9-646" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
-<span id="cb9-647"><a href="#cb9-647" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-648"><a href="#cb9-648" aria-hidden="true" tabindex="-1"></a><span class="in">#Choose a patient ID</span></span>
-<span id="cb9-649"><a href="#cb9-649" aria-hidden="true" tabindex="-1"></a><span class="in">set.seed(1)</span></span>
-<span id="cb9-650"><a href="#cb9-650" aria-hidden="true" tabindex="-1"></a><span class="in">id_show &lt;- sample(unique(dat_long$id), 1) #randomly select an ID</span></span>
-<span id="cb9-651"><a href="#cb9-651" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-652"><a href="#cb9-652" aria-hidden="true" tabindex="-1"></a><span class="in">id_show&lt;-118 # i selected the ID =118</span></span>
+<span id="cb9-624"><a href="#cb9-624" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-625"><a href="#cb9-625" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-626"><a href="#cb9-626" aria-hidden="true" tabindex="-1"></a><span class="in"># Fit longitudinal model (LME)</span></span>
+<span id="cb9-627"><a href="#cb9-627" aria-hidden="true" tabindex="-1"></a><span class="in">lmeFit &lt;- lme(</span></span>
+<span id="cb9-628"><a href="#cb9-628" aria-hidden="true" tabindex="-1"></a><span class="in">  egfr ~ time + donor_type + recip_male + donor_age_c,</span></span>
+<span id="cb9-629"><a href="#cb9-629" aria-hidden="true" tabindex="-1"></a><span class="in">  random   = ~ time | id,</span></span>
+<span id="cb9-630"><a href="#cb9-630" aria-hidden="true" tabindex="-1"></a><span class="in">  data     = dat_long,</span></span>
+<span id="cb9-631"><a href="#cb9-631" aria-hidden="true" tabindex="-1"></a><span class="in">  na.action = na.omit,</span></span>
+<span id="cb9-632"><a href="#cb9-632" aria-hidden="true" tabindex="-1"></a><span class="in">  control  = lmeControl(opt = "optim")</span></span>
+<span id="cb9-633"><a href="#cb9-633" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
+<span id="cb9-634"><a href="#cb9-634" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-635"><a href="#cb9-635" aria-hidden="true" tabindex="-1"></a><span class="in">#Fit survival model (Cox) </span></span>
+<span id="cb9-636"><a href="#cb9-636" aria-hidden="true" tabindex="-1"></a><span class="in">survFit &lt;- coxph(</span></span>
+<span id="cb9-637"><a href="#cb9-637" aria-hidden="true" tabindex="-1"></a><span class="in">  Surv(time, status) ~ donor_type + recip_male + donor_age_c,</span></span>
+<span id="cb9-638"><a href="#cb9-638" aria-hidden="true" tabindex="-1"></a><span class="in">  data = dat_surv,</span></span>
+<span id="cb9-639"><a href="#cb9-639" aria-hidden="true" tabindex="-1"></a><span class="in">  x = TRUE</span></span>
+<span id="cb9-640"><a href="#cb9-640" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
+<span id="cb9-641"><a href="#cb9-641" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-642"><a href="#cb9-642" aria-hidden="true" tabindex="-1"></a><span class="in">#Fit joint model (JM) </span></span>
+<span id="cb9-643"><a href="#cb9-643" aria-hidden="true" tabindex="-1"></a><span class="in">## method options include: "weibull-PH-aGH", "piecewise-PH-aGH", etc.</span></span>
+<span id="cb9-644"><a href="#cb9-644" aria-hidden="true" tabindex="-1"></a><span class="in">jointFit &lt;- jointModel(</span></span>
+<span id="cb9-645"><a href="#cb9-645" aria-hidden="true" tabindex="-1"></a><span class="in">  lmeFit, survFit,</span></span>
+<span id="cb9-646"><a href="#cb9-646" aria-hidden="true" tabindex="-1"></a><span class="in">  timeVar = "time",</span></span>
+<span id="cb9-647"><a href="#cb9-647" aria-hidden="true" tabindex="-1"></a><span class="in">  method  = "piecewise-PH-aGH"</span></span>
+<span id="cb9-648"><a href="#cb9-648" aria-hidden="true" tabindex="-1"></a><span class="in">)</span></span>
+<span id="cb9-649"><a href="#cb9-649" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-650"><a href="#cb9-650" aria-hidden="true" tabindex="-1"></a><span class="in">#Choose a patient ID</span></span>
+<span id="cb9-651"><a href="#cb9-651" aria-hidden="true" tabindex="-1"></a><span class="in">set.seed(1)</span></span>
+<span id="cb9-652"><a href="#cb9-652" aria-hidden="true" tabindex="-1"></a><span class="in">id_show &lt;- sample(unique(dat_long$id), 1) #randomly select an ID</span></span>
 <span id="cb9-653"><a href="#cb9-653" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-654"><a href="#cb9-654" aria-hidden="true" tabindex="-1"></a><span class="in">dataP &lt;- dat_long[dat_long$id == 14, ]</span></span>
-<span id="cb9-655"><a href="#cb9-655" aria-hidden="true" tabindex="-1"></a><span class="in">dataP &lt;- dataP[order(dataP$time), ]</span></span>
-<span id="cb9-656"><a href="#cb9-656" aria-hidden="true" tabindex="-1"></a><span class="in">len_id &lt;- nrow(dataP)</span></span>
-<span id="cb9-657"><a href="#cb9-657" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-658"><a href="#cb9-658" aria-hidden="true" tabindex="-1"></a><span class="in">## A helper time grid for plotting survival curves</span></span>
-<span id="cb9-659"><a href="#cb9-659" aria-hidden="true" tabindex="-1"></a><span class="in">tmax &lt;- max(dat_surv$time, na.rm = TRUE)</span></span>
-<span id="cb9-660"><a href="#cb9-660" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-661"><a href="#cb9-661" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-662"><a href="#cb9-662" aria-hidden="true" tabindex="-1"></a><span class="in">saveGIF({</span></span>
-<span id="cb9-663"><a href="#cb9-663" aria-hidden="true" tabindex="-1"></a><span class="in">  for (i in 1:len_id) {</span></span>
-<span id="cb9-664"><a href="#cb9-664" aria-hidden="true" tabindex="-1"></a><span class="in">    </span></span>
-<span id="cb9-665"><a href="#cb9-665" aria-hidden="true" tabindex="-1"></a><span class="in">    ## longitudinal history up to visit i</span></span>
-<span id="cb9-666"><a href="#cb9-666" aria-hidden="true" tabindex="-1"></a><span class="in">    newdat_i &lt;- dataP[1:i, ]</span></span>
-<span id="cb9-667"><a href="#cb9-667" aria-hidden="true" tabindex="-1"></a><span class="in">    </span></span>
-<span id="cb9-668"><a href="#cb9-668" aria-hidden="true" tabindex="-1"></a><span class="in">    ## dynamic survival prediction conditional on history up to i</span></span>
-<span id="cb9-669"><a href="#cb9-669" aria-hidden="true" tabindex="-1"></a><span class="in">    sfit_i &lt;- survfitJM(jointFit, newdata = newdat_i)</span></span>
-<span id="cb9-670"><a href="#cb9-670" aria-hidden="true" tabindex="-1"></a><span class="in">    </span></span>
-<span id="cb9-671"><a href="#cb9-671" aria-hidden="true" tabindex="-1"></a><span class="in">    ## ---- two-panel layout</span></span>
-<span id="cb9-672"><a href="#cb9-672" aria-hidden="true" tabindex="-1"></a><span class="in">    par(mfrow = c(1, 2), mar = c(4.5, 4.5, 3.5, 1))</span></span>
-<span id="cb9-673"><a href="#cb9-673" aria-hidden="true" tabindex="-1"></a><span class="in">    </span></span>
-<span id="cb9-674"><a href="#cb9-674" aria-hidden="true" tabindex="-1"></a><span class="in">    </span></span>
-<span id="cb9-675"><a href="#cb9-675" aria-hidden="true" tabindex="-1"></a><span class="in">    #Panel A: longitudinal data</span></span>
-<span id="cb9-676"><a href="#cb9-676" aria-hidden="true" tabindex="-1"></a><span class="in">    plot(</span></span>
-<span id="cb9-677"><a href="#cb9-677" aria-hidden="true" tabindex="-1"></a><span class="in">      x = newdat_i$time,</span></span>
-<span id="cb9-678"><a href="#cb9-678" aria-hidden="true" tabindex="-1"></a><span class="in">      y = newdat_i$egfr,</span></span>
-<span id="cb9-679"><a href="#cb9-679" aria-hidden="true" tabindex="-1"></a><span class="in">      pch = 16,</span></span>
-<span id="cb9-680"><a href="#cb9-680" aria-hidden="true" tabindex="-1"></a><span class="in">      xlim = range(dataP$time, na.rm = TRUE),</span></span>
-<span id="cb9-681"><a href="#cb9-681" aria-hidden="true" tabindex="-1"></a><span class="in">      ylim = range(dataP$egfr, na.rm = TRUE),</span></span>
-<span id="cb9-682"><a href="#cb9-682" aria-hidden="true" tabindex="-1"></a><span class="in">      xlab = "Time since transplant (years)",</span></span>
-<span id="cb9-683"><a href="#cb9-683" aria-hidden="true" tabindex="-1"></a><span class="in">      ylab = "eGFR (mL/min/1.73m²)",</span></span>
-<span id="cb9-684"><a href="#cb9-684" aria-hidden="true" tabindex="-1"></a><span class="in">      main = paste0("Longitudinal eGFR (ID = ", id_show, ")\nUp to visit ", i)</span></span>
-<span id="cb9-685"><a href="#cb9-685" aria-hidden="true" tabindex="-1"></a><span class="in">    )</span></span>
-<span id="cb9-686"><a href="#cb9-686" aria-hidden="true" tabindex="-1"></a><span class="in">    lines(newdat_i$time, newdat_i$egfr, lwd = 2)</span></span>
-<span id="cb9-687"><a href="#cb9-687" aria-hidden="true" tabindex="-1"></a><span class="in">    </span></span>
-<span id="cb9-688"><a href="#cb9-688" aria-hidden="true" tabindex="-1"></a><span class="in">    #(Optional) add subject-specific fitted mean from the LME</span></span>
-<span id="cb9-689"><a href="#cb9-689" aria-hidden="true" tabindex="-1"></a><span class="in">    tt &lt;- seq(min(dataP$time), max(dataP$time), length.out = 100)</span></span>
-<span id="cb9-690"><a href="#cb9-690" aria-hidden="true" tabindex="-1"></a><span class="in">    pred_df &lt;- data.frame(</span></span>
-<span id="cb9-691"><a href="#cb9-691" aria-hidden="true" tabindex="-1"></a><span class="in">      id = id_show,</span></span>
-<span id="cb9-692"><a href="#cb9-692" aria-hidden="true" tabindex="-1"></a><span class="in">      time = tt,</span></span>
-<span id="cb9-693"><a href="#cb9-693" aria-hidden="true" tabindex="-1"></a><span class="in">      donor_type  = newdat_i$donor_type[1],</span></span>
-<span id="cb9-694"><a href="#cb9-694" aria-hidden="true" tabindex="-1"></a><span class="in">      recip_male  = newdat_i$recip_male[1],</span></span>
-<span id="cb9-695"><a href="#cb9-695" aria-hidden="true" tabindex="-1"></a><span class="in">      donor_age_c = newdat_i$donor_age_c[1]</span></span>
-<span id="cb9-696"><a href="#cb9-696" aria-hidden="true" tabindex="-1"></a><span class="in">    )</span></span>
-<span id="cb9-697"><a href="#cb9-697" aria-hidden="true" tabindex="-1"></a><span class="in">    yhat &lt;- predict(lmeFit, newdata = pred_df, level = 1)  # subject-specific</span></span>
-<span id="cb9-698"><a href="#cb9-698" aria-hidden="true" tabindex="-1"></a><span class="in">    lines(tt, yhat, lwd = 2, lty = 2)</span></span>
-<span id="cb9-699"><a href="#cb9-699" aria-hidden="true" tabindex="-1"></a><span class="in">    </span></span>
-<span id="cb9-700"><a href="#cb9-700" aria-hidden="true" tabindex="-1"></a><span class="in">    </span></span>
-<span id="cb9-701"><a href="#cb9-701" aria-hidden="true" tabindex="-1"></a><span class="in">    #Panel B: survival prediction</span></span>
-<span id="cb9-702"><a href="#cb9-702" aria-hidden="true" tabindex="-1"></a><span class="in">    plot(</span></span>
-<span id="cb9-703"><a href="#cb9-703" aria-hidden="true" tabindex="-1"></a><span class="in">      sfit_i,</span></span>
-<span id="cb9-704"><a href="#cb9-704" aria-hidden="true" tabindex="-1"></a><span class="in">      estimator = "mean",</span></span>
-<span id="cb9-705"><a href="#cb9-705" aria-hidden="true" tabindex="-1"></a><span class="in">      conf.int  = 0.95,</span></span>
-<span id="cb9-706"><a href="#cb9-706" aria-hidden="true" tabindex="-1"></a><span class="in">      fill.area = TRUE,</span></span>
-<span id="cb9-707"><a href="#cb9-707" aria-hidden="true" tabindex="-1"></a><span class="in">      col.area  = "lightblue",</span></span>
-<span id="cb9-708"><a href="#cb9-708" aria-hidden="true" tabindex="-1"></a><span class="in">      include.y = FALSE,</span></span>
-<span id="cb9-709"><a href="#cb9-709" aria-hidden="true" tabindex="-1"></a><span class="in">      xlim      = c(0, tmax),</span></span>
-<span id="cb9-710"><a href="#cb9-710" aria-hidden="true" tabindex="-1"></a><span class="in">      xlab      = "Time since transplant (years)",</span></span>
-<span id="cb9-711"><a href="#cb9-711" aria-hidden="true" tabindex="-1"></a><span class="in">      ylab      = "Predicted survival probability",</span></span>
-<span id="cb9-712"><a href="#cb9-712" aria-hidden="true" tabindex="-1"></a><span class="in">      main      = "Dynamic survival prediction"</span></span>
-<span id="cb9-713"><a href="#cb9-713" aria-hidden="true" tabindex="-1"></a><span class="in">    )</span></span>
-<span id="cb9-714"><a href="#cb9-714" aria-hidden="true" tabindex="-1"></a><span class="in">  }</span></span>
-<span id="cb9-715"><a href="#cb9-715" aria-hidden="true" tabindex="-1"></a><span class="in">}, ani.width = 900, ani.height = 420)</span></span>
-<span id="cb9-716"><a href="#cb9-716" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-717"><a href="#cb9-717" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-654"><a href="#cb9-654" aria-hidden="true" tabindex="-1"></a><span class="in">id_show&lt;-118 # i selected the ID =118</span></span>
+<span id="cb9-655"><a href="#cb9-655" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-656"><a href="#cb9-656" aria-hidden="true" tabindex="-1"></a><span class="in">dataP &lt;- dat_long[dat_long$id == 14, ]</span></span>
+<span id="cb9-657"><a href="#cb9-657" aria-hidden="true" tabindex="-1"></a><span class="in">dataP &lt;- dataP[order(dataP$time), ]</span></span>
+<span id="cb9-658"><a href="#cb9-658" aria-hidden="true" tabindex="-1"></a><span class="in">len_id &lt;- nrow(dataP)</span></span>
+<span id="cb9-659"><a href="#cb9-659" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-660"><a href="#cb9-660" aria-hidden="true" tabindex="-1"></a><span class="in">## A helper time grid for plotting survival curves</span></span>
+<span id="cb9-661"><a href="#cb9-661" aria-hidden="true" tabindex="-1"></a><span class="in">tmax &lt;- max(dat_surv$time, na.rm = TRUE)</span></span>
+<span id="cb9-662"><a href="#cb9-662" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-663"><a href="#cb9-663" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-664"><a href="#cb9-664" aria-hidden="true" tabindex="-1"></a><span class="in">saveGIF({</span></span>
+<span id="cb9-665"><a href="#cb9-665" aria-hidden="true" tabindex="-1"></a><span class="in">  for (i in 1:len_id) {</span></span>
+<span id="cb9-666"><a href="#cb9-666" aria-hidden="true" tabindex="-1"></a><span class="in">    </span></span>
+<span id="cb9-667"><a href="#cb9-667" aria-hidden="true" tabindex="-1"></a><span class="in">    ## longitudinal history up to visit i</span></span>
+<span id="cb9-668"><a href="#cb9-668" aria-hidden="true" tabindex="-1"></a><span class="in">    newdat_i &lt;- dataP[1:i, ]</span></span>
+<span id="cb9-669"><a href="#cb9-669" aria-hidden="true" tabindex="-1"></a><span class="in">    </span></span>
+<span id="cb9-670"><a href="#cb9-670" aria-hidden="true" tabindex="-1"></a><span class="in">    ## dynamic survival prediction conditional on history up to i</span></span>
+<span id="cb9-671"><a href="#cb9-671" aria-hidden="true" tabindex="-1"></a><span class="in">    sfit_i &lt;- survfitJM(jointFit, newdata = newdat_i)</span></span>
+<span id="cb9-672"><a href="#cb9-672" aria-hidden="true" tabindex="-1"></a><span class="in">    </span></span>
+<span id="cb9-673"><a href="#cb9-673" aria-hidden="true" tabindex="-1"></a><span class="in">    ## ---- two-panel layout</span></span>
+<span id="cb9-674"><a href="#cb9-674" aria-hidden="true" tabindex="-1"></a><span class="in">    par(mfrow = c(1, 2), mar = c(4.5, 4.5, 3.5, 1))</span></span>
+<span id="cb9-675"><a href="#cb9-675" aria-hidden="true" tabindex="-1"></a><span class="in">    </span></span>
+<span id="cb9-676"><a href="#cb9-676" aria-hidden="true" tabindex="-1"></a><span class="in">    </span></span>
+<span id="cb9-677"><a href="#cb9-677" aria-hidden="true" tabindex="-1"></a><span class="in">    #Panel A: longitudinal data</span></span>
+<span id="cb9-678"><a href="#cb9-678" aria-hidden="true" tabindex="-1"></a><span class="in">    plot(</span></span>
+<span id="cb9-679"><a href="#cb9-679" aria-hidden="true" tabindex="-1"></a><span class="in">      x = newdat_i$time,</span></span>
+<span id="cb9-680"><a href="#cb9-680" aria-hidden="true" tabindex="-1"></a><span class="in">      y = newdat_i$egfr,</span></span>
+<span id="cb9-681"><a href="#cb9-681" aria-hidden="true" tabindex="-1"></a><span class="in">      pch = 16,</span></span>
+<span id="cb9-682"><a href="#cb9-682" aria-hidden="true" tabindex="-1"></a><span class="in">      xlim = range(dataP$time, na.rm = TRUE),</span></span>
+<span id="cb9-683"><a href="#cb9-683" aria-hidden="true" tabindex="-1"></a><span class="in">      ylim = range(dataP$egfr, na.rm = TRUE),</span></span>
+<span id="cb9-684"><a href="#cb9-684" aria-hidden="true" tabindex="-1"></a><span class="in">      xlab = "Time since transplant (years)",</span></span>
+<span id="cb9-685"><a href="#cb9-685" aria-hidden="true" tabindex="-1"></a><span class="in">      ylab = "eGFR (mL/min/1.73m²)",</span></span>
+<span id="cb9-686"><a href="#cb9-686" aria-hidden="true" tabindex="-1"></a><span class="in">      main = paste0("Longitudinal eGFR (ID = ", id_show, ")\nUp to visit ", i)</span></span>
+<span id="cb9-687"><a href="#cb9-687" aria-hidden="true" tabindex="-1"></a><span class="in">    )</span></span>
+<span id="cb9-688"><a href="#cb9-688" aria-hidden="true" tabindex="-1"></a><span class="in">    lines(newdat_i$time, newdat_i$egfr, lwd = 2)</span></span>
+<span id="cb9-689"><a href="#cb9-689" aria-hidden="true" tabindex="-1"></a><span class="in">    </span></span>
+<span id="cb9-690"><a href="#cb9-690" aria-hidden="true" tabindex="-1"></a><span class="in">    #(Optional) add subject-specific fitted mean from the LME</span></span>
+<span id="cb9-691"><a href="#cb9-691" aria-hidden="true" tabindex="-1"></a><span class="in">    tt &lt;- seq(min(dataP$time), max(dataP$time), length.out = 100)</span></span>
+<span id="cb9-692"><a href="#cb9-692" aria-hidden="true" tabindex="-1"></a><span class="in">    pred_df &lt;- data.frame(</span></span>
+<span id="cb9-693"><a href="#cb9-693" aria-hidden="true" tabindex="-1"></a><span class="in">      id = id_show,</span></span>
+<span id="cb9-694"><a href="#cb9-694" aria-hidden="true" tabindex="-1"></a><span class="in">      time = tt,</span></span>
+<span id="cb9-695"><a href="#cb9-695" aria-hidden="true" tabindex="-1"></a><span class="in">      donor_type  = newdat_i$donor_type[1],</span></span>
+<span id="cb9-696"><a href="#cb9-696" aria-hidden="true" tabindex="-1"></a><span class="in">      recip_male  = newdat_i$recip_male[1],</span></span>
+<span id="cb9-697"><a href="#cb9-697" aria-hidden="true" tabindex="-1"></a><span class="in">      donor_age_c = newdat_i$donor_age_c[1]</span></span>
+<span id="cb9-698"><a href="#cb9-698" aria-hidden="true" tabindex="-1"></a><span class="in">    )</span></span>
+<span id="cb9-699"><a href="#cb9-699" aria-hidden="true" tabindex="-1"></a><span class="in">    yhat &lt;- predict(lmeFit, newdata = pred_df, level = 1)  # subject-specific</span></span>
+<span id="cb9-700"><a href="#cb9-700" aria-hidden="true" tabindex="-1"></a><span class="in">    lines(tt, yhat, lwd = 2, lty = 2)</span></span>
+<span id="cb9-701"><a href="#cb9-701" aria-hidden="true" tabindex="-1"></a><span class="in">    </span></span>
+<span id="cb9-702"><a href="#cb9-702" aria-hidden="true" tabindex="-1"></a><span class="in">    </span></span>
+<span id="cb9-703"><a href="#cb9-703" aria-hidden="true" tabindex="-1"></a><span class="in">    #Panel B: survival prediction</span></span>
+<span id="cb9-704"><a href="#cb9-704" aria-hidden="true" tabindex="-1"></a><span class="in">    plot(</span></span>
+<span id="cb9-705"><a href="#cb9-705" aria-hidden="true" tabindex="-1"></a><span class="in">      sfit_i,</span></span>
+<span id="cb9-706"><a href="#cb9-706" aria-hidden="true" tabindex="-1"></a><span class="in">      estimator = "mean",</span></span>
+<span id="cb9-707"><a href="#cb9-707" aria-hidden="true" tabindex="-1"></a><span class="in">      conf.int  = 0.95,</span></span>
+<span id="cb9-708"><a href="#cb9-708" aria-hidden="true" tabindex="-1"></a><span class="in">      fill.area = TRUE,</span></span>
+<span id="cb9-709"><a href="#cb9-709" aria-hidden="true" tabindex="-1"></a><span class="in">      col.area  = "lightblue",</span></span>
+<span id="cb9-710"><a href="#cb9-710" aria-hidden="true" tabindex="-1"></a><span class="in">      include.y = FALSE,</span></span>
+<span id="cb9-711"><a href="#cb9-711" aria-hidden="true" tabindex="-1"></a><span class="in">      xlim      = c(0, tmax),</span></span>
+<span id="cb9-712"><a href="#cb9-712" aria-hidden="true" tabindex="-1"></a><span class="in">      xlab      = "Time since transplant (years)",</span></span>
+<span id="cb9-713"><a href="#cb9-713" aria-hidden="true" tabindex="-1"></a><span class="in">      ylab      = "Predicted survival probability",</span></span>
+<span id="cb9-714"><a href="#cb9-714" aria-hidden="true" tabindex="-1"></a><span class="in">      main      = "Dynamic survival prediction"</span></span>
+<span id="cb9-715"><a href="#cb9-715" aria-hidden="true" tabindex="-1"></a><span class="in">    )</span></span>
+<span id="cb9-716"><a href="#cb9-716" aria-hidden="true" tabindex="-1"></a><span class="in">  }</span></span>
+<span id="cb9-717"><a href="#cb9-717" aria-hidden="true" tabindex="-1"></a><span class="in">}, ani.width = 900, ani.height = 420)</span></span>
 <span id="cb9-718"><a href="#cb9-718" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-719"><a href="#cb9-719" aria-hidden="true" tabindex="-1"></a><span class="in">#dir.create("images", showWarnings = FALSE)</span></span>
-<span id="cb9-720"><a href="#cb9-720" aria-hidden="true" tabindex="-1"></a><span class="in">#file.rename("animation.gif", "images/animation.gif")</span></span>
-<span id="cb9-721"><a href="#cb9-721" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-722"><a href="#cb9-722" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-719"><a href="#cb9-719" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-720"><a href="#cb9-720" aria-hidden="true" tabindex="-1"></a><span class="in">#for showing the gif file in the output no need to run </span></span>
+<span id="cb9-721"><a href="#cb9-721" aria-hidden="true" tabindex="-1"></a><span class="in">#dir.create("images", showWarnings = FALSE)</span></span>
+<span id="cb9-722"><a href="#cb9-722" aria-hidden="true" tabindex="-1"></a><span class="in">#file.rename("animation.gif", "images/animation.gif")</span></span>
 <span id="cb9-723"><a href="#cb9-723" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-724"><a href="#cb9-724" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-725"><a href="#cb9-725" aria-hidden="true" tabindex="-1"></a><span class="al">![](images/animation.gif)</span>{width=85%}</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
+<span id="cb9-724"><a href="#cb9-724" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb9-725"><a href="#cb9-725" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-726"><a href="#cb9-726" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-727"><a href="#cb9-727" aria-hidden="true" tabindex="-1"></a><span class="al">![](images/animation.gif)</span>{width=90%}</span></code><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></pre></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 
