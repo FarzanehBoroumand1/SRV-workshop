@@ -260,11 +260,13 @@ we also could get the prediction plot using `ggplot2` as follows:
 
 ✅ **eGFR at baseline**
 
-The effect of baseline eGFR on graft failure is clearly non-linear.Compared with eGFR = 40 (HR = 1):
-Very low eGFR (<30) is associated with a substantially higher hazard, indicating worse kidney function strongly increases risk.
-eGFR between ~30 and 50 shows risk decreasing, reaching its lowest point around ~50.
-High eGFR (>50) shows a gradual increase in hazard, suggesting a U-shaped or curved relationship.
-These predictions are for a male recipient receiving a kidney from a deceased donor, at median age.
+The effect of baseline eGFR on graft failure is clearly non-linear.Compared with eGFR = 40 (HR = 1):  
+
+- **Very low eGFR (<30)** is associated with a substantially higher hazard, indicating worse kidney function strongly increases risk.  
+- **eGFR between ~30 and 50** shows risk decreasing, reaching its lowest point around ~50.  
+- **High eGFR (>50)** shows a gradual increase in hazard, suggesting a U-shaped or curved relationship.  
+
+These predictions are for a **male recipient** receiving a kidney from a **deceased donor**, at **median age**.
 
 
 
@@ -348,11 +350,14 @@ ggplot(plot_age, aes(x = age_rec, y = HR)) +
 
 ✅  **Age**
 
-The effect of recipient age on graft failure is strongly non-linear. Compared with a 50-year-old recipient (HR = 1):
-Younger adults (<40) have a slightly lower hazard, but the protective effect is modest.
-Ages 50–60 show a gradual increase in hazard.
-Older ages (>60) display a rapid, accelerating increase in hazard, with much higher risk by age 75–80.
-These predictions are for a male recipient receiving a kidney from a deceased donor, at median of eGFR.
+The effect of recipient age on graft failure is strongly non-linear. Compared with a 50-year-old recipient (HR = 1):  
+
+- **Younger adults (<40)** have a slightly lower hazard, but the protective effect is modest.  
+- **Ages 50–60** show a gradual increase in hazard.  
+- **Older ages (>60)** display a rapid, accelerating increase in hazard, with much higher risk by age 75–80.  
+
+
+These predictions are for a **male recipient** receiving a kidney from a **deceased donor**, at **median of eGFR**.  
 
 
 ```{r, warning=FALSE}
